@@ -56,6 +56,12 @@ const routes = [
     meta: { title: '短信', requiresAuth: true }
   },
   {
+    path: '/manager',
+    name: 'manager',
+    component: () => import('../views/Manager.vue'),
+    meta: { title: '管理处工作台', requiresAuth: true, requiresManager: true }
+  },
+  {
     path: '/notes',
     name: 'notes',
     component: () => import('../views/Notes.vue'),
@@ -74,10 +80,18 @@ const router = createRouter({
   routes
 })
 
-// 路由守卫：登录后才能访问的页面
+// 路由守卫：登录后才能访问的页面；工作台仅管理员账号可进
 router.beforeEach((to) => {
   if (to.meta.requiresAuth && !localStorage.getItem('nq_user')) {
     return { name: 'login', query: { redirect: to.fullPath } }
+  }
+  if (to.meta.requiresManager) {
+    try {
+      const user = JSON.parse(localStorage.getItem('nq_user') || 'null')
+      if (user?.role !== 'manager') return { name: 'home' }
+    } catch {
+      return { name: 'home' }
+    }
   }
   document.title = to.meta.title || '南桥夜市'
   return true

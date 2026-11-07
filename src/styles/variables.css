@@ -1,36 +1,53 @@
 /* ============================================
    南桥夜市 · 设计变量
    全站统一使用这套变量，不要写死色值
+   --------------------------------------------
+   基调：一整条街的暖光。
+   纸是焦糖色的旧纸，框架是熬糖熬出来的酱褐色（不用黑），
+   红是灯笼红，黄是灯芯黄，绿只留给"顶替/正常"。
    ============================================ */
 
 :root {
-  /* 主色系：老夜市暖棕 */
-  --color-primary: #8B4513;        /* 主色：深棕（导航栏、标题、主按钮） */
-  --color-primary-dark: #6B3410;   /* 主色加深（hover 态） */
-  --color-accent: #D97706;         /* 强调色：暖橙（标签、高亮、链接） */
-  --color-accent-light: #FDE68A;   /* 强调浅色（公告栏背景边框） */
+  /* 酱褐：导航、页脚、深色底（暖，不黑） */
+  --ink: #40251A;
+  --ink-2: #4E2E20;
+  --ink-3: #5E3A28;
 
-  /* 背景与卡片 */
-  --color-bg: #FAF7F2;             /* 页面背景：米白 */
-  --color-card: #FFFFFF;           /* 卡片背景 */
+  /* 主色：灶火褐 */
+  --color-primary: #7A3C22;
+  --color-primary-dark: #572617;
+
+  /* 强调：灯笼红 / 灯芯黄 */
+  --color-accent: #B4472A;
+  --color-accent-dark: #8E3320;
+  --color-accent-light: #F7E3BE;
+  --amber: #D98A2B;
+  --amber-soft: #EBB86A;
+
+  /* 纸张 */
+  --color-bg: #F0DDBB;
+  --color-bg-deep: #E7CFA6;
+  --color-card: #FBF2DD;
+  --color-card-2: #F6E8CA;
 
   /* 文字 */
-  --color-text: #2D1810;           /* 主文字 */
-  --color-text-secondary: #6B5544; /* 次要文字 */
-  --color-text-muted: #8A7666;     /* 弱化文字（时间戳等） */
+  --color-text: #2E1C11;
+  --color-text-secondary: #6C4C34;
+  --color-text-muted: #97795A;
 
   /* 边框与状态 */
-  --color-border: #E8DDD0;         /* 边框 */
-  --color-danger: #B91C1C;         /* 警告/错误/停业 */
-  --color-success: #15803D;        /* 营业中/成功 */
+  --color-border: #DCC29A;
+  --color-border-strong: #C5A472;
+  --color-danger: #A33A22;
+  --color-success: #52703C;
 
   /* 字体 */
-  --font-title: "Noto Serif SC", "Songti SC", "SimSun", serif;
-  --font-body: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-title: "Songti SC", "Source Han Serif SC", "Noto Serif SC", "STSong", "SimSun", serif;
+  --font-body: -apple-system, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
 
   /* 圆角与间距 */
-  --radius: 6px;
-  --radius-lg: 10px;
+  --radius: 2px;
+  --radius-lg: 3px;
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;
@@ -38,18 +55,22 @@
   --space-xl: 40px;
 
   /* 内容区最大宽度 */
-  --container-max: 1200px;
+  --container-max: 1120px;
 
   /* 字号层级 */
-  --font-h1: 28px;
-  --font-h2: 22px;
-  --font-h3: 16px;
+  --font-h1: 40px;
+  --font-h2: 25px;
+  --font-h3: 17px;
   --font-body-size: 14px;
   --font-small: 13px;
   --font-tiny: 12px;
+
+  /* 阴影：暖褐色的浅影，像灯下的纸 */
+  --shadow-soft: 0 1px 0 rgba(255, 252, 240, 0.75) inset, 0 12px 26px -18px rgba(74, 35, 18, 0.5);
+  --shadow-lift: 0 1px 0 rgba(255, 252, 240, 0.8) inset, 0 18px 34px -20px rgba(74, 35, 18, 0.62);
 }
 
 /* 响应式断点参考
-   1920px：大屏（内容区仍限制在 1200px 内）
+   1920px：大屏（内容区仍限制在 1120px 内）
    1440px：常规笔记本
    720px：手机窄屏（在此断点以下改布局） */

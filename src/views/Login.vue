@@ -7,12 +7,12 @@
       <p class="login-subtitle">登录后可查看私信、手记和管理店铺信息</p>
 
       <div class="form-group">
-        <label class="form-label">用户名</label>
+        <label class="form-label">ID</label>
         <input
           type="text"
           class="form-input"
           v-model="username"
-          placeholder="请输入用户名"
+          placeholder="摊主为摊位号，食客为C+数字"
           @keyup.enter="handleLogin"
         >
       </div>
@@ -41,7 +41,7 @@ import { useRouter, useRoute } from 'vue-router'
 import NavBar from '../components/NavBar.vue'
 import Footer from '../components/Footer.vue'
 import BackBar from '../components/BackBar.vue'
-import accounts from '../data/accounts.json'
+import { matchLogin } from '../utils/auth'
 
 const router = useRouter()
 const route = useRoute()
@@ -50,43 +50,31 @@ const username = ref('')
 const password = ref('')
 const errorMsg = ref('')
 
-// 登录逻辑：账号密码对照表在 src/data/accounts.json（队友C维护）
-// 玩家自己注册的账号存 localStorage nq_custom_accounts，同样可以登录
+// 登录逻辑：统一走 matchLogin——
+// 剧情账号：ID（摊主=摊位号 / 管理处=M1 / 食客=C+数字）或账号名均可登录
+// 玩家注册的账号：用户名或分配到的 C+数字ID 均可登录
 function handleLogin() {
-  const uname = username.value.trim()
+  const id = username.value.trim()
   const pwd = password.value.trim()
 
-  if (!uname || !pwd) {
-    errorMsg.value = '请输入用户名和密码'
+  if (!id || !pwd) {
+    errorMsg.value = '请输入ID和密码'
     return
   }
 
-  const account = accounts[uname]
-  let matched = account && account.password === pwd
-  let shopName = account?.shopName || uname
-
-  if (!matched) {
-    // 检查玩家注册的账号
-    try {
-      const custom = JSON.parse(localStorage.getItem('nq_custom_accounts') || '{}')
-      if (custom[uname] && custom[uname].password === pwd) {
-        matched = true
-        shopName = custom[uname].shopName || uname
-      }
-    } catch {
-      /* ignore */
-    }
-  }
-
-  if (matched) {
+  const result = matchLogin(id, pwd)
+  if (result && result.ok) {
     errorMsg.value = ''
     localStorage.setItem('nq_user', JSON.stringify({
-      username: uname,
-      shopName
+      username: result.username,
+      shopName: result.shopName,
+      role: result.role
     }))
-    router.push(route.query.redirect || '/messages')
+    window.dispatchEvent(new CustomEvent('nq-user-changed'))
+    // 管理员账号登录后直接进工作台
+    router.push(route.query.redirect || (result.role === 'manager' ? '/manager' : '/messages'))
   } else {
-    errorMsg.value = '用户名或密码错误，请重试'
+    errorMsg.value = 'ID或密码错误，请重试'
   }
 }
 </script>
@@ -98,18 +86,31 @@ function handleLogin() {
   flex-direction: column;
 }
 .login-container {
+  position: relative;
   max-width: 400px;
   width: 100%;
-  margin: 60px auto;
+  margin: 64px auto;
   background: var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-xl);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  padding: 44px 40px 36px;
   flex: 1;
+  box-shadow: var(--shadow-lift);
+  overflow: hidden;
+}
+.login-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--amber), var(--color-accent));
 }
 .login-title {
   font-family: var(--font-title);
-  font-size: var(--font-h1);
+  font-size: 30px;
+  letter-spacing: 5px;
   text-align: center;
   margin-bottom: var(--space-sm);
 }

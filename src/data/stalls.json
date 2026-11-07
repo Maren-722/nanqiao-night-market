@@ -4,26 +4,26 @@
     "stallNo": "A1",
     "closed": true,
     "shopName": "陈记糖粥藕",
-    "owner": "陈桂生",
-    "main": "糖粥、藕粉、桂花糖水",
+    "owner": "陈伯",
+    "uid": "A1",
+    "main": "糖粥藕、桂花糖水",
     "price": "8元起",
     "dishes": [
       { "name": "糖粥藕", "price": 8 },
       { "name": "桂花糖水", "price": 5 }
     ],
-    "notes": [
-      { "date": "10月10日", "content": "今天的藕粉很稠。" },
-      { "date": "10月11日", "content": "价格改来改去，手有点抖。" }
-    ],
+    "notes": [],
     "reviews": [
-      { "user": "老顾客", "date": "10月5日", "content": "吃了十年的味道，怎么突然不做了？" }
+      { "user": "momo", "date": "10月2日", "content": "每次去陈伯都多给我舀半勺粥，说姑娘家多吃点。藕糯粥甜，从小喝到大的味道。" },
+      { "user": "橘子汽水", "date": "10月28日", "content": "今天路过摊子锁着，心里空落落的。陈伯您快回来呀。" }
     ]
   },
   {
-    "id": "zhangayi",
+    "id": "zhangjie",
     "stallNo": "A2",
-    "shopName": "张阿姨凉面",
-    "owner": "张桂香",
+    "shopName": "老街凉面",
+    "owner": "老夫妻俩",
+    "uid": "A2",
     "main": "凉面、凉皮、酸梅汤",
     "price": "8元起",
     "dishes": [
@@ -31,13 +31,17 @@
       { "name": "酸梅汤", "price": 5 }
     ],
     "notes": [],
-    "reviews": []
+    "reviews": [
+      { "user": "不吃香菜", "date": "10月5日", "content": "凉面筋道，酸梅汤解腻！上次下大雨，摊主还借了我一把伞，人超好。" },
+      { "user": "小鱼干", "date": "10月11日", "content": "逛夜市必来一碗，凉皮也推荐，麻酱给得足，拌开香得很。" }
+    ]
   },
   {
     "id": "zhaoji",
     "stallNo": "A3",
-    "shopName": "赵记馄饨",
-    "owner": "赵德柱",
+    "shopName": "巷口馄饨",
+    "owner": "小两口",
+    "uid": "A3",
     "main": "鲜肉馄饨、荠菜馄饨",
     "price": "10元起",
     "dishes": [
@@ -45,13 +49,17 @@
       { "name": "荠菜馄饨", "price": 12 }
     ],
     "notes": [],
-    "reviews": []
+    "reviews": [
+      { "user": "晚点睡", "date": "10月9日", "content": "晚上收摊前来一碗荠菜馄饨，热汤下肚，一天的累都没了。" },
+      { "user": "没有名字", "date": "10月16日", "content": "皮薄馅大，汤清清淡淡不口渴，家里老人也吃得惯。" }
+    ]
   },
   {
     "id": "zhenjie",
     "stallNo": "A4",
-    "shopName": "珍姐水果捞",
-    "owner": "阿珍",
+    "shopName": "鲜果小铺",
+    "owner": "姐妹俩",
+    "uid": "A4",
     "main": "水果捞、鲜榨果汁",
     "price": "15元起",
     "dishes": [
@@ -59,13 +67,17 @@
       { "name": "鲜榨西瓜汁", "price": 8 }
     ],
     "notes": [],
-    "reviews": []
+    "reviews": [
+      { "user": "七喜", "date": "10月6日", "content": "西瓜汁是真西瓜榨的，一口就能喝出来！水果捞料也特别足。" },
+      { "user": "橘子汽水", "date": "10月14日", "content": "逛街必买，老板娘每次都多给一勺椰果，嘿嘿。" }
+    ]
   },
   {
     "id": "awei",
     "stallNo": "A5",
-    "shopName": "阿伟烤冷面",
-    "owner": "阿伟",
+    "shopName": "街角烤冷面",
+    "owner": "年轻小哥",
+    "uid": "A5",
     "main": "烤冷面、鸡蛋灌饼",
     "price": "8元起",
     "dishes": [
@@ -73,13 +85,17 @@
       { "name": "鸡蛋灌饼", "price": 6 }
     ],
     "notes": [],
-    "reviews": []
+    "reviews": [
+      { "user": "一路向北", "date": "10月8日", "content": "烤冷面加双蛋，刷酱到位，夜市头一份。" },
+      { "user": "顺其自然", "date": "10月19日", "content": "出摊晚，当夜宵正好。记得让小哥多刷酱，不加钱！" }
+    ]
   },
   {
     "id": "laozhang",
     "stallNo": "B1",
     "shopName": "张记卤味",
-    "owner": "张建国",
+    "owner": "老张",
+    "uid": "B1",
     "main": "卤鸭脖、卤藕片、卤蛋",
     "price": "10元起",
     "dishes": [
@@ -88,13 +104,18 @@
       { "name": "卤蛋", "price": 3 }
     ],
     "notes": [],
-    "reviews": []
+    "reviews": [
+      { "user": "开心每一天", "date": "10月12日", "content": "卤味好吃，老板手艺真的赞，人也特别热情实在！今天刚好碰上老板夫妻结婚纪念日，还暖心地送了个鸡腿，太有爱了❤️ 好吃又暖心，必须常来支持！祝老板生意兴隆！" },
+      { "user": "老张", "date": "10月12日", "replyTo": "开心每一天", "content": "感谢支持！🙏" },
+      { "user": "忙里偷闲", "date": "10月21日", "content": "鸭脖入味，藕片脆，配啤酒绝了。每周五下班准时报到。" }
+    ]
   },
   {
     "id": "xiaoli",
     "stallNo": "B2",
     "shopName": "小李炒粉",
-    "owner": "李明",
+    "owner": "小李",
+    "uid": "B2",
     "main": "炒粉、炒面、蛋炒饭",
     "price": "12元起",
     "dishes": [
@@ -103,13 +124,17 @@
       { "name": "蛋炒饭", "price": 10 }
     ],
     "notes": [],
-    "reviews": []
+    "reviews": [
+      { "user": "momo", "date": "10月10日", "content": "炒粉锅气足，加蛋绝配！小伙子手脚麻利，排队也值。" },
+      { "user": "小陈", "date": "10月18日", "content": "开业那天去凑了热闹，免费那锅是真香，以后常来。" }
+    ]
   },
   {
     "id": "wangji",
     "stallNo": "B3",
-    "shopName": "王记烧烤",
-    "owner": "王强",
+    "shopName": "炭火烧烤",
+    "owner": "东北大哥",
+    "uid": "B3",
     "main": "烤羊肉串、烤生蚝、烤茄子",
     "price": "15元起",
     "dishes": [
@@ -118,30 +143,35 @@
       { "name": "烤茄子", "price": 12 }
     ],
     "notes": [],
-    "reviews": []
+    "reviews": [
+      { "user": "阿辞", "date": "10月7日", "content": "羊肉串不膻，生蚝新鲜，蒜蓉给得大方，良心。" },
+      { "user": "忙里偷闲", "date": "10月20日", "content": "下班过来撸个串，一天累气全没了。老板微辣，谢谢。" }
+    ]
   },
   {
     "id": "liujie",
     "stallNo": "B4",
     "shopName": "刘姐麻辣烫",
     "owner": "刘姐",
-    "main": "麻辣烫、秘制香辣藕片",
+    "uid": "B4",
+    "main": "麻辣烫、手工藕圆子",
     "price": "15元起",
     "dishes": [
       { "name": "麻辣烫", "price": 15 },
-      { "name": "香辣藕片", "price": 10 }
+      { "name": "手工藕圆子", "price": 10 }
     ],
-    "notes": [
-      { "date": "10月9日", "content": "跟陈叔说好了，这周帮我把藕带上。他进货的眼光，我信。" },
-      { "date": "10月12日", "content": "陈叔今天没来。藕的事……先放一放吧。" }
-    ],
-    "reviews": []
+    "notes": [],
+    "reviews": [
+      { "user": "晚点睡", "date": "10月4日", "content": "汤底香，藕圆子必点，一口一个满足。刘姐总念叨让我少喝冰的，暖。" },
+      { "user": "阿辞", "date": "10月15日", "content": "辣度自己选，我这种不能吃辣的也能吃痛快，回头客超多。" }
+    ]
   },
   {
     "id": "aqiang",
     "stallNo": "B5",
-    "shopName": "阿强臭豆腐",
-    "owner": "阿强",
+    "shopName": "巷尾臭豆腐",
+    "owner": "小伙子",
+    "uid": "B5",
     "main": "臭豆腐、炸串",
     "price": "10元起",
     "dishes": [
@@ -149,6 +179,9 @@
       { "name": "炸鸡排", "price": 12 }
     ],
     "notes": [],
-    "reviews": []
+    "reviews": [
+      { "user": "没有名字", "date": "10月3日", "content": "外酥里嫩，闻着臭吃着香，就是排队太长，老板手能不能再快点哈哈哈。" },
+      { "user": "王先生", "date": "10月17日", "content": "炸鸡排大块实惠，孩子每次路过都走不动道，没法子。" }
+    ]
   }
 ]

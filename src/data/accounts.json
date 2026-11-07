@@ -1,72 +1,42 @@
 {
-  "chenguisheng": {
-    "password": "123456",
-    "shopName": "陈记糖粥藕",
-    "stallNo": "A1",
-    "role": "merchant"
-  },
-  "zhangguixiang": {
-    "password": "123456",
-    "shopName": "张阿姨凉面",
-    "stallNo": "A2",
-    "role": "merchant"
-  },
-  "zhaodezhu": {
-    "password": "123456",
-    "shopName": "赵记馄饨",
-    "stallNo": "A3",
-    "role": "merchant"
-  },
-  "azhen": {
-    "password": "123456",
-    "shopName": "珍姐水果捞",
-    "stallNo": "A4",
-    "role": "merchant"
-  },
-  "awei": {
-    "password": "123456",
-    "shopName": "阿伟烤冷面",
-    "stallNo": "A5",
-    "role": "merchant"
-  },
-  "zhangjianguo": {
-    "password": "123456",
-    "shopName": "张记卤味",
-    "stallNo": "B1",
-    "role": "merchant"
-  },
-  "liming": {
-    "password": "123456",
+  "小李": {
+    "uid": "B2",
+    "password": "20260420",
     "shopName": "小李炒粉",
     "stallNo": "B2",
     "role": "merchant"
   },
-  "wangqiang": {
-    "password": "123456",
-    "shopName": "王记烧烤",
-    "stallNo": "B3",
-    "role": "merchant"
-  },
-  "liujie": {
-    "password": "123456",
+  "刘姐": {
+    "uid": "B4",
+    "password": "0601",
     "shopName": "刘姐麻辣烫",
     "stallNo": "B4",
     "role": "merchant"
   },
-  "aqiang": {
-    "password": "123456",
-    "shopName": "阿强臭豆腐",
-    "stallNo": "B5",
+  "陈伯": {
+    "uid": "A1",
+    "password": "20060816",
+    "shopName": "陈记糖粥藕",
+    "stallNo": "A1",
     "role": "merchant"
   },
-  "chennian": {
-    "password": "123456",
-    "shopName": "夜归人（陈念）",
-    "role": "customer"
-  },
-  "wangzhiqiang": {
-    "password": "123456",
-    "shopName": "南桥夜市管理处·王志强",
+  "王主任": {
+    "uid": "M1",
+    "password": "20211101",
+    "shopName": "南桥夜市管理处",
     "role": "manager"
+  },
+  "老张": {
+    "uid": "B1",
+    "password": "1012",
+    "shopName": "张记卤味",
+    "stallNo": "B1",
+    "role": "merchant"
+  },
+  "今天吃什么": {
+    "uid": "C4826",
+    "password": "nian",
+    "shopName": "今天吃什么",
+    "role": "customer"
   }
 }

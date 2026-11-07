@@ -2,12 +2,14 @@
   <div class="forum-page">
     <NavBar />
     <div class="container">
-      <div class="forum-header">
-        <h2 class="section-title">夜市论坛</h2>
-        <!-- 登录后可以发帖 -->
+      <header class="page-head forum-header">
+        <div>
+          <p class="page-head-kicker">南桥夜市 · 论坛</p>
+          <h1 class="page-head-title">夜市论坛</h1>
+          <p class="page-head-desc">摊主和老顾客都在这里聊两句。登录后可以发帖、评论。</p>
+        </div>
         <button v-if="currentUser" class="btn" @click="showComposer = true">发帖</button>
-      </div>
-      <p class="page-desc">摊主和老顾客都在这里聊两句。登录后可以发帖、评论。</p>
+      </header>
 
       <!-- 发帖框（登录后可见） -->
       <div v-if="showComposer" class="card composer">
@@ -24,7 +26,9 @@
         @click="$router.push('/forum/' + post.id)"
       >
         <h3 class="post-title">{{ post.title }}</h3>
-        <p class="post-meta">{{ post.author }} · {{ post.date }} · {{ post.replies }} 回复</p>
+        <p class="post-meta">
+          {{ post.author }} <span v-if="post.uid" class="user-uid">ID:{{ post.uid }}</span> · {{ post.date }} · {{ post.replies }} 回复
+        </p>
         <p class="post-preview">{{ post.preview }}</p>
       </div>
     </div>
@@ -33,10 +37,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import NavBar from '../components/NavBar.vue'
 import Footer from '../components/Footer.vue'
 import postsData from '../data/posts.json'
+import { useCurrentUser, uidOf } from '../utils/auth'
 
 // 帖子列表：内置帖子(src/data/posts.json) + 玩家发布的帖子(localStorage nq_posts)
 // 玩家帖子/评论只存在本机浏览器，退出游戏（清除浏览器数据/换设备）后不再保留
@@ -45,13 +50,7 @@ const showComposer = ref(false)
 const newTitle = ref('')
 const newContent = ref('')
 
-const currentUser = computed(() => {
-  try {
-    return JSON.parse(localStorage.getItem('nq_user') || 'null')
-  } catch {
-    return null
-  }
-})
+const { currentUser } = useCurrentUser()
 
 // 读取玩家发布的帖子
 function readLocalPosts() {
@@ -79,11 +78,14 @@ function loadData() {
     ...p,
     replies: (p.comments?.length || 0) + (localComments[p.id]?.length || 0)
   }))
-  // 内置帖子：回复数叠加玩家补充的评论
-  const builtinPosts = postsData.map(p => ({
-    ...p,
-    replies: p.replies + (localComments[p.id]?.length || 0)
-  }))
+  // 内置帖子：按发帖时间近→远排列（"4月20日" → 420）
+  const parseDate = s => {
+    const m = String(s || '').match(/(\d+)月(\d+)日/)
+    return m ? (+m[1]) * 100 + (+m[2]) : 0
+  }
+  const builtinPosts = [...postsData]
+    .sort((a, b) => parseDate(b.date) - parseDate(a.date))
+    .map(p => ({ ...p, replies: p.replies + (localComments[p.id]?.length || 0) }))
   posts.value = [...userPosts, ...builtinPosts]
 }
 
@@ -104,6 +106,10 @@ function publishPost() {
     content: newContent.value.trim(),
     comments: []
   }
+  // 发帖人一律带ID：商户=真名拼音，游客=数字ID
+  const uname = currentUser.value?.username
+  const uid = uname ? uidOf(uname) : null
+  if (uid) post.uid = uid
   const localPosts = readLocalPosts()
   localPosts.unshift(post)
   localStorage.setItem('nq_posts', JSON.stringify(localPosts))
@@ -117,33 +123,38 @@ function publishPost() {
 <style scoped>
 .forum-header {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-}
-.page-desc {
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-md);
+  gap: 20px;
 }
 .composer {
   margin-bottom: var(--space-md);
 }
 .post-card {
   cursor: pointer;
-  margin-bottom: var(--space-sm);
-  transition: border-color 0.2s;
+  margin-bottom: 10px;
+  transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 .post-card:hover {
-  border-color: var(--color-accent);
+  border-color: var(--color-border-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lift);
 }
 .post-title {
-  font-size: var(--font-h3);
-  color: var(--color-primary);
-  margin-bottom: 4px;
+  font-family: var(--font-title);
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  color: var(--color-text);
+  margin-bottom: 5px;
 }
 .post-meta {
   font-size: var(--font-tiny);
   color: var(--color-text-muted);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+}
+.user-uid {
+  opacity: 0.85;
+  margin-left: 6px;
 }
 .post-preview {
   font-size: var(--font-small);
