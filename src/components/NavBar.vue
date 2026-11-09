@@ -32,13 +32,12 @@
     <div v-if="showUnlock" class="unlock-mask">
       <div class="unlock-card">
         <span class="unlock-lamp">🏮</span>
-        <p class="unlock-text">夜色里，所有的线索都被你串了起来。</p>
-        <p class="unlock-text strong">这盏灯，为你亮了。</p>
+        <p class="unlock-text strong">陈伯的故事可以看了。</p>
+        <p class="unlock-text">想再逛一会儿，之后点导航栏的灯笼就能回来。</p>
         <div class="unlock-actions">
           <button class="unlock-btn primary" @click="goEnding">去往结局</button>
           <button class="unlock-btn" @click="stayExploring">继续探索</button>
         </div>
-        <p class="unlock-hint">（之后点击导航栏亮起的灯笼，随时可前往结局）</p>
       </div>
     </div>
 
@@ -450,11 +449,6 @@ function doSwitch() {
 .unlock-btn.primary:hover {
   background: rgba(255, 190, 92, 1);
 }
-.unlock-hint {
-  color: #B3927A;
-  font-size: 12px;
-}
-
 @media (max-width: 720px) {
   .navbar {
     padding: 0 14px;

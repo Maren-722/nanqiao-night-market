@@ -1,193 +1,108 @@
 <template>
   <div class="ending-page">
-    <!-- 未集齐：灯还没亮 -->
     <div v-if="!unlocked" class="ending-card">
       <span class="ending-lamp dim">🏮</span>
       <p class="blocked-text">灯还没亮。</p>
-      <p class="blocked-sub">夜市的故事，还没到说再见的时候。</p>
+      <p class="blocked-sub">还有线索没看完。回夜市再找找。</p>
       <hr class="ending-divider">
       <button class="ending-btn" @click="$router.push('/home')">回到夜市</button>
     </div>
 
-    <!-- 已集齐：分幕结局 -->
     <div v-else class="ending-shell">
       <div class="ending-card" :key="stage">
         <p class="stage-tag">{{ stageLabel }}</p>
 
-        <!-- 第一幕：桌上 -->
         <template v-if="stage === 0">
-          <h1 class="ending-title">你把它们摊在桌上</h1>
-          <p class="ending-text">十月三十日，夜里十一点。</p>
-          <p class="ending-text">
-            你把这几天的东西一样一样摊开：一张排班表，三张帖子截图，六个账号，一条地铁线。
-          </p>
-          <p class="ending-text">
-            你在纸上写下几个词：陈伯。陈桂生。A1。糖粥藕。二十年。
-          </p>
-          <p class="ending-text">
-            写完你才发现，这不像一个人的档案，倒像一个人被留在这世上的全部痕迹。
-          </p>
-          <p class="ending-text">你其实已经知道答案了。只是还没敢承认。</p>
+          <h1 ref="title" tabindex="-1" class="ending-title">关门以后</h1>
+          <p class="ending-text">10月30日，夜市快收摊了。你又点开问陈伯去哪儿的帖子。有人回说，A1门口的凳子已经替他收好了，回来去隔壁拿。</p>
+          <p class="ending-text">排班表上，陈伯月初缺过班，回来摆了些日子，27日那格又被划掉。那天小李等到快七点，发消息问他还来不来。王主任已经拿到了他留下的钥匙和纸条。</p>
+          <p class="ending-text">你翻回那份旧寻人启事。上面写着孩子手腕系红绳，绳上有个「念」字。陈伯十月的手记里，也写到了这个字。老张的聊天还留着陈伯回家的走法，你拿线路图对了一遍。</p>
           <div class="ending-actions">
-            <button class="ending-btn primary" @click="stage = 1">往下看</button>
+            <button class="ending-btn primary" @click="goToStage(1)">看陈伯的故事</button>
           </div>
         </template>
 
-        <!-- 第二幕：真相 -->
         <template v-else-if="stage === 1">
-          <h1 class="ending-title">真相是三件事</h1>
-
-          <p class="ending-kicker">一 · 他有个儿子</p>
-          <p class="ending-text">
-            2006年8月16日，城南老街。四岁的陈念在人群里松开了父亲的手。那天他手腕上系着一根红绳，绳结里绣着一个「念」。
-          </p>
-          <p class="ending-text">
-            之后的二十年，陈桂生没搬过家，没换过号码，没离开过这条街。他怕儿子回来，找不到门。
-          </p>
-          <p class="ending-text">
-            今年十月，儿子回来了。他坐在离父亲三米远的地方，喝了一碗糖粥藕，说这个味道特别亲切。第二次来，他把袖子捋上去，露出手腕上那根红绳，问：认不认得这个字。
-            <br>父亲低头搅着粥，说：不认得。
-          </p>
-
-          <p class="ending-kicker">二 · 他病了</p>
-          <p class="ending-text">
-            十月五日体检，他住了一个星期的院。这件事他没告诉任何人，只在手记里写了一句：认了，让他守着我走吗？
-          </p>
-          <p class="ending-text">
-            他算得很清楚——认了，就是让孩子从相认那天起，开始守灵。
-          </p>
-
-          <p class="ending-kicker">三 · 他回了家</p>
-          <p class="ending-text">
-            10月26日晚上，他把最后一锅粥分给街坊，把灶台擦干净，给王主任留了张纸条。
-          </p>
-          <p class="ending-text">
-            然后他坐上3号线，往城南，第五站，梧桐苑。那是他住了二十年、一直没搬过的老屋。
-          </p>
-          <p class="ending-text">
-            他没有走远。他只是回了家，等一件他不想让任何人看见的事。
-          </p>
-          <div class="ending-actions">
-            <button class="ending-btn primary" @click="stage = 2">往下看</button>
-          </div>
-        </template>
-
-        <!-- 第三幕：你写的那条帖子 -->
-        <template v-else-if="stage === 2">
-          <h1 class="ending-title">凌晨一点，你写了一条帖子</h1>
-          <p class="ending-text">
-            你写A1，写那锅粥，写一根红绳，写一个在夜市站了二十年的父亲。
-          </p>
-          <p class="ending-text">你写：他没有失踪，他只是回家了。</p>
-          <div class="post-preview">
-            <p class="post-preview-title">陈伯没有失踪，他只是回家了</p>
-            <p class="post-preview-body">
-              前面那些都是真的。我一条一条核过。A1的灶台是他自己擦的，钥匙交给了王主任。他不是出事，他是自己走的。<br>
-              他儿子不知道。这条街上的人也都不知道。
-            </p>
-            <p class="post-preview-addr">
-              他住在城南梧桐苑，3号线南桥站往城南第五站，5号楼2单元101。
-            </p>
-          </div>
-          <p class="ending-text">
-            你盯着最后那一行看了很久。
-          </p>
-          <p class="ending-text">
-            发出去，明天就会有人站在他家门口；删掉，这条街会继续等一个不会回来的人。
-          </p>
-          <p class="ending-text strong">删，还是不删？</p>
+          <h1 ref="title" tabindex="-1" class="ending-title">那碗粥是谁喝的</h1>
+          <p class="ending-text">2006年8月16日，四岁的陈念在城南老街走失。后来他进了福利院，被邻市一家人领养，换了名字。陈伯一直住在老屋，怕他还记得门，却找不着人。</p>
+          <p class="ending-text">10月14日，论坛上的「今天吃什么」来A1喝粥。接碗的时候，他腕上那根接长过的红绳露了出来。过了几天，他又来，把袖子捋上去问：「您认得这个字吗？」陈伯低头搅着锅，说不认得。</p>
+          <p class="ending-text">陈伯认得。十月初他去体检，在医院住了几天，出院时医生跟他说这病治不好。那孩子好不容易回来，他怕一开口，孩子就得请假陪他跑医院。年轻人走后，他连名字都没问到。</p>
+          <p class="ending-text">26日收摊，陈伯给老张先盛了碗淡一点的粥，把借来的锅盖还给刘姐，又给小李留了一份。他擦好灶台，给王主任留了纸条和钥匙，坐3号线往城南走。南桥上车，第五站是梧桐苑。他回了老屋。</p>
           <div class="ending-actions row">
-            <button class="ending-btn" @click="choose('delete')">删掉这一行，发出去</button>
-            <button class="ending-btn primary" @click="choose('keep')">留着，发出去</button>
+            <button class="ending-btn ghost" @click="goToStage(0)">回看线索</button>
+            <button class="ending-btn primary" @click="goToStage(2)">看后续</button>
           </div>
         </template>
 
-        <!-- 第四幕：尾声 -->
-        <template v-else>
-          <h1 class="ending-title">{{ choice === 'delete' ? '他们把位置留着' : '那盏灯，从南桥亮到城南' }}</h1>
+        <template v-else-if="!choice">
+          <h1 ref="title" tabindex="-1" class="ending-title">把话捎给谁</h1>
+          <p class="ending-text">你给论坛回了个帖，告诉大家陈伯自己回家休息了，A1暂时不开。刚发完，就有人问能不能过去看看。你没在帖子里写他住哪儿。</p>
+          <div class="post-preview">
+            <p class="post-preview-title">今天吃什么 · 私信</p>
+            <p class="post-preview-body">你好。你是不是知道陈伯去哪儿了？我就想见他一面，先问问他愿不愿意也行。</p>
+          </div>
+          <div class="ending-actions row">
+            <button class="ending-btn" @click="choose('tell')">私信告诉他梧桐苑</button>
+            <button class="ending-btn" @click="choose('ask')">请王主任先问陈伯</button>
+          </div>
+        </template>
 
-          <template v-if="choice === 'delete'">
-            <p class="ending-text">你删掉了那一行。</p>
-            <p class="ending-text">
-              帖子发出去，论坛安静了一会儿。然后有人回：人没事就好。
-            </p>
-            <p class="ending-text">
-              第二天，A1摊前放了一碗糖粥藕。第三天又多了一碗。没有人组织，也没有人说破。
-            </p>
-            <p class="ending-text">
-              十一月一日，夜市五周年。A1的灯亮着——王主任把摊位留着，老张每天来擦一遍灶台，刘姐在灶上温着一锅粥。
-            </p>
-            <p class="ending-text">
-              他们不知道他在哪儿。但他们把他的位置留着。
-            </p>
-            <p class="ending-text">
-              有些人不告而别，是为了让别人好好过。<br>
-              而有些人守着一个空摊子，是为了让不告而别的人回来时，还有个地方站。
-            </p>
-            <p class="ending-text">
-              你关掉网页。窗外，南桥的灯一盏一盏亮起来。
-            </p>
+        <template v-else>
+          <h1 ref="title" tabindex="-1" class="ending-title">{{ choice === 'tell' ? '你坐，我来' : '有空就来喝粥' }}</h1>
+
+          <template v-if="choice === 'tell'">
+            <p class="ending-text">你把梧桐苑告诉他，又请王主任转了他的号码。陈念到小区外面等了一会儿，接到电话。陈伯问他：「你到了？我在门口买菜。你站那儿别动，我出来。」</p>
+            <p class="ending-text">11月1日，夜市过五周年。王主任把A1的钥匙送回来，老张拎着一袋卤蛋，刘姐端来绿豆汤。陈伯坐在灶边，看陈念把袖口往上卷，卷过了那根红绳。</p>
+            <p class="ending-text">「勺子要贴着锅底。」陈伯扶着膝盖，想站起来。陈念伸手按了按他胳膊：「你坐，我来。」</p>
+            <p class="ending-text">粥刚舀出来烫，老张把第一碗往陈伯那边推了推。「等会儿再喝，」他说，「没人跟你抢。」</p>
           </template>
 
           <template v-else>
-            <p class="ending-text">你没有删。</p>
-            <p class="ending-text">
-              帖子在凌晨一点四十分发出去。第一个回复的人是「今天吃什么」，他只回了三个字：我明天去。
-            </p>
-            <p class="ending-text">
-              十一月一日，夜市五周年。
-            </p>
-            <p class="ending-text">
-              A1的灯亮了。灶前站着一个年轻人，手腕上系着一根褪色的红绳，正笨手笨脚地搅一锅粥。陈伯坐在旁边的小马扎上，裹着厚外套，看着他，没说话，一直在笑。
-            </p>
-            <p class="ending-text">
-              王主任在人群外面站了很久，最后转过身，抹了一把脸。
-            </p>
-            <p class="ending-text">
-              老张端来一碟卤蛋，放在灶台上：老陈，五周年，得有个样子。
-            </p>
-            <p class="ending-text">
-              刘姐把一碗绿豆汤放在陈伯手边：喝吧，今年的。
-            </p>
-            <p class="ending-text strong">
-              那盏灯，从南桥一直亮到城南。
-            </p>
+            <p class="ending-text">你把私信给王主任看。王主任给陈伯发了条短信，说喝过粥的年轻人想见他，什么时候方便，回个话就行。</p>
+            <p class="ending-text">11月1日，夜市过五周年。A1先空着，王主任没给别人排。老张把门口扫了一遍，刘姐过来把挡着门的空箱挪开。小李收摊时照例问了一声：「主任，A1的灯我替您关吗？」</p>
+            <p class="ending-text">王主任刚收到一条消息。陈伯说：「你帮我问问，他哪天歇班？不用请假。有空就来喝粥。」</p>
+            <p class="ending-text">王主任把这几句话转给陈念，回头跟小李说：「再亮一会儿吧。我收完表去关。」</p>
           </template>
 
           <hr class="ending-divider">
           <p class="ending-fin">— 完 —</p>
           <div class="ending-actions">
-            <button class="ending-btn" @click="$router.push('/home')">再回夜市看看</button>
+            <button class="ending-btn" @click="choose('')">回到选择</button>
+            <button class="ending-btn" @click="$router.push('/home')">回到夜市</button>
             <button class="ending-btn ghost" @click="restart">重新开始</button>
           </div>
         </template>
       </div>
 
-      <!-- 进度指示 -->
-      <div class="stage-dots">
-        <span v-for="n in 4" :key="n" class="dot" :class="{ on: stage >= n - 1 }"></span>
+      <div class="stage-dots" aria-hidden="true">
+        <span v-for="n in 3" :key="n" class="dot" :class="{ on: stage >= n - 1 }"></span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import { isComplete } from '../utils/progress'
 
 // 结局页守卫：线索没有集齐时，直接访问只会看到"灯还没亮"
 const unlocked = ref(isComplete())
 const stage = ref(0)
 const choice = ref('')
+const title = ref(null)
 
-const stageLabel = computed(() => {
-  if (stage.value === 3) return '尾声'
-  return ['一', '二', '三'][stage.value] || ''
-})
+const stageLabel = computed(() => ['线索', '故事', '后续'][stage.value])
 
-function choose(v) {
-  choice.value = v
-  stage.value = 3
+async function goToStage(page) {
+  stage.value = page
+  await nextTick()
+  title.value?.focus()
+}
+
+async function choose(outcome) {
+  choice.value = outcome
+  await nextTick()
+  title.value?.focus()
 }
 
 function restart() {
@@ -248,24 +163,11 @@ function restart() {
   margin-bottom: 22px;
   line-height: 1.55;
 }
-.ending-kicker {
-  font-family: var(--font-title);
-  font-size: 16px;
-  letter-spacing: 2px;
-  color: var(--color-accent);
-  margin: 28px 0 10px;
-  padding-left: 10px;
-  border-left: 3px solid var(--amber);
-}
 .ending-text {
   font-size: 15px;
   line-height: 2.05;
   color: #4A3322;
   margin-bottom: 14px;
-}
-.ending-text.strong {
-  color: var(--color-primary);
-  font-weight: 600;
 }
 .ending-divider {
   border: none;
@@ -321,7 +223,7 @@ function restart() {
   border-color: var(--color-border-strong);
 }
 
-/* 帖子预览：抉择前的最后一眼 */
+/* 选择前收到的私信 */
 .post-preview {
   margin: 20px 0 24px;
   padding: 20px 22px;
@@ -340,15 +242,6 @@ function restart() {
   font-size: 13px;
   line-height: 1.95;
   color: var(--color-text-secondary);
-}
-.post-preview-addr {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px dashed var(--color-border-strong);
-  font-size: 13px;
-  line-height: 1.8;
-  color: var(--color-accent);
-  font-weight: 600;
 }
 
 /* 进度点 */

@@ -5,7 +5,7 @@
       <header class="page-head">
         <p class="page-head-kicker">南桥夜市 · 导览</p>
         <h1 class="page-head-title">夜市导览</h1>
-        <p class="page-head-desc">夜市不大，慢慢走。点开一家，能看见是谁在守摊、卖什么、多少钱；拿不定主意，就看看吃过的人在底下留的那几句。</p>
+        <p class="page-head-desc">摊位按 A、B 两区排列。点进一家，可以看菜单、价格和食客评价。</p>
       </header>
 
       <div class="stall-grid">

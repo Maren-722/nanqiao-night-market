@@ -6,7 +6,7 @@
         <div>
           <p class="page-head-kicker">南桥夜市 · 论坛</p>
           <h1 class="page-head-title">夜市论坛</h1>
-          <p class="page-head-desc">摊主和老顾客都在这里聊两句。登录后可以发帖、评论。</p>
+          <p class="page-head-desc">问哪家开摊，或者聊聊今晚吃了什么。登录后可以发帖、回帖。</p>
         </div>
         <button v-if="currentUser" class="btn" @click="showComposer = true">发帖</button>
       </header>

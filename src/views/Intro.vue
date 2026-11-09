@@ -5,17 +5,17 @@
       <span class="intro-tag">前情</span>
       <h1 class="intro-title">你是一名刚到临岗市的大一新生</h1>
       <p class="intro-text">
-        开学两周，你还没适应这座江边城市的秋天。今天室友们都出去了，你一个人在宿舍刷手机，搜“临岗必吃夜市”。
+        刚到临岗上大学，学校周围吃过一圈，你还没去过江边。今晚室友都出去了，你一个人没想好吃什么，顺手搜了下附近的夜市。
       </p>
       <p class="intro-text">
-        评论区里有人提到<span class="intro-highlight">南桥夜市</span>——一个数字化转型的新型夜市：每个摊位都上了官网，能看菜单、看评价、逛论坛。里面有凉面、馄饨、炒粉、烧烤、麻辣烫、臭豆腐……等许多美味，尤其是那家<span class="intro-highlight">“陈记糖粥藕”</span>，据说是临岗人从小吃到大的老味道，糖藕软糯、粥底浓稠。
+        好几个人推荐<span class="intro-highlight">南桥夜市</span>的陈记糖粥藕。有人特意提醒，去晚了，锅里就只剩粥了。你点开摊位一看，上面写着「暂停营业」。
       </p>
       <p class="intro-text">
-        只是你点进去才发现，那个卖糖粥藕的陈伯，已经好几天没出摊了——你忽然很想知道，他去了哪儿。
+        夜市论坛里也有人在问：「A1怎么还锁着？陈伯什么时候回来？」你往下翻了几条，问的人挺多，谁也说不准。
       </p>
       <hr class="intro-divider">
       <p class="intro-text intro-go">
-        在美味的诱惑下，你点开了南桥夜市的官网：
+        你想看看夜市的公告是怎么说的。
         <a class="intro-link" @click="$router.push('/home')">www.nanqiao-night-market.com</a>
       </p>
       <p class="intro-disclaimer">本游戏为虚构创作，其中人物、地点、事件均为虚构，如有雷同，纯属巧合。</p>

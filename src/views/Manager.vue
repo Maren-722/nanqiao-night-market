@@ -5,7 +5,7 @@
       <header class="page-head">
         <p class="page-head-kicker">南桥夜市 · 管理处</p>
         <h1 class="page-head-title">管理处工作台</h1>
-        <p class="page-head-desc">南桥夜市管理处 · 内部系统。公告从这里发布、下架，历史记录长期留存。</p>
+        <p class="page-head-desc">查看管理处历年发布的通告，包括已经下架的记录。</p>
       </header>
 
       <!-- 通告历史 -->

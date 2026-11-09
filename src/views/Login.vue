@@ -4,7 +4,7 @@
     <div class="login-container">
       <BackBar label="返回首页" fallback="/home" />
       <h1 class="login-title">账号登录</h1>
-      <p class="login-subtitle">登录后可查看私信、手记和管理店铺信息</p>
+      <p class="login-subtitle">登录后可查看该账号的私信和手记</p>
 
       <div class="form-group">
         <label class="form-label">ID</label>
