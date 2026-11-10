@@ -4,7 +4,6 @@
 
     <!-- 首屏：黄昏的街口，摊子还没收，灯已经亮了 -->
     <section class="hero">
-      <img class="hero-food-photo" :src="foodImage('chenji')" alt="夜市灯下的糖粥藕" width="1536" height="1024" fetchpriority="high">
       <div class="hero-glow" aria-hidden="true"></div>
 
       <!-- 街上的一排棚顶与灯串（装饰） -->
@@ -215,7 +214,6 @@
 </template>
 
 <script setup>
-import { foodImage } from '../utils/foodImages'
 import { ref, computed } from 'vue'
 import NavBar from '../components/NavBar.vue'
 import Footer from '../components/Footer.vue'
@@ -872,22 +870,4 @@ for (let d = 1; d <= 31; d++) {
     letter-spacing: 0;
   }
 }
-</style>
-
-<style scoped>
-.hero { min-height:480px; background:#38241b; }
-.hero-food-photo { position:absolute; right:0; top:0; width:70%; height:100%; object-fit:cover; object-position:center 60%; }
-.hero-glow { z-index:1; background:linear-gradient(90deg,#38241b 8%,#38241bf0 26%,#38241b70 55%,#38241b10 100%); }
-.hero-scene { display:none; }
-.hero-inner { padding-top:105px; padding-bottom:92px; }
-.hero-title { font-size:72px; }
-.hero-sub { border:0; padding:0; background:none; margin-top:26px; }
-.hero-links { margin-top:32px; }
-.hero-links a { border:1px solid #e5c7a68a; border-radius:3px; padding:9px 20px; background:#39281d70; }
-.hero-links a:hover { background:#9c432b; letter-spacing:2px; }
-.hero-side { display:none; }
-.hero-date { color:#fff1d8; }
-.pinned-card { border-radius:8px; }
-.notice-item { padding-top:22px; padding-bottom:22px; }
-@media(max-width:720px) { .hero { min-height:390px; } .hero-food-photo { width:100%; } .hero-glow { background:linear-gradient(90deg,#38241be8,#38241b50); } .hero-inner { padding-top:70px; padding-bottom:65px; } .hero-title { font-size:48px; letter-spacing:8px; } .hero-sub { font-size:11px; letter-spacing:1px; } }
 </style>
