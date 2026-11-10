@@ -10,7 +10,7 @@
         <h1 id="market-title" class="hero-title">南桥夜市</h1>
         <p class="hero-sub">营业时间　每天 17:00 — 23:00</p>
         <div class="hero-links">
-          <router-link class="hero-primary" to="/stalls">逛夜市 <span aria-hidden="true">→</span></router-link>
+          <router-link class="hero-primary" to="/stalls">逛夜市</router-link>
           <router-link class="hero-secondary" to="/forum">看论坛</router-link>
         </div>
       </div>
@@ -18,16 +18,6 @@
     </section>
 
     <div class="container">
-
-      <!-- 置顶：管理处的话（长期说明，特殊样式） -->
-      <div v-if="pinnedNotice" class="pinned-card" @click="openNotice(0)">
-        <span class="pinned-nail" aria-hidden="true"></span>
-        <div class="pinned-body">
-          <p class="pinned-tag">置顶 · 管理处</p>
-          <p class="pinned-text">{{ pinnedNotice.text }}</p>
-        </div>
-        <span class="pinned-arrow">›</span>
-      </div>
 
       <!-- 公告栏（置顶通知同样列在栏内首位） -->
       <h2 class="section-title">公告栏</h2>
@@ -151,7 +141,6 @@ const visibleNotices = computed(() => {
     .sort((a, b) => parseDate(b.publishDate) - parseDate(a.publishDate))
   return [...pinned, ...regular]
 })
-const pinnedNotice = computed(() => visibleNotices.value.find(n => n.pinned) || null)
 
 // 公告弹窗
 const showModal = ref(false)
@@ -253,59 +242,6 @@ for (let d = 1; d <= 31; d++) {
 .hero-steam i:nth-child(3) { left:4px; animation-delay:-4.6s; }
 @keyframes marketSteam { 0% { opacity:0; transform:translate(0,15px) scale(.7); } 35% { opacity:.7; } 100% { opacity:0; transform:translate(-12px,-60px) scale(1.4); } }
 
-/* ---------- 置顶：挂在管理处门口的木牌 ---------- */
-.pinned-card {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: linear-gradient(180deg, #5A3220 0%, #472517 100%);
-  border: 1px solid #6E4128;
-  border-radius: var(--radius-lg);
-  padding: 18px 24px 18px 26px;
-  margin-bottom: 32px;
-  cursor: pointer;
-  box-shadow: 0 18px 34px -22px rgba(58, 26, 12, 0.9);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.pinned-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 22px 40px -22px rgba(58, 26, 12, 0.95);
-}
-.pinned-nail {
-  position: absolute;
-  left: 9px;
-  top: 50%;
-  width: 5px;
-  height: 5px;
-  margin-top: -2.5px;
-  border-radius: 50%;
-  background: #E9C48C;
-  box-shadow: 0 0 6px rgba(255, 214, 150, 0.8);
-}
-.pinned-body {
-  flex: 1;
-  min-width: 0;
-}
-.pinned-tag {
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: var(--amber-soft);
-  margin-bottom: 5px;
-}
-.pinned-text {
-  font-family: var(--font-title);
-  font-size: 16.5px;
-  letter-spacing: 1.2px;
-  line-height: 1.7;
-  color: #FBF0DA;
-  font-weight: 600;
-}
-.pinned-arrow {
-  color: var(--amber-soft);
-  font-size: 22px;
-}
-
 /* ---------- 公告栏：贴在墙上的纸条 ---------- */
 .notice-bar {
   background: var(--color-card);
@@ -331,25 +267,43 @@ for (let d = 1; d <= 31; d++) {
   background: var(--color-card-2);
   padding-left: 6px;
 }
-/* 公告栏内首位的置顶条目：淡底强调 */
+/* 公告栏内首位的置顶条目：沿用木牌的褐色底 */
 .notice-item.is-pinned {
-  background: #FFF8E9;
-  margin: 0 -24px;
-  padding-left: 24px;
-  padding-right: 24px;
-  border-bottom: 1px solid rgba(180, 71, 42, 0.28);
+  background: linear-gradient(180deg, #5A3220 0%, #472517 100%);
+  border: 1px solid #6E4128;
+  margin: 2px -24px 0;
+  padding: 18px 24px;
+  border-bottom: 1px solid #6E4128;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 .notice-item.is-pinned:hover {
-  background: #FFF3DC;
+  background: linear-gradient(180deg, #653926 0%, #4E2A1A 100%);
+  padding-left: 28px;
 }
 .notice-item.is-pinned .notice-text {
+  color: #FBF0DA;
+  font-family: var(--font-title);
+  font-size: 16.5px;
+  letter-spacing: 1.2px;
   font-weight: 600;
+}
+.notice-item.is-pinned .notice-meta {
+  color: var(--amber-soft);
+}
+.notice-item.is-pinned .notice-tag {
+  color: var(--amber-soft) !important;
+}
+.notice-item.is-pinned .notice-pin {
+  background: #E9C48C;
+  box-shadow: 0 0 0 3px rgba(255, 214, 150, 0.18);
+}
+.notice-item.is-pinned .notice-arrow {
+  color: var(--amber-soft);
 }
 .notice-pinned-tag {
   display: inline-block;
-  color: var(--color-accent);
-  border: 1px solid rgba(180, 71, 42, 0.45);
+  color: #F0C58A;
+  border: 1px solid rgba(240, 197, 138, 0.5);
   border-radius: 2px;
   padding: 0 5px;
   font-size: 10px;
@@ -630,9 +584,6 @@ for (let d = 1; d <= 31; d++) {
   .hero-links { margin-top:30px; gap:28px; font-size:15px; }
   .hero-primary { padding:10px 22px; gap:14px; }
   .hero-steam { display:none; }
-  .pinned-text {
-    font-size: var(--font-body-size);
-  }
   .cal-board {
     padding: 12px 10px 8px;
   }
