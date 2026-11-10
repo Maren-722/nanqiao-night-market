@@ -29,21 +29,23 @@
         <span class="pinned-arrow">›</span>
       </div>
 
-      <!-- 公告栏 -->
+      <!-- 公告栏（置顶通知同样列在栏内首位） -->
       <h2 class="section-title">公告栏</h2>
       <div class="notice-bar">
         <div
-          v-for="(n, i) in regularNotices"
+          v-for="(n, i) in visibleNotices"
           :key="n.id"
           class="notice-item"
-          @click="openNotice(i + 1)"
+          :class="{ 'is-pinned': n.pinned }"
+          @click="openNotice(i)"
         >
           <span class="notice-pin" aria-hidden="true"></span>
           <div class="notice-body">
             <p class="notice-text">{{ n.text }}</p>
             <p class="notice-meta">
               <span class="notice-tag" :style="{ color: tagColors[n.tag] || 'var(--color-primary)' }">{{ n.tag }}</span>
-              管理处 · {{ n.publishDate }}
+              <span v-if="n.pinned" class="notice-pinned-tag">置顶</span>
+              管理处 · {{ n.publishDate || '长期' }}
             </p>
           </div>
           <span class="notice-arrow">›</span>
@@ -150,7 +152,6 @@ const visibleNotices = computed(() => {
   return [...pinned, ...regular]
 })
 const pinnedNotice = computed(() => visibleNotices.value.find(n => n.pinned) || null)
-const regularNotices = computed(() => visibleNotices.value.filter(n => !n.pinned))
 
 // 公告弹窗
 const showModal = ref(false)
@@ -243,8 +244,9 @@ for (let d = 1; d <= 31; d++) {
 .hero-links { display:flex; align-items:center; gap:38px; margin-top:40px; font-size:clamp(15px,1.6vw,21px); letter-spacing:2px; }
 .hero-primary { display:inline-flex; align-items:center; gap:20px; padding:12px 28px; background:#f5dfb6; color:#48301e; border:1px solid #f9e8cb; border-radius:4px; transition:background .2s,transform .2s; }
 .hero-primary:hover { background:#fff0d2; transform:translateY(-2px); }
-.hero-secondary { color:#fff0d5; padding:9px 0 5px; border-bottom:1px solid #e6c79c; transition:color .2s; }
-.hero-secondary:hover { color:#ffce8c; }
+/* 「看论坛」与「逛夜市」保持同一套按钮风格 */
+.hero-secondary { display:inline-flex; align-items:center; gap:20px; padding:12px 28px; background:#f5dfb6; color:#48301e; border:1px solid #f9e8cb; border-radius:4px; transition:background .2s,transform .2s; }
+.hero-secondary:hover { background:#fff0d2; transform:translateY(-2px); }
 .hero-steam { position:absolute; right:12%; bottom:22%; width:60px; height:90px; pointer-events:none; opacity:.32; }
 .hero-steam i { position:absolute; bottom:0; left:15px; width:20px; height:60px; border-left:2px solid #f7e9d0; border-radius:50%; filter:blur(3px); animation:marketSteam 7s ease-in-out infinite; }
 .hero-steam i:nth-child(2) { left:30px; animation-delay:-2.3s; }
@@ -328,6 +330,32 @@ for (let d = 1; d <= 31; d++) {
 .notice-item:hover {
   background: var(--color-card-2);
   padding-left: 6px;
+}
+/* 公告栏内首位的置顶条目：淡底强调 */
+.notice-item.is-pinned {
+  background: #FFF8E9;
+  margin: 0 -24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  border-bottom: 1px solid rgba(180, 71, 42, 0.28);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.notice-item.is-pinned:hover {
+  background: #FFF3DC;
+}
+.notice-item.is-pinned .notice-text {
+  font-weight: 600;
+}
+.notice-pinned-tag {
+  display: inline-block;
+  color: var(--color-accent);
+  border: 1px solid rgba(180, 71, 42, 0.45);
+  border-radius: 2px;
+  padding: 0 5px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin-right: 8px;
+  transform: translateY(-1px);
 }
 .notice-pin {
   width: 8px;
