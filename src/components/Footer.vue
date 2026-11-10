@@ -7,7 +7,7 @@
     <p class="footer-small">夜市管理处维护 · 有问题请联系管理处王主任</p>
     <details class="image-credits">
       <summary>图片来源</summary>
-      <p>图片仅用于虚构摊位的菜品示意。糖粥藕、汤馄饨为 AI 生成图，其余照片来源于 Wikimedia Commons，按页面比例裁切显示，沿用各图片原许可。</p>
+      <p>图片仅用于虚构摊位的菜品示意，经过 AI 生成或调整。糖粥藕、汤馄饨为生成图，其余图片基于以下 Wikimedia Commons 照片调整背景、角度和摆盘，改编图片沿用所列原许可。</p>
       <ul><li v-for="credit in imageCredits" :key="credit.id"><a :href="credit.source" target="_blank" rel="noopener noreferrer">{{ foodLabels[credit.id] }}</a> · {{ credit.author }} · <a :href="credit.licenseUrl" target="_blank" rel="noopener noreferrer">{{ credit.license }}</a></li></ul>
     </details>
   </footer>
