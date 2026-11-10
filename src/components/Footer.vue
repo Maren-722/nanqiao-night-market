@@ -5,20 +5,12 @@
     </div>
     <p class="footer-main">南桥夜市 · 临岗市江边 · 营业时间 每天 17:00 — 23:00</p>
     <p class="footer-small">夜市管理处维护 · 有问题请联系管理处王主任</p>
-    <details class="image-credits">
-      <summary>图片来源</summary>
-      <p>首页江边夜市插画由 AI 生成，用于虚构场景展示。</p>
-      <p>图片仅用于虚构摊位的菜品示意，经过 AI 生成或调整。糖粥藕、汤馄饨为生成图，其余图片基于以下 Wikimedia Commons 照片调整背景、角度和摆盘，改编图片沿用所列原许可。</p>
-      <ul><li v-for="credit in imageCredits" :key="credit.id"><a :href="credit.source" target="_blank" rel="noopener noreferrer">{{ foodLabels[credit.id] }}</a> · {{ credit.author }} · <a :href="credit.licenseUrl" target="_blank" rel="noopener noreferrer">{{ credit.license }}</a></li></ul>
-    </details>
   </footer>
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import imageCredits from '../data/image-credits.json'
-import { foodLabels } from '../utils/foodImages'
 
 const route = useRoute()
 const hideNav = computed(() => route.meta.hideNav === true)
@@ -73,13 +65,4 @@ const hideNav = computed(() => route.meta.hideNav === true)
   font-size: 11px;
   color: rgba(201, 177, 146, 0.66);
 }
-</style>
-
-<style scoped>
-.image-credits { max-width:760px; margin:16px auto 0; font-size:11px; color:#d1bca4; letter-spacing:0; }
-.image-credits summary { cursor:pointer; display:list-item; list-style-position:inside; }
-.image-credits p { margin:14px 0; line-height:1.8; }
-.image-credits ul { display:grid; grid-template-columns:1fr 1fr; gap:7px 18px; text-align:left; }
-.image-credits a { text-decoration:underline; text-underline-offset:3px; }
-@media(max-width:600px) { .image-credits ul { grid-template-columns:1fr; } }
 </style>
