@@ -25,19 +25,19 @@
   --amber-soft: #EBB86A;
 
   /* 纸张 */
-  --color-bg: #F0DDBB;
-  --color-bg-deep: #E7CFA6;
-  --color-card: #FBF2DD;
-  --color-card-2: #F6E8CA;
+  --color-bg: #F6F2EA;
+  --color-bg-deep: #EDE5D8;
+  --color-card: #FFFCF6;
+  --color-card-2: #F4EDE1;
 
   /* 文字 */
   --color-text: #2E1C11;
   --color-text-secondary: #6C4C34;
-  --color-text-muted: #97795A;
+  --color-text-muted: #816C57;
 
   /* 边框与状态 */
-  --color-border: #DCC29A;
-  --color-border-strong: #C5A472;
+  --color-border: #E2D8C9;
+  --color-border-strong: #CDB99C;
   --color-danger: #A33A22;
   --color-success: #52703C;
 
@@ -46,8 +46,8 @@
   --font-body: -apple-system, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
 
   /* 圆角与间距 */
-  --radius: 2px;
-  --radius-lg: 3px;
+  --radius: 4px;
+  --radius-lg: 8px;
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;

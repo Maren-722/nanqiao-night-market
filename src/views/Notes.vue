@@ -5,7 +5,7 @@
       <header class="page-head">
         <p class="page-head-kicker">南桥夜市 · 私人</p>
         <h1 class="page-head-title">我的手记</h1>
-        <p class="page-head-desc">这个账号留下的手记。新写的内容会保存在当前浏览器。</p>
+        <p class="page-head-desc">只有你自己能看到的私密手记。想写什么，就写在这儿。</p>
       </header>
 
       <!-- 只有你自己能看到的私密手记；这里也可以添加新手记（本机保存） -->

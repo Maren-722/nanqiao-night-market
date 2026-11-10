@@ -1,0 +1,9 @@
+糖粥藕与汤馄饨为虚构游戏素材，使用内置 image_gen 生成，转为 JPEG 以减小体积。
+
+chenji.jpg
+Use case: photorealistic-natural. Asset type: food image for a fictional Chinese night-market game. Photograph a single rustic white ceramic bowl of 糖粥藕, a thick sweet reddish brown rice congee with clearly visible soft cooked lotus root slices and rice grains, a tiny scattering of golden osmanthus. Bowl on a worn dark wooden street food table, warm side light from a stall lamp, dusk. Food fills center of wide horizontal 3:2 composition. Genuine everyday street food photography, subtle steam, appetizing natural textures, moderate shallow depth of field. No people, no text, no signage, no watermark, no collage.
+
+zhaoji.jpg
+Use case: photorealistic-natural. Asset: one food photo for a fictional Chinese night-market stall serving fresh pork wonton soup. A humble white ceramic bowl full of plump silky wontons in clear broth, a little green scallion and seaweed, ceramic spoon beside bowl. Warm stall light, worn wooden table, no person, no text, no branding. Natural everyday food photography, appetizing realistic textures, no plastic smoothness. Wide 3:2 photograph, bowl centered, three-quarter view, softly blurred night-market background. No collage.
+
+其余图片的作者、来源及许可见 src/data/image-credits.json 和网页底部“图片来源”。

@@ -5,6 +5,7 @@
       <BackBar label="返回夜市导览" fallback="/stalls" />
       <!-- 摊位详情：按路由参数 :id 匹配 src/data/stalls.json -->
       <div v-if="stall" class="detail-card">
+        <figure class="detail-photo"><img :src="foodImage(stall.id)" :alt="foodLabels[stall.id]" width="960" height="640"><figcaption>{{ foodLabels[stall.id] }} · 菜品示意图</figcaption></figure>
         <div class="detail-header">
           <span class="stall-no">摊位 {{ stall.stallNo }}</span>
           <h2 class="stall-name">{{ stall.shopName }}</h2>
@@ -49,6 +50,7 @@ import NavBar from '../components/NavBar.vue'
 import Footer from '../components/Footer.vue'
 import BackBar from '../components/BackBar.vue'
 import stallsData from '../data/stalls.json'
+import { foodImage, foodLabels } from '../utils/foodImages'
 import { useCurrentUser } from '../utils/auth'
 
 const route = useRoute()
@@ -188,4 +190,19 @@ function addReview() {
   margin-top: var(--space-md);
   color: var(--color-text-secondary);
 }
+</style>
+
+<style scoped>
+.detail-card { border-radius:12px; padding:0 38px 34px; max-width:860px; }
+.detail-card::before { display:none; }
+.detail-photo { margin:0 -38px 28px; position:relative; background:#e5dacc; }
+.detail-photo img { width:100%; height:340px; object-fit:cover; display:block; }
+.detail-photo figcaption { position:absolute; bottom:16px; right:18px; padding:4px 10px; border-radius:3px; background:#24160bc4; color:#fff5e5; font-size:11px; }
+.detail-header { padding-bottom:24px; }
+.sub-title { margin-top:28px; font-family:var(--font-title); font-size:22px; }
+.dish-row { padding:14px 0; font-size:15px; }
+.dish-price { font-weight:600; }
+.review-item { padding:20px 0; }
+.review-user { margin-bottom:8px; color:#806c59; }
+@media(max-width:720px) { .detail-card { padding:0 20px 24px; } .detail-photo { margin:0 -20px 22px; } .detail-photo img { height:230px; } .stall-name { font-size:28px; } }
 </style>

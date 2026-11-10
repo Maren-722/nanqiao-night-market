@@ -5,25 +5,28 @@
       <header class="page-head">
         <p class="page-head-kicker">南桥夜市 · 导览</p>
         <h1 class="page-head-title">夜市导览</h1>
-        <p class="page-head-desc">摊位按 A、B 两区排列。点进一家，可以看菜单、价格和食客评价。</p>
+        <p class="page-head-desc">夜市不大，慢慢走。点开一家，能看见是谁在守摊、卖什么、多少钱；拿不定主意，就看看吃过的人在底下留的那几句。</p>
       </header>
 
       <div class="stall-grid">
         <!-- 摊位卡片：数据来自 src/data/stalls.json，两列按 A/B 区顺序填充 -->
-        <div
+        <router-link
           v-for="stall in stalls"
           :key="stall.id"
           class="card stall-card"
           :class="{ 'stall-closed': stall.closed }"
-          @click="$router.push('/stalls/' + stall.id)"
+          :to="'/stalls/' + stall.id"
         >
+          <div class="stall-photo"><img :src="foodImage(stall.id)" :alt="foodLabels[stall.id]" width="960" height="640" loading="lazy"><span class="food-caption">{{ foodLabels[stall.id] }}</span></div>
+          <div class="stall-info">
           <div class="stall-no">摊位 {{ stall.stallNo }}</div>
           <h3 class="stall-name">{{ stall.shopName }}</h3>
           <p class="stall-owner">老板：{{ stall.owner }}<span v-if="stall.uid" class="stall-id">ID:{{ stall.uid }}</span></p>
           <p class="stall-main">{{ stall.main }}</p>
           <p class="stall-price">价格：{{ stall.price }}</p>
           <span v-if="stall.closed" class="stall-status">暂停营业</span>
-        </div>
+          </div>
+        </router-link>
       </div>
     </div>
     <Footer />
@@ -35,6 +38,7 @@ import { ref, onMounted } from 'vue'
 import NavBar from '../components/NavBar.vue'
 import Footer from '../components/Footer.vue'
 import stallsData from '../data/stalls.json'
+import { foodImage, foodLabels } from '../utils/foodImages'
 
 // 摊位列表：数据从 src/data/stalls.json 读取（你负责写这个文件）
 const stalls = ref([])
@@ -165,4 +169,26 @@ onMounted(() => {
     display: none;
   }
 }
+</style>
+
+<style scoped>
+.stall-grid { gap:24px; }
+.stall-card { display:block; padding:0; border-radius:10px; background:var(--color-card); }
+.stall-card::before { display:none; }
+.stall-photo { position:relative; aspect-ratio:16/9; overflow:hidden; background:#e5dacc; }
+.stall-photo::after { content:''; position:absolute; inset:50% 0 0; background:linear-gradient(transparent,rgba(28,19,10,.55)); }
+.stall-photo img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s; }
+.stall-card:hover img { transform:scale(1.035); }
+.food-caption { position:absolute; left:22px; bottom:13px; color:white; z-index:1; font-size:12px; letter-spacing:2px; }
+.stall-info { padding:22px 24px; }
+.stall-no { font-size:11px; margin-bottom:10px; }
+.stall-name { font-size:25px; letter-spacing:2px; }
+.stall-owner,.stall-main,.stall-price { font-size:13px; }
+.stall-main { margin-top:10px; }
+.stall-price { margin-top:14px; color:var(--color-accent); font-weight:600; }
+.stall-status { top:16px; right:16px; background:#fff8e9; border:1px solid #a43c27; color:#9b321c; font-size:12px; padding:5px 10px; box-shadow:0 2px 10px #30201420; }
+.stall-closed .stall-name { color:var(--color-text); }
+.stall-closed .stall-owner,.stall-closed .stall-main { color:var(--color-text-secondary); }
+.stall-closed .stall-price { color:var(--color-accent); }
+@media(max-width:720px) { .stall-grid { gap:12px; } .stall-info { padding:15px 12px; } .stall-name { font-size:18px; letter-spacing:0; } .stall-owner,.stall-main,.stall-price { font-size:12px; } .stall-id { display:block; } .stall-id::before { display:none; } .stall-status { top:8px; right:8px; font-size:10px; padding:2px 6px; } .food-caption { left:12px; bottom:8px; font-size:10px; } .stall-photo { aspect-ratio:4/3; } }
 </style>

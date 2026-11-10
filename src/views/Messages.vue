@@ -5,7 +5,7 @@
       <header class="page-head">
         <p class="page-head-kicker">南桥夜市 · 私信</p>
         <h1 class="page-head-title">短信</h1>
-        <p class="page-head-desc">点开联系人，查看这个账号的聊天记录。</p>
+        <p class="page-head-desc">和夜市里的人说几句话。有些话，他们只对熟人说。</p>
       </header>
 
       <div v-if="currentUser" class="chat-app" :class="{ 'chat-open': !!activeConv }">

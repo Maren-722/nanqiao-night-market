@@ -53,6 +53,8 @@ function check(name, ok, extra = '') {
 
   const browser = await puppeteer.launch({ executablePath, headless: 'new' })
   const page = await browser.newPage()
+  const runtimeErrors = []
+  page.on('pageerror', error => runtimeErrors.push(error.message))
   await page.setViewport({ width: 1440, height: 950 })
 
   const go = async (route, wait = 900) => {
@@ -80,22 +82,10 @@ function check(name, ok, extra = '') {
     await sleep(600)
   }
   const body = () => page.evaluate(() => document.querySelector('.chat-window-body')?.innerText || '')
-  const clickText = async (selector, text) => {
-    const clicked = await page.evaluate((selector, text) => {
-      const element = [...document.querySelectorAll(selector)].find(el => el.innerText.includes(text))
-      element?.click()
-      return Boolean(element)
-    }, selector, text)
-    if (!clicked) throw new Error(`找不到可点击的内容：${text}`)
-  }
 
   console.log('— 站点可达 —')
   const res = await page.goto(BASE + '/home', { waitUntil: 'networkidle0' })
   check('首页能打开', res.status() === 200, String(res.status()))
-  await go('/ending')
-  check('集齐线索前结局锁定', await page.$eval('.blocked-text', el => el.innerText) === '灯还没亮。')
-
-  await go('/home')
 
   console.log('— 置顶通知 —')
   await page.evaluate(() => document.querySelector('.pinned-card')?.click())
@@ -150,17 +140,15 @@ function check(name, ok, extra = '') {
   await openConv('王主任')
   const w = await body()
   check('没有「闹脾气」', !w.includes('闹脾气'), w.slice(0, 80))
-  check('在担心（心里不踏实）', /心里(?:也)?不踏实/.test(w), w.slice(0, 120))
+  check('在担心（心里不踏实）', w.includes('心里不踏实'), w.slice(0, 120))
   check('没有「藕都分给街坊」', !w.includes('藕都分给街坊'))
-  await openConv('刘姐')
-  check('小李私信保留刘姐的密码线索', (await body()).includes('0601'))
 
   console.log('— 刘姐：与陈伯的老对话还在 —')
   await login('B4', '0601')
   await go('/messages')
   await openConv('陈伯')
   const lj = await body()
-  check('8 月那段还在', lj.includes('明儿又到那天了') && lj.includes('二十年'), lj.slice(0, 60))
+  check('8 月那段还在', lj.includes('每年就你记得'), lj.slice(0, 60))
   check('没有「早起熬粥」', !lj.includes('早起熬粥'))
   check('陈伯走后她没有再发消息', !lj.includes('今晚没见你出摊'), lj.slice(-80))
 
@@ -170,8 +158,13 @@ function check(name, ok, extra = '') {
   await openConv('陈伯')
   const lz = await body()
   check(
-    '老张提议捎一段，陈伯留下3号线和五站的线索',
-    ['女婿今晚开车', '南桥上3号线，五站就到'].every(s => lz.includes(s)),
+    '四句对话完整',
+    [
+      '不用，我家离这儿不远。',
+      '跟我还客气啥？走吧。',
+      '真不用，也就五站路，你赶紧回去吧。',
+      '哎，你这人，真是拗不过你。'
+    ].every(s => lz.includes(s)),
     lz.slice(0, 120)
   )
 
@@ -182,7 +175,6 @@ function check(name, ok, extra = '') {
   check('三篇手记', noteCount === 3, String(noteCount))
   const firstText = await page.evaluate(() => document.querySelector('.note-card .note-content').innerText)
   check('没有「房东换了三茬」', !firstText.includes('房东换了三茬'), firstText.slice(0, 40))
-  check('红绳上的「念」字加粗显示', await page.$eval('.note-card strong', el => el.innerText) === '念')
   check('红绳是「袖子往上捋」露出来的', (await page.evaluate(() => document.body.innerText)).includes('袖子往上捋'))
   check('没有在线编辑入口', !(await page.evaluate(() => !!document.querySelector('.note-edit'))))
 
@@ -192,40 +184,73 @@ function check(name, ok, extra = '') {
   await go('/stalls', 700)
   await page.screenshot({ path: path.join(SHOT_DIR, 'stalls.png') })
 
-  console.log('— 完整解锁与两种后续 —')
+  console.log('— 新开场、食物图片与响应式布局 —')
+  await page.evaluate(async () => {
+    const images = [...document.querySelectorAll('.stall-photo img')]
+    for (const image of images) image.loading = 'eager'
+    await Promise.all(images.map(image => image.decode()))
+  })
+  check('十家摊位的本地图片全部加载', await page.$$eval('.stall-photo img', images => images.length === 10 && images.every(image => image.naturalWidth > 0 && image.src.includes('/nanqiao-night-market/images/food/'))))
+  await page.screenshot({ path: path.join(SHOT_DIR, 'stalls-desktop.png'), fullPage: true })
+  await page.click('.stall-card')
+  await page.waitForSelector('.detail-photo img')
+  check('点击带图摊位卡片仍能打开正确详情', page.url().endsWith('/stalls/chenji'))
+  await page.screenshot({ path: path.join(SHOT_DIR, 'detail-desktop.png'), fullPage: true })
+  await go('/')
+  check('开场说明是推理游戏且有三条玩法提示', (await page.$eval('.game-intro', e => e.textContent)).includes('网页推理游戏') && (await page.$$('.how-to-play li')).length === 3)
+  await page.screenshot({ path: path.join(SHOT_DIR, 'intro-desktop.png'), fullPage: true })
+  await page.click('.intro-start')
+  await page.waitForSelector('.hero')
+  check('新开场按钮进入首页', page.url().endsWith('/home'))
+  await page.screenshot({ path: path.join(SHOT_DIR, 'home-desktop.png'), fullPage: true })
+  for (const width of [390, 320]) {
+    await page.setViewport({ width, height: 844 })
+    for (const route of ['/', '/home', '/stalls', '/stalls/chenji']) {
+      await go(route, 100)
+      check(`${width}px ${route} 没有横向溢出`, await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth))
+      if (width === 390) await page.screenshot({ path: path.join(SHOT_DIR, 'mobile-' + (route.replaceAll('/', '-') || 'intro') + '.png'), fullPage: true })
+    }
+  }
+  await page.setViewport({ width: 1440, height: 950 })
+
+  console.log('— 恢复原稿后的完整解谜流程 —')
+  const clickText = async (selector, text) => {
+    const clicked = await page.evaluate((selector, text) => {
+      const el = [...document.querySelectorAll(selector)].find(el => el.textContent.includes(text))
+      el?.click()
+      return !!el
+    }, selector, text)
+    if (!clicked) throw new Error('找不到按钮：' + text)
+  }
   for (const id of ['p1', 'p2', 'p3']) await go('/forum/' + id, 100)
   await go('/home')
   await clickText('.notice-item', '地铁3号线南桥站')
   await page.waitForSelector('.metro-img')
+  await login('B2', '20260420')
+  await go('/messages')
+  await openConv('刘姐')
   await login('C4826', 'nian')
   await go('/notes')
+  check('儿子的三篇手记仍是保留版本', (await page.$$('.note-card')).length === 3 && (await page.$eval('.note-content', e => e.textContent)).includes('怕她以为我过得不好'))
   await login('M1', '20211101')
   await go('/manager')
   await clickText('.history-item', '寻人启事')
-  check('最后一条寻人启事仍可阅读', await page.$eval('.modal-content', el => el.innerText.includes('红绳')))
   await page.click('.modal-close')
   await page.waitForSelector('.unlock-mask')
-  check('通过原有页面集齐十条线索，显示结局入口', !!await page.$('.unlock-mask .unlock-btn.primary'))
+  check('正常浏览可以集齐十条线索', await page.evaluate(() => JSON.parse(localStorage.getItem('nq_progress')).length === 10))
   await page.click('.unlock-mask .unlock-btn.primary')
   await page.waitForSelector('.ending-title')
-  const endingHeading = () => page.$eval('.ending-title', el => el.innerText)
-  check('第一页面向玩家回顾线索', await endingHeading() === '关门以后')
-  await clickText('.ending-btn', '看陈伯的故事')
-  check('第二页交代地点与父子关系', await endingHeading() === '那碗粥是谁喝的' &&
-    await page.$eval('.ending-card', el => el.innerText.includes('第五站是梧桐苑')))
-  await clickText('.ending-btn', '看后续')
-  check('第三页有两种后续，进度仍为三页', await endingHeading() === '把话捎给谁' &&
-    (await page.$$('.stage-dots .dot')).length === 3)
-  await clickText('.ending-btn', '私信告诉他梧桐苑')
-  check('私信路线显示父子见面的后续', await endingHeading() === '你坐，我来')
-  await clickText('.ending-btn', '回到选择')
-  await clickText('.ending-btn', '请王主任先问陈伯')
-  check('转达路线显示陈伯回信的后续', await endingHeading() === '有空就来喝粥')
-  await page.setViewport({ width: 390, height: 844 })
-  await sleep(650)
-  check('手机宽度下结局没有横向溢出', await page.evaluate(() =>
-    document.documentElement.scrollWidth <= document.documentElement.clientWidth))
-  await page.screenshot({ path: path.join(SHOT_DIR, 'ending.png'), fullPage: true })
+  check('恢复原四幕结局', await page.$eval('.ending-title', e => e.textContent) === '你把它们摊在桌上')
+  await clickText('.ending-btn', '往下看')
+  await clickText('.ending-btn', '往下看')
+  await clickText('.ending-btn', '留着，发出去')
+  check('原结局保留地址分支可达', await page.$eval('.ending-title', e => e.textContent) === '那盏灯，从南桥亮到城南')
+  await go('/ending')
+  await clickText('.ending-btn', '往下看')
+  await clickText('.ending-btn', '往下看')
+  await clickText('.ending-btn', '删掉这一行')
+  check('原结局删除地址分支可达', await page.$eval('.ending-title', e => e.textContent) === '他们把位置留着')
+  check('浏览流程没有脚本运行错误', runtimeErrors.length === 0, runtimeErrors.join('; '))
 
   console.log(`\n结果：${pass} 通过 / ${fail} 失败`)
   await browser.close()

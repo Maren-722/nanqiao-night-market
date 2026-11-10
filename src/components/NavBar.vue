@@ -32,12 +32,13 @@
     <div v-if="showUnlock" class="unlock-mask">
       <div class="unlock-card">
         <span class="unlock-lamp">🏮</span>
-        <p class="unlock-text strong">陈伯的故事可以看了。</p>
-        <p class="unlock-text">想再逛一会儿，之后点导航栏的灯笼就能回来。</p>
+        <p class="unlock-text">夜色里，所有的线索都被你串了起来。</p>
+        <p class="unlock-text strong">这盏灯，为你亮了。</p>
         <div class="unlock-actions">
           <button class="unlock-btn primary" @click="goEnding">去往结局</button>
           <button class="unlock-btn" @click="stayExploring">继续探索</button>
         </div>
+        <p class="unlock-hint">（之后点击导航栏亮起的灯笼，随时可前往结局）</p>
       </div>
     </div>
 
@@ -449,6 +450,11 @@ function doSwitch() {
 .unlock-btn.primary:hover {
   background: rgba(255, 190, 92, 1);
 }
+.unlock-hint {
+  color: #B3927A;
+  font-size: 12px;
+}
+
 @media (max-width: 720px) {
   .navbar {
     padding: 0 14px;
@@ -481,5 +487,20 @@ function doSwitch() {
     right: var(--space-md);
     top: 64px;
   }
+}
+</style>
+
+<style scoped>
+@media (max-width:900px) {
+  .navbar { height:auto; min-height:88px; padding:16px 16px 8px; flex-direction:column; align-items:flex-start; gap:12px; }
+  .navbar-logo { padding-left:8px; }
+  .logo-cn { font-size:19px; letter-spacing:3px; }
+  .logo-en { display:none; }
+  .navbar-links { width:100%; overflow:visible; flex-wrap:wrap; justify-content:flex-start; gap:4px 20px; }
+  .navbar-links a { font-size:12px; letter-spacing:0; padding:5px 0; }
+  .navbar-user-wrap { position:absolute; right:48px; top:12px; max-width:44%; }
+  .navbar-user { display:block; max-width:100%; overflow:hidden; text-overflow:ellipsis; padding:3px 9px; }
+  .nav-lamp { position:absolute; right:17px; top:17px; }
+  .user-menu { position:absolute; top:calc(100% + 8px); right:12px; }
 }
 </style>
