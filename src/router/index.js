@@ -77,7 +77,10 @@ const routes = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    return savedPosition || { left: 0, top: 0 }
+  }
 })
 
 // 路由守卫：登录后才能访问的页面；工作台仅管理员账号可进

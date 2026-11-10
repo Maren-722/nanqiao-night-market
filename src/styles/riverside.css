@@ -1,0 +1,82 @@
+/* 江边暮色：公共页面以纸色、木色和细金线呼应首页插画。 */
+:root {
+  --ink: #33241d;
+  --ink-2: #443026;
+  --ink-3: #594135;
+  --color-primary: #624532;
+  --color-primary-dark: #443026;
+  --color-accent: #986140;
+  --color-accent-dark: #74472e;
+  --color-accent-light: #f2e3c8;
+  --amber: #c99651;
+  --amber-soft: #e3c18b;
+  --color-bg: #f5efe4;
+  --color-bg-deep: #e9dfcf;
+  --color-card: #fffaf1;
+  --color-card-2: #f0e7d8;
+  --color-text: #362b24;
+  --color-text-secondary: #685747;
+  --color-text-muted: #82715e;
+  --color-border: #e1d5c3;
+  --color-border-strong: #c8b18e;
+  --radius-lg: 5px;
+  --shadow-soft: 0 2px 4px #38291d03, 0 10px 26px -22px #38291d55;
+  --shadow-lift: 0 15px 32px -24px #38291d70;
+}
+
+body {
+  background-image: radial-gradient(ellipse at 85% 0, #e3c89926, transparent 55%),
+    repeating-linear-gradient(0deg, #75543603 0 1px, transparent 1px 4px);
+}
+
+#app .navbar {
+  background: linear-gradient(100deg, #3c291f, #30231e);
+  height: 80px;
+  padding-left: clamp(24px, 3.4vw, 58px);
+  padding-right: clamp(24px, 3.4vw, 58px);
+  box-shadow: none;
+}
+#app .navbar::after { height: 1px; opacity: .35; }
+#app .logo-cn { font-size: 29px; letter-spacing: 4px; text-shadow: none; }
+#app .logo-en { display: none; }
+#app .navbar-links { gap: 32px; }
+#app .navbar-links a { font-size: 15px; letter-spacing: 1px; }
+#app .navbar-links a.active::after { height: 1px; box-shadow: none; }
+
+#app .page-head { padding-top: 10px; padding-bottom: 28px; }
+#app .page-head::before {
+  content: '';
+  position: absolute;
+  inset: -12px 0 0 40%;
+  background: url('../assets/night-market-dusk.jpg') right 64% / cover no-repeat;
+  opacity: .13;
+  mask-image: linear-gradient(90deg, transparent, #000);
+  pointer-events: none;
+}
+#app .page-head > * { position: relative; }
+#app .page-head::after { background: linear-gradient(90deg, #bb9868, transparent); opacity: .35; }
+#app .page-head-title { letter-spacing: 4px; }
+#app .page-head-title::after { height: 1px; border-bottom: 0; }
+#app .page-head-kicker { color: #946e43; }
+#app .section-title { border-bottom: 0; }
+#app .section-title::before { display: none; }
+#app .section-title::after { background: linear-gradient(90deg, #bb9868, #d9cbb8); }
+
+#app .post-card { border-radius: 5px; border-left: 2px solid #d2b78d; margin-bottom: 14px; }
+#app .post-card:hover { border-left-color: #9e7343; background: #fffdf7; }
+#app .stall-card { border-radius: 5px; }
+#app .stall-no { background: #b08b5010; border-color: #bea47e70; color: #89643e; }
+#app .pinned-card { background: linear-gradient(110deg, #483329, #392b24); border-color: #6f543e; }
+#app .btn { box-shadow: none; }
+#app .btn:hover { background: #77543b; }
+#app .footer { background: linear-gradient(180deg, #34281fe8, #30231ef5), url('../assets/night-market-dusk.jpg') center 74% / cover; }
+#app .footer::before { opacity: .5; }
+#app .footer-lights span { box-shadow: 0 0 8px 2px #e9b85d30; }
+
+@media (max-width: 900px) {
+  #app .navbar { height: auto; min-height: 88px; padding: 16px 16px 8px; }
+  #app .logo-cn { font-size: 22px; letter-spacing: 3px; }
+  #app .navbar-links { gap: 4px 20px; }
+  #app .navbar-links a { font-size: 12px; letter-spacing: 0; }
+  #app .page-head::before { inset: 0 0 0 28%; opacity: .08; }
+}

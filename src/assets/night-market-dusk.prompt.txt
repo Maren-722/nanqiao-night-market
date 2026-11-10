@@ -1,0 +1,5 @@
+Asset: night-market-dusk.jpg
+Created with the built-in image_gen tool, 2026-11-10.
+Reference: user-approved generated homepage concept exec-1f8ddb9a-3991-4dd2-9249-be00d78131c2.png.
+Prompt: Edit the approved website concept into its production background illustration only. Preserve the illustrated riverside market scene, palette, paper texture, perspective, stalls on right with vendor and seated diner, autumn tree, people walking, river and village left, warm string lights and steam. Remove the navbar, bottom announcement strip, all text, buttons and icons. Reconstruct uninterrupted dark painted sky, filling a 16:9 landscape. Maintain generous empty dark sky in the upper left for HTML text, lights at lower middle, promenade in lower third. No text, UI, watermark or border.
+Generated source: exec-92658e15-de5d-4d84-8687-67cf9ac86ca3.png; JPEG encoding at quality 90 without resizing.
