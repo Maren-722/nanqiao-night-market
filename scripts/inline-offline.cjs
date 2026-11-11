@@ -51,10 +51,12 @@ const foodScript =
     ? "<script>window.__NQ_FOOD_IMAGES__=" + JSON.stringify(foodMap) + ";</script>\n  "
     : "";
 
-// 菜品图已内联进 HTML，产物里的 images 目录不再被引用，删掉以保持「一个文件」
-const imagesDir = path.join(dir, "images");
-if (foodInlined > 0 && fs.existsSync(imagesDir)) {
-  fs.rmSync(imagesDir, { recursive: true, force: true });
+// 图片与脚本、样式都已内联进 HTML，产物里的 images / assets 目录不再被引用，删掉以保持「一个文件」
+for (const sub of ["images", "assets"]) {
+  const leftover = path.join(dir, sub);
+  if (fs.existsSync(leftover)) {
+    fs.rmSync(leftover, { recursive: true, force: true });
+  }
 }
 
 // 3) 内联入口脚本，移到 body 末尾（此时 #app 已解析完成）

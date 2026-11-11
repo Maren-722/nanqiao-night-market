@@ -23,7 +23,7 @@
 **实现要点**
 
 - 自适应布局，360–1920px 区间不出现横向滚动（见 6.3）
-- 单文件离线版 2.39 MB，脚本、样式与图片全部内联，无外部依赖
+- 单文件离线版约 2.4 MB，脚本、样式与图片全部内联，无外部依赖
 - 无后端、无外部接口，剧情由前端 JSON 驱动
 - 加载与弱网实测数据见 6.5
 
@@ -49,7 +49,7 @@
 4. **夜市论坛** — 用任意用户名注册即可发帖、评论，同一个用户名能看到自己发过的内容
 5. **私信** — 以剧情角色登录后，能读到该角色和别人的往来
 6. **手记** — 被找回的几页手记，是整条线里信息密度最高的部分
-7. **结局** — 主要线索收齐后，集齐处的灯笼会亮起，可直接进入结局页
+7. **结局** — 集齐 10 个关键节点后，导航栏的灯笼会点亮，点击即可进入结局页
 
 线索不会在页面上直接点破，需要对照不同页面的时间与称呼。中途可随时关闭重开，进度存在本机。
 
@@ -89,11 +89,11 @@
 
 ### 6.1 架构
 
-Vue 3 + vue-router（hash 模式）。所有页面是前端组件，数据来自 `src/data/*.json`；路由守卫按登录态决定能否进入私信、手记与管理处。单页应用，切换页面不重新请求资源，首次加载后基本只看本机数据。
+Vue 3 + vue-router（hash 模式）。所有页面是前端组件，数据来自 `src/data/*.json`；路由守卫按登录态限制私信、手记与管理处，其中管理处仅管理员角色（`manager`）可进。单页应用，切换页面不重新请求资源，首次加载后基本只看本机数据。
 
 ### 6.2 数据与进度
 
-- 剧情：`stalls.json`（十家摊位与顾客评价）、`posts.json`（论坛帖与评论）、`messages.json`（私信会话与手记）、`notices.json`（公告三态）、`accounts.json`（账号与摊位对应）
+- 剧情：`stalls.json`（十家摊位与顾客评价）、`posts.json`（论坛帖与评论）、`messages.json`（私信会话与手记）、`notices.json`（公告三态：刊登中 / 已过期 / 已删除）、`accounts.json`（账号与摊位对应）
 - 玩家：登录态、注册的用户名、发帖、评论、已读线索、结局进度，全部存 localStorage，换浏览器不继承
 
 ### 6.3 界面规格与自适应
@@ -114,8 +114,8 @@ Vue 3 + vue-router（hash 模式）。所有页面是前端组件，数据来自
 
 ### 6.5 体积与加载
 
-- 图片全部 WebP：10 张摊位图合计 1.10 MB（单张 70–130 KB，宽 960）、首页主视觉 146 KB（1672×941）、地铁线路图 64 KB；`dist` 总产物约 1.4 MB
-- 离线单文件 2.39 MB（含全部图片的 base64）
+- 图片以 WebP 为主：10 张摊位图合计 0.93 MB（单张 70–130 KB，宽 960）、首页主视觉 146 KB（1672×941）、地铁线路图 64 KB；纸纹素材 `kraft.jpg` 103 KB 为 JPEG；`dist` 总产物约 1.4 MB
+- 单文件离线版约 2.4 MB（含全部图片的 base64）
 - 摊位图 `loading="lazy"`，首页主视觉 `fetchpriority="high"`
 - 慢网实测（1920×1080）：正常网首页 206 KB、导览 1.16 MB；较慢 3G（1.6 Mbps）导览 10 张图 5 s 全部出；极慢 400 kbps 首页正文 2 s、主视觉 6 s，导览 10 张 22 s 全部出
 - 复测：`node tests/competition-env-check.cjs`（需先 `npm run build`，再 `npm run preview -- --port 4174`）
@@ -146,9 +146,10 @@ Vue 3 + vue-router（hash 模式）。所有页面是前端组件，数据来自
 ├── 打开游戏/index.html      # 离线运行入口（双击即玩）
 ├── index.html               # 开发入口，file:// 下会白屏，勿直接双击
 ├── src/
-│   ├── assets/              # 图片（含地铁线网图）
+│   ├── main.js              # 应用入口
+│   ├── assets/              # 图片（孔明灯、纸纹、地铁线网图）
 │   ├── components/          # NavBar、Footer、BackBar
-│   ├── data/                # 剧情数据（accounts / stalls / posts / messages / notices）
+│   ├── data/                # 剧情数据与授权明细（accounts / stalls / posts / messages / notices / image-credits）
 │   ├── router/              # 路由与登录守卫
 │   ├── styles/              # 全局样式与设计变量
 │   ├── utils/               # 登录鉴权、进度与节点追踪
@@ -157,7 +158,7 @@ Vue 3 + vue-router（hash 模式）。所有页面是前端组件，数据来自
 ├── public/                  # 静态图片资源（WebP）
 ├── scripts/
 │   ├── preview-server.mjs    # 零依赖静态预览服务
-│   ├── 启动预览.bat / 停止预览.bat
+│   ├── 启动预览.bat / start-preview.bat / 停止预览.bat
 │   └── inline-offline.cjs   # 离线单文件后处理
 ├── tests/                   # 界面自检与自适应、慢网实测脚本
 ├── vite.config.js
@@ -199,7 +200,7 @@ node -e "JSON.parse(require('fs').readFileSync('src/data/messages.json','utf8'))
 
 - 线上地址：https://maren-722.github.io/nanqiao-night-market/
 - 部署：GitHub Pages，Source 设为 GitHub Actions，工作流 `.github/workflows/deploy.yml`；`vite.config.js` 的 `base` 为 `/nanqiao-night-market/`
-- 本仓库只有 `main` 一条开发线，推送即触发部署
+- 日常改动直接提交至 `main`，推送即触发部署
 
 **提交包内容**
 
