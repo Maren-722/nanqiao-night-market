@@ -151,3 +151,17 @@ node -e "JSON.parse(require('fs').readFileSync('src/data/messages.json','utf8'))
 - `HANDOVER.md` 是内部交接文档，同样不随作品提交
 - `dist/`、`node_modules/` 不入库，构建产物由 CI 生成
 - 线上版本与 `main` 分支一致，评委可直接用上面的在线地址体验
+
+建议的提交包内容：
+
+```
+README.md              必交，即本文档
+index.html
+package.json
+package-lock.json
+vite.config.js
+src/                   全部页面组件、样式与剧情 JSON
+public/                图片资源（WebP）
+.github/workflows/deploy.yml   可选，用于复现自动部署
+tests/                 可选，自检脚本
+```
