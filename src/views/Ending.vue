@@ -251,10 +251,14 @@ function restart() {
   font-size: 14px;
   letter-spacing: 5px;
   text-indent: 5px;
-  color: #9d7a55;
+  color: #8a6242;
+}
+.plain-link.small::after {
+  background: linear-gradient(90deg, transparent, rgba(160, 124, 84, 0.6), transparent);
+  transform: scaleX(0.5);
 }
 .plain-link.small:hover {
-  color: #c9a173;
+  color: #6f4c30;
 }
 .plain-link.tiny {
   font-size: 12px;
