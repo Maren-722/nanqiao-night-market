@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:offline": "vite build --config vite.config.offline.mjs && node scripts/inline-offline.cjs",
     "preview": "vite preview",
     "test:ui": "node tests/ui-smoke.cjs"
   },
