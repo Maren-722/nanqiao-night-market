@@ -48,7 +48,7 @@ body {
   content: '';
   position: absolute;
   inset: -12px 0 0 40%;
-  background: url('../assets/night-market-dusk.jpg') right 64% / cover no-repeat;
+  background: url('../assets/night-market-dusk.webp') right 64% / cover no-repeat;
   opacity: .13;
   mask-image: linear-gradient(90deg, transparent, #000);
   pointer-events: none;
@@ -69,7 +69,7 @@ body {
 #app .pinned-card { background: linear-gradient(110deg, #483329, #392b24); border-color: #6f543e; }
 #app .btn { box-shadow: none; }
 #app .btn:hover { background: #77543b; }
-#app .footer { background: linear-gradient(180deg, #34281fe8, #30231ef5), url('../assets/night-market-dusk.jpg') center 74% / cover; }
+#app .footer { background: linear-gradient(180deg, #34281fe8, #30231ef5), url('../assets/night-market-dusk.webp') center 74% / cover; }
 #app .footer::before { opacity: .5; }
 #app .footer-lights span { box-shadow: 0 0 8px 2px #e9b85d30; }
 

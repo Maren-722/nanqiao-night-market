@@ -117,12 +117,12 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import marketScene from '../assets/night-market-dusk.jpg'
+import marketScene from '../assets/night-market-dusk.webp'
 import NavBar from '../components/NavBar.vue'
 import Footer from '../components/Footer.vue'
 import noticesData from '../data/notices.json'
 import { markNode } from '../utils/progress'
-import metroMap from '../assets/metro-map.png'
+import metroMap from '../assets/metro-map.webp'
 
 // 首屏下滑提示：开始滚动后淡出，不干扰阅读
 const showHint = ref(true)

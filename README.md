@@ -34,6 +34,7 @@ npm run dev        # 开发服务器，访问 http://localhost:5173/nanqiao-nigh
 npm run build      # 打包至 dist/
 npm run test:ui    # 界面回归自检（需本机 Chrome，或设 CHROME_PATH）
 node tests/responsive-audit.cjs   # 自适应审计：10 个页面 × 9 档宽度
+node tests/competition-env-check.cjs  # 参赛环境实测：1920/1440/720 三档 + 三档网速
 ```
 
 项目设置了 base 路径，必须带 `/nanqiao-night-market/` 访问，根路径不可用。
@@ -47,6 +48,7 @@ node tests/responsive-audit.cjs   # 自适应审计：10 个页面 × 9 档宽�
 ├── scripts/              # 本地预览服务
 ├── tests/ui-smoke.cjs    # 界面回归自检
 ├── tests/responsive-audit.cjs  # 多页 × 多宽度的自适应审计
+├── tests/competition-env-check.cjs  # 界面规格 + 慢网实测
 ├── 启动预览.bat / 停止预览.bat
 └── src/
     ├── assets/           # 图片（含地铁线网图）
@@ -87,6 +89,13 @@ node -e "JSON.parse(require('fs').readFileSync('src/data/messages.json','utf8'))
 - 主要断点：**720px**（切换单列布局、导航折叠，短信页与手记页改为横向选择列表）、**900px**（导览等版式的两列/一列切换）
 - 实测矩阵：**9 档宽度**（360 / 390 / 430 / 768 / 820 / 1024 / 1280 / 1440 / 1920）× **15 个页面组合**（游客态 10 页 + 登录态 5 页，含摊位详情、帖子详情、私信、手记、管理处页），横向溢出均为 0
 - 复测方式：`node tests/responsive-audit.cjs`（需站点在 5173 运行）
+
+## 资源体积与加载
+
+- 图片全部为 **WebP**：10 张摊位图合计 1.10MB（单张 70–130KB，宽 960）、首页主视觉 146KB（1672×941）、地铁线路图 64KB；`dist` 总产物约 1.4MB
+- 摊位图 `loading="lazy"`，首页主视觉 `fetchpriority="high"`
+- 慢网实测（1920×1080）：正常网首页 206KB、导览 1.16MB；较慢 3G（1.6Mbps）导览 10 张图 5s 全部出；极慢 400kbps 首页正文 2s、主视觉 6s，导览 10 张 22s 全部出
+- 复测方式：`node tests/competition-env-check.cjs`（需 `npm run build` + `npm run preview -- --port 4174`）
 
 ## 分支
 
