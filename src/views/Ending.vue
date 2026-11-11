@@ -4,6 +4,7 @@
       <!-- 第一屏：一盏灯 -->
       <section v-if="screen === 0" key="lamp" class="lamp-stage">
         <div class="halo" :class="{ dim: !unlocked }"></div>
+        <div class="cord" :class="{ dim: !unlocked }"></div>
 
         <svg class="lantern" :class="{ dim: !unlocked }" viewBox="0 0 160 240" aria-hidden="true">
           <defs>
@@ -125,7 +126,7 @@ function restart() {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 64px 20px 72px;
+  padding: 40px 20px 52px;
   background:
     radial-gradient(620px 380px at 50% 8%, rgba(255, 186, 106, 0.18), transparent 72%),
     radial-gradient(900px 500px at 50% 110%, rgba(120, 52, 24, 0.34), transparent 70%),
@@ -142,19 +143,31 @@ function restart() {
   max-width: 640px;
   position: relative;
 }
+
+/* 吊绳：让灯像真挂在夜色里 */
+.cord {
+  width: 1px;
+  height: 74px;
+  margin-bottom: -14px;
+  background: linear-gradient(180deg, rgba(255, 214, 168, 0) 0%, rgba(255, 214, 168, 0.34) 62%, rgba(255, 214, 168, 0.5) 100%);
+}
+.cord.dim {
+  background: linear-gradient(180deg, rgba(190, 168, 140, 0) 0%, rgba(190, 168, 140, 0.2) 100%);
+}
+
 .halo {
   position: absolute;
-  top: -6px;
-  width: 460px;
-  height: 460px;
+  top: 40px;
+  width: 540px;
+  height: 540px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(255, 176, 84, 0.34) 0%,
-    rgba(255, 150, 60, 0.16) 38%,
+    rgba(255, 176, 84, 0.32) 0%,
+    rgba(255, 150, 60, 0.15) 38%,
     rgba(255, 150, 60, 0) 70%
   );
-  filter: blur(6px);
+  filter: blur(8px);
   animation: breathe 5.6s ease-in-out infinite;
   pointer-events: none;
 }
@@ -169,11 +182,11 @@ function restart() {
 }
 
 .lantern {
-  width: 208px;
+  width: 252px;
   height: auto;
   position: relative;
   animation: swing 6.4s ease-in-out infinite;
-  filter: drop-shadow(0 0 28px rgba(255, 148, 66, 0.45)) drop-shadow(0 18px 26px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 0 34px rgba(255, 148, 66, 0.5)) drop-shadow(0 18px 26px rgba(0, 0, 0, 0.5));
 }
 .lantern.dim {
   animation: none;
@@ -186,19 +199,19 @@ function restart() {
 
 .lamp-caption {
   position: relative;
-  margin-top: 34px;
+  margin-top: 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
 }
 .lamp-state {
   font-family: var(--font-title);
-  font-size: 15px;
-  letter-spacing: 7px;
-  color: #c2a582;
+  font-size: 13px;
+  letter-spacing: 0.42em;
+  color: #b0906b;
   margin: 0;
-  text-indent: 7px;
+  text-indent: 0.42em;
 }
 .lamp-state.on {
   color: #f6d9a8;
@@ -209,13 +222,13 @@ function restart() {
 .plain-link {
   border: 0;
   background: none;
-  padding: 6px 2px;
+  padding: 6px 2px 2px;
   cursor: pointer;
   font-family: var(--font-title);
-  font-size: 17px;
-  letter-spacing: 6px;
-  text-indent: 6px;
-  color: #e8c79a;
+  font-size: 18px;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  color: #eed3a6;
   transition: color 0.3s, text-shadow 0.3s;
 }
 .plain-link::after {
@@ -261,10 +274,10 @@ function restart() {
   position: relative;
   width: 100%;
   max-width: 620px;
-  padding: 62px clamp(26px, 6vw, 62px) 48px;
+  padding: 52px clamp(24px, 5.5vw, 58px) 38px;
   background: #fffaf1;
-  background-image: radial-gradient(ellipse at 22% 0%, #e8cf9f22, transparent 62%),
-    repeating-linear-gradient(0deg, #7b5a3a08 0 1px, transparent 1px 5px);
+  background-image: radial-gradient(ellipse at 24% 2%, #e8cf9f1f, transparent 58%),
+    radial-gradient(ellipse at 88% 100%, #d9bd8a14, transparent 60%);
   border: 1px solid #d9c6a6;
   border-radius: 2px;
   box-shadow: 0 50px 100px -52px rgba(8, 3, 1, 0.95), 0 0 0 6px rgba(255, 248, 232, 0.04);
@@ -284,10 +297,10 @@ function restart() {
 .body-text {
   font-family: var(--font-title);
   font-size: 16px;
-  line-height: 2.15;
+  line-height: 2.05;
   letter-spacing: 0.6px;
-  color: #403026;
-  margin: 0 0 22px;
+  color: #3c2b20;
+  margin: 0 0 19px;
   text-align: justify;
 }
 
@@ -314,34 +327,34 @@ function restart() {
 .brand {
   font-family: var(--font-title);
   font-size: 12px;
-  letter-spacing: 0.32em;
-  text-indent: 0.32em;
-  color: #9c825f;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  color: #9a7f5c;
   text-align: center;
-  margin: 46px 0 4px;
+  margin: 34px 0 0;
 }
 .brand::before,
 .brand::after {
   content: '';
   display: block;
-  width: 46px;
+  width: 76px;
   height: 1px;
   margin: 0 auto;
-  background: #d8c3a0;
+  background: linear-gradient(90deg, transparent, #d2bb95, transparent);
 }
 .brand::before {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 .brand::after {
-  margin-top: 18px;
+  margin-top: 16px;
 }
 
 .nav {
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 30px;
-  margin-top: 40px;
+  gap: 26px;
+  margin-top: 26px;
 }
 
 /* 翻页动画：像把纸轻轻掀起 */
@@ -360,32 +373,39 @@ function restart() {
 
 @media (max-width: 720px) {
   .ending-page {
-    padding: 44px 16px 56px;
+    padding: 34px 14px 44px;
     align-items: flex-start;
   }
+  .cord {
+    height: 52px;
+  }
   .lantern {
-    width: 168px;
+    width: 196px;
   }
   .halo {
-    width: 360px;
-    height: 360px;
+    top: 24px;
+    width: 400px;
+    height: 400px;
   }
   .paper {
-    padding: 42px 22px 34px;
+    padding: 36px 20px 28px;
   }
   .lead {
     font-size: 19px;
-    margin-bottom: 26px;
-    padding-bottom: 18px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
   }
   .body-text {
     font-size: 15px;
-    line-height: 2.05;
+    line-height: 2;
     text-align: left;
   }
+  .brand {
+    margin-top: 28px;
+  }
   .nav {
-    gap: 20px;
-    margin-top: 32px;
+    gap: 18px;
+    margin-top: 22px;
   }
 }
 </style>
