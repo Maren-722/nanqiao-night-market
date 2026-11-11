@@ -7,11 +7,12 @@
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="hero-inner">
         <p class="hero-kicker">临岗市 · 江边老街</p>
-        <h1 id="market-title" class="hero-title">南桥夜市</h1>
+        <h1 id="market-title" class="hero-title" data-text="南桥夜市">南桥夜市</h1>
         <p class="hero-sub">营业时间　每天 17:00 — 23:00</p>
         <div class="hero-links">
-          <router-link class="hero-primary" to="/stalls">逛夜市</router-link>
-          <router-link class="hero-secondary" to="/forum">看论坛</router-link>
+          <router-link class="hero-link" to="/stalls">逛夜市</router-link>
+          <span class="hero-link-rule" aria-hidden="true"></span>
+          <router-link class="hero-link" to="/forum">看论坛</router-link>
         </div>
       </div>
       <div class="hero-steam" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -102,7 +103,6 @@
                   <span class="cal-shop struck">{{ shop.name }}</span><span class="cal-replace">→{{ shop.replacedBy }}</span>
                 </template>
                 <span v-else class="cal-shop">{{ shop.name }}</span>
-                <br v-if="si === 0">
               </template>
             </div>
           </div>
@@ -236,18 +236,76 @@ for (let d = 1; d <= 31; d++) {
 <style scoped>
 /* 首页插画保持完整构图，交互与文字由 HTML 呈现。 */
 .hero { position:relative; isolation:isolate; overflow:hidden; aspect-ratio:1672 / 941; min-height:580px; max-height:900px; background:#343139; }
+/* 照片保持原样，只让字浮在上面 */
 .hero-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center bottom; }
 .hero-shade { position:absolute; inset:0; background:linear-gradient(90deg,rgba(27,23,29,.16),transparent 66%); }
 .hero-inner { position:relative; z-index:2; width:min(100%,1440px); margin:0 auto; padding:clamp(64px,7vw,120px) clamp(28px,7vw,110px) 80px; color:#fff0d5; }
-.hero-kicker { font-size:clamp(13px,1.5vw,21px); letter-spacing:5px; }
-.hero-title { font-family:var(--font-title); font-size:clamp(56px,6.7vw,100px); font-weight:500; line-height:1.3; letter-spacing:7px; margin:20px 0 18px; color:#fff2d9; text-shadow:0 2px 12px #211b2225; }
-.hero-sub { font-size:clamp(13px,1.5vw,20px); letter-spacing:2px; }
-.hero-links { display:flex; align-items:center; gap:38px; margin-top:40px; font-size:clamp(15px,1.6vw,21px); letter-spacing:2px; }
-.hero-primary { display:inline-flex; align-items:center; gap:20px; padding:12px 28px; background:#f5dfb6; color:#48301e; border:1px solid #f9e8cb; border-radius:4px; transition:background .2s,transform .2s; }
-.hero-primary:hover { background:#fff0d2; transform:translateY(-2px); }
-/* 「看论坛」与「逛夜市」保持同一套按钮风格 */
-.hero-secondary { display:inline-flex; align-items:center; gap:20px; padding:12px 28px; background:#f5dfb6; color:#48301e; border:1px solid #f9e8cb; border-radius:4px; transition:background .2s,transform .2s; }
-.hero-secondary:hover { background:#fff0d2; transform:translateY(-2px); }
+.hero-kicker { font-size:clamp(15px,1.45vw,19px); letter-spacing:5px; }
+/* 标题：字是灯下的字——纸白的笔画，背后一团会呼吸的灯芯光 */
+.hero-title {
+  position:relative;
+  z-index:0;
+  display:inline-block;
+  width:max-content;
+  max-width:100%;
+  white-space:nowrap;
+  font-family:var(--font-title);
+  font-size:clamp(56px,6.7vw,100px);
+  font-weight:500;
+  line-height:1.3;
+  letter-spacing:7px;
+  margin:20px 0 18px;
+  color:#FFF6E2;
+  text-shadow:0 1px 2px rgba(32,20,12,.4), 0 8px 34px rgba(255,176,88,.28);
+}
+/* 灯芯光：照笔画走的一圈暖晕；标题连同晕光都锁成单行，避免任何折行残留 */
+.hero-title::before {
+  content:attr(data-text);
+  position:absolute;
+  left:0;
+  top:0;
+  z-index:-1;
+  white-space:nowrap;
+  color:rgba(255,180,92,.62);
+  filter:blur(20px);
+  animation:heroGlow 7.5s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes heroGlow {
+  0%, 100% { opacity:.5; }
+  50% { opacity:.95; }
+}
+.hero-sub { font-size:clamp(15px,1.45vw,18px); letter-spacing:2px; }
+/* 两个去处：只留字和一根短金线，不做方块按钮 */
+.hero-links { display:flex; align-items:center; gap:30px; margin-top:48px; }
+.hero-link {
+  position:relative;
+  display:inline-block;
+  padding-bottom:10px;
+  font-family:var(--font-title);
+  font-size:clamp(17px,1.7vw,21px);
+  letter-spacing:.26em;
+  text-indent:.26em;
+  color:rgba(255,240,216,.9);
+  text-shadow:0 1px 14px rgba(30,18,10,.55);
+  transition:color .3s;
+}
+.hero-link::after {
+  content:'';
+  position:absolute;
+  left:0;
+  right:.26em;
+  bottom:0;
+  height:1px;
+  background:linear-gradient(90deg,rgba(240,206,150,.95),rgba(240,206,150,.2));
+  transform:scaleX(.55);
+  transform-origin:left center;
+  transition:transform .35s ease, opacity .35s;
+  opacity:.75;
+}
+.hero-link:hover { color:#FFF9EC; }
+.hero-link:hover::after { transform:scaleX(1); opacity:1; }
+.hero-link-rule { width:1px; height:15px; background:rgba(240,206,150,.32); }
 .hero-steam { position:absolute; right:12%; bottom:22%; width:60px; height:90px; pointer-events:none; opacity:.32; }
 .hero-steam i { position:absolute; bottom:0; left:15px; width:20px; height:60px; border-left:2px solid #f7e9d0; border-radius:50%; filter:blur(3px); animation:marketSteam 7s ease-in-out infinite; }
 .hero-steam i:nth-child(2) { left:30px; animation-delay:-2.3s; }
@@ -272,7 +330,7 @@ for (let d = 1; d <= 31; d++) {
 }
 .scroll-hint.is-hidden { opacity:0; }
 .scroll-hint-text {
-  font-size:12px;
+  font-size:13px;
   letter-spacing:2px;
   color:#f9e7c8;
   text-shadow:0 1px 8px rgba(32,22,28,.55);
@@ -329,7 +387,7 @@ for (let d = 1; d <= 31; d++) {
 .notice-item.is-pinned .notice-text {
   color: #FBF0DA;
   font-family: var(--font-title);
-  font-size: 16.5px;
+  font-size: 19px;
   letter-spacing: 1.2px;
   font-weight: 600;
 }
@@ -351,8 +409,8 @@ for (let d = 1; d <= 31; d++) {
   color: #F0C58A;
   border: 1px solid rgba(240, 197, 138, 0.5);
   border-radius: 2px;
-  padding: 0 5px;
-  font-size: 10px;
+  padding: 0 6px;
+  font-size: 12px;
   letter-spacing: 1px;
   margin-right: 8px;
   transform: translateY(-1px);
@@ -371,12 +429,12 @@ for (let d = 1; d <= 31; d++) {
   min-width: 0;
 }
 .notice-text {
-  font-size: 14.5px;
+  font-size: var(--font-body-size);
   color: var(--color-text);
-  line-height: 1.7;
+  line-height: 1.75;
 }
 .notice-meta {
-  margin-top: 4px;
+  margin-top: 6px;
   font-size: var(--font-tiny);
   color: var(--color-text-muted);
 }
@@ -394,7 +452,7 @@ for (let d = 1; d <= 31; d++) {
   color: #FFF4E2;
   padding: 2px 9px;
   border-radius: var(--radius);
-  font-size: 11px;
+  font-size: 12.5px;
   letter-spacing: 1px;
   flex-shrink: 0;
   margin-top: 3px;
@@ -413,7 +471,7 @@ for (let d = 1; d <= 31; d++) {
   padding: 20px;
 }
 .modal-card {
-  max-width: 580px;
+  max-width: 620px;
   width: 100%;
   max-height: 86vh;
   overflow-y: auto;
@@ -432,7 +490,7 @@ for (let d = 1; d <= 31; d++) {
 .modal-title {
   flex: 1;
   font-family: var(--font-title);
-  font-size: 19px;
+  font-size: 22px;
   letter-spacing: 1px;
   color: var(--color-text);
   line-height: 1.5;
@@ -536,7 +594,7 @@ for (let d = 1; d <= 31; d++) {
 }
 .cal-head {
   text-align: center;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1.8px;
   font-weight: 600;
   color: var(--color-text-secondary);
@@ -548,7 +606,7 @@ for (let d = 1; d <= 31; d++) {
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   padding: 9px 8px;
-  min-height: 98px;
+  min-height: 112px;
 }
 .cal-pad {
   background: transparent;
@@ -562,12 +620,12 @@ for (let d = 1; d <= 31; d++) {
 }
 .cal-date {
   font-family: var(--font-title);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--color-text);
 }
 .cal-today-tag {
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 1px;
   background: var(--color-accent);
   color: #FFF4E2;
@@ -587,12 +645,12 @@ for (let d = 1; d <= 31; d++) {
   border-color: var(--color-accent);
 }
 .cal-shops {
-  font-size: 10.5px;
-  line-height: 1.9;
+  font-size: 12px;
+  line-height: 1.75;
 }
 .cal-shop {
   color: var(--color-text-secondary);
-  display: inline-block;
+  display: block;
 }
 .cal-shop.struck {
   color: var(--color-danger);
@@ -600,9 +658,11 @@ for (let d = 1; d <= 31; d++) {
   font-weight: 600;
 }
 .cal-replace {
+  display: block;
   color: var(--color-success);
-  font-size: 10px;
-  margin-left: 2px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  margin-left: 0;
 }
 .cal-legend {
   font-size: var(--font-tiny);
@@ -626,11 +686,11 @@ for (let d = 1; d <= 31; d++) {
   .hero-inner { padding:54px 24px 300px; }
   .scroll-hint { bottom:12px; }
   .scroll-hint-text { font-size:11px; letter-spacing:1.5px; }
-  .hero-kicker { font-size:12px; letter-spacing:3px; }
+  .hero-kicker { font-size:13px; letter-spacing:3px; }
   .hero-title { font-size:48px; letter-spacing:5px; margin:20px 0; }
-  .hero-sub { font-size:12px; letter-spacing:.5px; }
-  .hero-links { margin-top:30px; gap:28px; font-size:15px; }
-  .hero-primary { padding:10px 22px; gap:14px; }
+  .hero-sub { font-size:13.5px; letter-spacing:.5px; }
+  .hero-links { margin-top:30px; gap:18px; }
+  .hero-link { font-size:15px; letter-spacing:.18em; text-indent:.18em; }
   .hero-steam { display:none; }
   .cal-board {
     padding: 12px 10px 8px;

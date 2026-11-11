@@ -219,7 +219,7 @@ function doSwitch() {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  height: 68px;
+  height: 72px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -247,15 +247,15 @@ function doSwitch() {
 }
 .logo-cn {
   font-family: var(--font-title);
-  font-size: 21px;
+  font-size: 24px;
   font-weight: 600;
-  letter-spacing: 5px;
+  letter-spacing: 4px;
   line-height: 1;
   color: #FFF3DC;
   text-shadow: 0 0 18px rgba(255, 188, 96, 0.35);
 }
 .logo-en {
-  font-size: 8px;
+  font-size: 9.5px;
   letter-spacing: 2.6px;
   line-height: 1;
   color: rgba(235, 184, 106, 0.8);
@@ -273,7 +273,7 @@ function doSwitch() {
 .navbar-links a {
   position: relative;
   color: #D9C3A6;
-  font-size: 13px;
+  font-size: 15px;
   letter-spacing: 1.4px;
   cursor: pointer;
   padding: 9px 1px;
@@ -365,8 +365,8 @@ function doSwitch() {
   gap: 8px;
 }
 .menu-input {
-  font-size: 14px;
-  padding: 8px 10px;
+  font-size: 16px;
+  padding: 9px 11px;
 }
 .menu-error {
   color: var(--color-danger);
@@ -533,7 +533,7 @@ function doSwitch() {
     padding-left: 8px;
   }
   .logo-cn {
-    font-size: 17px;
+    font-size: 19px;
     letter-spacing: 2.5px;
   }
   .logo-en {

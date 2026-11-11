@@ -134,10 +134,10 @@ function addReview() {
 }
 .stall-name {
   font-family: var(--font-title);
-  font-size: 34px;
+  font-size: 38px;
   letter-spacing: 3px;
   color: var(--color-text);
-  margin: 10px 0 6px;
+  margin: 10px 0 8px;
 }
 .stall-owner {
   color: var(--color-text-secondary);
@@ -198,12 +198,12 @@ function addReview() {
 .detail-card::before { display:none; }
 .detail-photo { margin:0 -38px 28px; position:relative; background:#e5dacc; }
 .detail-photo img { width:100%; height:340px; object-fit:cover; display:block; }
-.detail-photo figcaption { position:absolute; bottom:16px; right:18px; padding:4px 10px; border-radius:3px; background:#24160bc4; color:#fff5e5; font-size:11px; }
+.detail-photo figcaption { position:absolute; bottom:16px; right:18px; padding:4px 11px; border-radius:3px; background:#24160bc4; color:#fff5e5; font-size:13px; }
 .detail-header { padding-bottom:24px; }
-.sub-title { margin-top:28px; font-family:var(--font-title); font-size:22px; }
-.dish-row { padding:14px 0; font-size:15px; }
+.sub-title { margin-top:30px; font-family:var(--font-title); font-size:25px; }
+.dish-row { padding:15px 0; font-size:18px; }
 .dish-price { font-weight:600; }
 .review-item { padding:20px 0; }
 .review-user { margin-bottom:8px; color:#806c59; }
-@media(max-width:720px) { .detail-card { padding:0 20px 24px; } .detail-photo { margin:0 -20px 22px; } .detail-photo img { height:230px; } .stall-name { font-size:28px; } }
+@media(max-width:720px) { .detail-card { padding:0 20px 24px; } .detail-photo { margin:0 -20px 22px; } .detail-photo img { height:230px; } .stall-name { font-size:30px; } }
 </style>

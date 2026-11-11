@@ -139,18 +139,18 @@ onBeforeUnmount(() => {
 }
 .note-date {
   font-family: var(--font-title);
-  font-size: var(--font-small);
+  font-size: 17px;
   letter-spacing: 2px;
   color: var(--color-accent);
-  margin-bottom: 8px;
-  padding-bottom: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
   border-bottom: 1px dashed var(--color-border);
 }
 .note-content {
   white-space: pre-line;
-  line-height: 2.05;
+  line-height: 2;
   color: #46301F;
-  font-size: 14.5px;
+  font-size: 19px;
 }
 .note-composer {
   margin-top: var(--space-lg);

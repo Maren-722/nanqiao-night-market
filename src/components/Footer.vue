@@ -23,10 +23,10 @@ const hideNav = computed(() => route.meta.hideNav === true)
     linear-gradient(180deg, #452618 0%, #361D11 100%),
     repeating-linear-gradient(90deg, rgba(255, 214, 160, 0.035) 0 2px, transparent 2px 9px);
   border-top: 1px solid rgba(235, 184, 106, 0.28);
-  padding: 30px 24px 26px;
+  padding: 32px 24px 28px;
   text-align: center;
   color: #C9B192;
-  font-size: var(--font-tiny);
+  font-size: var(--font-small);
   letter-spacing: 1px;
 }
 .footer::before {
@@ -61,8 +61,8 @@ const hideNav = computed(() => route.meta.hideNav === true)
   letter-spacing: 1.6px;
 }
 .footer-small {
-  margin-top: 7px;
-  font-size: 11px;
+  margin-top: 8px;
+  font-size: 13.5px;
   color: rgba(201, 177, 146, 0.66);
 }
 </style>

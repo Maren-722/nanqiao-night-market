@@ -172,7 +172,7 @@ function closeNotice() {
   flex-wrap: wrap;
 }
 .state-badge {
-  font-size: 11px;
+  font-size: 12.5px;
   letter-spacing: 0.5px;
   padding: 1px 8px;
   border-radius: 2px;
@@ -194,7 +194,7 @@ function closeNotice() {
   color: #FFF6E6;
   padding: 1px 8px;
   border-radius: var(--radius);
-  font-size: 11px;
+  font-size: 12.5px;
   flex-shrink: 0;
 }
 .history-text {

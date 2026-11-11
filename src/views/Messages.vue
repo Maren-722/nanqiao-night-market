@@ -270,8 +270,8 @@ onBeforeUnmount(() => {
   box-shadow: inset 3px 0 0 var(--color-accent);
 }
 .chat-avatar {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   border-radius: var(--radius);
   background: linear-gradient(160deg, #8B4A29, #5E2E19);
   color: #FFF0D6;
@@ -279,7 +279,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   font-family: var(--font-title);
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   flex-shrink: 0;
   box-shadow: inset 0 0 0 1px rgba(255, 214, 150, 0.3);
@@ -389,8 +389,8 @@ onBeforeUnmount(() => {
   flex-direction: row-reverse;
 }
 .bubble-avatar {
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border-radius: var(--radius);
   background: linear-gradient(160deg, #8B4A29, #5E2E19);
   color: #FFF0D6;
@@ -398,7 +398,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   font-family: var(--font-title);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   flex-shrink: 0;
 }
@@ -409,7 +409,7 @@ onBeforeUnmount(() => {
 /* 微信式的日期分隔：一行小字居中 */
 .chat-date {
   text-align: center;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1px;
   color: var(--color-text-muted);
   margin: 6px 0 16px;
@@ -427,9 +427,9 @@ onBeforeUnmount(() => {
 .bubble {
   background: var(--color-card);
   border: 1px solid var(--color-border);
-  padding: 9px 12px;
+  padding: 11px 14px;
   border-radius: var(--radius);
-  line-height: 1.65;
+  line-height: 1.7;
   font-size: var(--font-body-size);
   white-space: pre-wrap;
   word-break: break-word;

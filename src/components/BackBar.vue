@@ -44,6 +44,6 @@ function goBack() {
   color: var(--color-accent);
 }
 .back-arrow {
-  font-size: 14px;
+  font-size: 16px;
 }
 </style>

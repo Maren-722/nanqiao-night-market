@@ -130,7 +130,7 @@ function addComment() {
 }
 .post-title {
   font-family: var(--font-title);
-  font-size: 27px;
+  font-size: 32px;
   letter-spacing: 1px;
   line-height: 1.5;
   color: var(--color-text);

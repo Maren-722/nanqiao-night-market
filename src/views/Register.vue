@@ -112,7 +112,7 @@ function handleRegister() {
 }
 .register-title {
   font-family: var(--font-title);
-  font-size: 30px;
+  font-size: 34px;
   letter-spacing: 5px;
   text-align: center;
   margin-bottom: var(--space-sm);

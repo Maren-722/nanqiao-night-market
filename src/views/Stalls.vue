@@ -181,16 +181,16 @@ onMounted(() => {
 .stall-photo::after { content:''; position:absolute; inset:50% 0 0; background:linear-gradient(transparent,rgba(28,19,10,.55)); }
 .stall-photo img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s; }
 .stall-card:hover img { transform:scale(1.035); }
-.food-caption { position:absolute; left:22px; bottom:13px; color:white; z-index:1; font-size:12px; letter-spacing:2px; }
-.stall-info { padding:22px 24px; }
-.stall-no { font-size:11px; margin-bottom:10px; }
-.stall-name { font-size:25px; letter-spacing:2px; }
-.stall-owner,.stall-main,.stall-price { font-size:13px; }
-.stall-main { margin-top:10px; }
-.stall-price { margin-top:14px; color:var(--color-accent); font-weight:600; }
-.stall-status { top:16px; right:16px; background:#fff8e9; border:1px solid #a43c27; color:#9b321c; font-size:12px; padding:5px 10px; box-shadow:0 2px 10px #30201420; }
+.food-caption { position:absolute; left:22px; bottom:14px; color:white; z-index:1; font-size:14px; letter-spacing:2px; }
+.stall-info { padding:24px 26px 26px; }
+.stall-no { font-size:13px; margin-bottom:12px; }
+.stall-name { font-size:29px; letter-spacing:2px; }
+.stall-owner,.stall-main,.stall-price { font-size:16px; }
+.stall-main { margin-top:12px; }
+.stall-price { margin-top:16px; color:var(--color-accent); font-weight:600; }
+.stall-status { top:16px; right:16px; background:#fff8e9; border:1px solid #a43c27; color:#9b321c; font-size:14px; padding:5px 11px; box-shadow:0 2px 10px #30201420; }
 .stall-closed .stall-name { color:var(--color-text); }
 .stall-closed .stall-owner,.stall-closed .stall-main { color:var(--color-text-secondary); }
 .stall-closed .stall-price { color:var(--color-accent); }
-@media(max-width:720px) { .stall-grid { gap:12px; } .stall-info { padding:15px 12px; } .stall-name { font-size:18px; letter-spacing:0; } .stall-owner,.stall-main,.stall-price { font-size:12px; } .stall-id { display:block; } .stall-id::before { display:none; } .stall-status { top:8px; right:8px; font-size:10px; padding:2px 6px; } .food-caption { left:12px; bottom:8px; font-size:10px; } .stall-photo { aspect-ratio:4/3; } }
+@media(max-width:720px) { .stall-grid { gap:12px; } .stall-info { padding:15px 12px; } .stall-name { font-size:20px; letter-spacing:0; } .stall-owner,.stall-main,.stall-price { font-size:14px; } .stall-id { display:block; } .stall-id::before { display:none; } .stall-status { top:8px; right:8px; font-size:12px; padding:2px 6px; } .food-caption { left:12px; bottom:9px; font-size:12px; } .stall-photo { aspect-ratio:4/3; } }
 </style>

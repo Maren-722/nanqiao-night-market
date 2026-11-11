@@ -55,15 +55,16 @@
   --space-xl: 40px;
 
   /* 内容区最大宽度 */
-  --container-max: 1120px;
+  --container-max: 1200px;
 
-  /* 字号层级 */
-  --font-h1: 40px;
-  --font-h2: 25px;
-  --font-h3: 17px;
-  --font-body-size: 14px;
-  --font-small: 13px;
-  --font-tiny: 12px;
+  /* 字号层级：阅读正文再上一档，页面上不再有小字批注感 */
+  --font-h1: 48px;
+  --font-h2: 33px;
+  --font-h3: 22.5px;
+  --font-body-size: 19px;
+  --font-small: 16.5px;
+  --font-tiny: 15px;
+  --font-micro: 13.5px;
 
   /* 阴影：暖褐色的浅影，像灯下的纸 */
   --shadow-soft: 0 1px 0 rgba(255, 252, 240, 0.75) inset, 0 12px 26px -18px rgba(74, 35, 18, 0.5);

@@ -25,7 +25,7 @@ body {
   background-repeat: no-repeat, no-repeat, repeat, repeat;
   color: var(--color-text);
   font-size: var(--font-body-size);
-  line-height: 1.75;
+  line-height: 1.8;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -54,7 +54,7 @@ ul, ol {
 .container {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 46px 28px 72px;
+  padding: 50px 32px 76px;
 }
 
 /* 页面骨架：让内容区撑满视口，页脚贴底（内容短时不露底色） */
@@ -88,16 +88,16 @@ ul, ol {
   background: repeating-linear-gradient(90deg, var(--color-border) 0 8px, transparent 8px 16px);
 }
 .page-head-kicker {
-  font-size: 10.5px;
-  letter-spacing: 3.4px;
+  font-size: 14px;
+  letter-spacing: 3px;
   color: var(--color-accent);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .page-head-title {
   font-family: var(--font-title);
-  font-size: 36px;
+  font-size: 46px;
   font-weight: 600;
-  letter-spacing: 6px;
+  letter-spacing: 5px;
   line-height: 1.3;
   color: var(--color-text);
   display: flex;
@@ -113,8 +113,8 @@ ul, ol {
   opacity: 0.7;
 }
 .page-head-desc {
-  margin-top: 10px;
-  max-width: 640px;
+  margin-top: 12px;
+  max-width: 760px;
   font-size: var(--font-small);
   line-height: 1.9;
   color: var(--color-text-secondary);
@@ -125,7 +125,7 @@ ul, ol {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 11px 22px;
+  padding: 14px 28px;
   background: var(--color-primary);
   color: #FBF0D9;
   border: 1px solid var(--color-primary-dark);
@@ -163,7 +163,7 @@ ul, ol {
   background: var(--color-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 22px 24px;
+  padding: 24px 28px;
   box-shadow: var(--shadow-soft);
 }
 
@@ -177,14 +177,14 @@ ul, ol {
   font-weight: 600;
   letter-spacing: 3px;
   color: var(--color-text);
-  margin: 52px 0 20px;
+  margin: 56px 0 22px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--color-border);
 }
 .section-title::before {
   content: '';
   width: 4px;
-  height: 21px;
+  height: 26px;
   background: linear-gradient(to bottom, var(--color-accent), var(--amber));
   flex-shrink: 0;
 }
@@ -203,7 +203,7 @@ ul, ol {
 
 /* 小标签（全大写的小字，用来做层级） */
 .kicker {
-  font-size: 11px;
+  font-size: 14px;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--color-text-muted);
@@ -268,7 +268,7 @@ ul, ol {
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius);
   background: #FFFCF3;
-  font-size: 16px; /* 移动端防 iOS 聚焦缩放，必须 ≥16px */
+  font-size: 18px; /* 移动端防 iOS 聚焦缩放，必须 ≥16px */
   font-family: var(--font-body);
   color: var(--color-text);
   outline: none;
@@ -291,20 +291,20 @@ ul, ol {
 /* 移动端适配（窄屏优先设计） */
 @media (max-width: 720px) {
   .container {
-    padding: 30px 16px 52px;
+    padding: 32px 18px 54px;
   }
   .page-head {
     margin-bottom: 26px;
     padding-bottom: 16px;
   }
   .page-head-title {
-    font-size: 27px;
+    font-size: 34px;
     letter-spacing: 4px;
     gap: 10px;
   }
   .section-title {
-    font-size: 20px;
+    font-size: 25px;
     letter-spacing: 2px;
-    margin: 38px 0 15px;
+    margin: 38px 0 16px;
   }
 }

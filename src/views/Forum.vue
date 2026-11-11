@@ -143,10 +143,10 @@ function publishPost() {
 }
 .post-title {
   font-family: var(--font-title);
-  font-size: 18px;
+  font-size: 22px;
   letter-spacing: 0.5px;
   color: var(--color-text);
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
 .post-meta {
   font-size: var(--font-tiny);
@@ -158,7 +158,7 @@ function publishPost() {
   margin-left: 6px;
 }
 .post-preview {
-  font-size: var(--font-small);
+  font-size: 17px;
   color: var(--color-text-secondary);
   overflow: hidden;
   text-overflow: ellipsis;
