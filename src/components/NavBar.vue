@@ -28,17 +28,21 @@
       ><img class="nav-lamp-img" :src="kongmingImg" alt="" /></span>
     </div>
 
-    <!-- 集齐线索：全屏解锁提示（只弹一次） -->
-    <div v-if="showUnlock" class="unlock-mask">
-      <div class="unlock-card">
-        <img class="unlock-lamp" :src="kongmingImg" alt="" />
-        <p class="unlock-text">夜色里，所有的线索都被你串了起来。</p>
-        <p class="unlock-text strong">这盏灯，为你亮了。</p>
-        <div class="unlock-actions">
-          <button class="unlock-btn primary" @click="goEnding">去往结局</button>
-          <button class="unlock-btn" @click="stayExploring">继续探索</button>
+    <!-- 集齐线索时的一次性提示：一整屏夜色里的一盏灯（与结局封面平行，样式各自独立） -->
+    <div v-if="showUnlock" class="lamp-gate">
+      <div class="gate-stage">
+        <div class="gate-lamp-wrap">
+          <div class="gate-glow"></div>
+          <img class="gate-bloom" :src="kongmingImg" alt="" aria-hidden="true" />
+          <img class="gate-lamp" :src="kongmingImg" alt="" />
         </div>
-        <p class="unlock-hint">（之后点击导航栏亮起的灯笼，随时可前往结局）</p>
+
+        <p class="gate-hint">夜色里，所有的线索都被你串了起来，这盏灯为你亮了。</p>
+
+        <button class="gate-primary" @click="enterStory">通往结局</button>
+        <button class="gate-back" @click="stayExploring">回到夜市</button>
+
+        <p class="gate-note">（之后点击导航栏亮起的灯笼，随时可前往结局）</p>
       </div>
     </div>
 
@@ -101,27 +105,34 @@ const loginPwd = ref('')
 const loginError = ref('')
 
 // ---------------- 结局灯笼 ----------------
-// 灯一直挂在导航栏：未集齐时是暗的，点了没反应；集齐后点亮，可进入结局
+// 灯一直挂在导航栏：未集齐时是暗的，点了没反应；集齐后点亮，可进入结局封面
 const progressComplete = ref(isComplete())
 const showUnlock = ref(false)
 
 function onProgressChanged(e) {
   if (e?.detail?.justUnlocked) {
     progressComplete.value = true
-    // 集齐后弹一次全屏提示（刷新/重进不再弹）
+    // 集齐后弹一次这盏灯的提示页（刷新/重进不再弹）
     if (!localStorage.getItem('nq_ending_prompted')) {
       showUnlock.value = true
     }
   }
 }
 
+// 点导航栏亮起的灯：进入结局封面（封面页保持不变）
 function goEnding() {
   if (!progressComplete.value) return   // 没集齐：点灯没反应
-  localStorage.setItem('nq_ending_prompted', '1')
-  showUnlock.value = false
   router.push('/ending')
 }
 
+// 提示页的主出口：直接进结局第一页，不再经过封面那一屏
+function enterStory() {
+  localStorage.setItem('nq_ending_prompted', '1')
+  showUnlock.value = false
+  router.push({ path: '/ending', query: { p: '1' } })
+}
+
+// 提示页的次要出口：留在夜市，之后可点导航栏的灯再进结局
 function stayExploring() {
   localStorage.setItem('nq_ending_prompted', '1')
   showUnlock.value = false
@@ -389,78 +400,127 @@ function doSwitch() {
   50% { filter: drop-shadow(0 0 13px rgba(255, 190, 92, 0.95)); }
 }
 
-/* 集齐线索的全屏解锁提示：一块被灯照亮的暖色屏 */
-.unlock-mask {
+/* 集齐线索时的一次性提示：整屏夜色 + 一盏孔明灯 + 无框的字 */
+.lamp-gate {
   position: fixed;
   inset: 0;
-  background:
-    radial-gradient(ellipse at center, rgba(120, 56, 24, 0.94), rgba(58, 26, 12, 0.98));
   z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  background:
+    radial-gradient(760px 460px at 50% 20%, rgba(255, 166, 86, 0.1), transparent 70%),
+    linear-gradient(176deg, #22100a 0%, #351a0f 40%, #27140c 72%, #170b06 100%);
+  animation: gateIn 0.5s ease;
 }
-.unlock-card {
-  max-width: 440px;
-  width: 100%;
-  text-align: center;
+@keyframes gateIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-.unlock-lamp {
-  display: block;
-  width: 104px;
-  height: auto;
-  margin: 0 auto 18px;
-  animation: lampGlow 2.6s ease-in-out infinite;
-}
-.unlock-text {
-  color: #EBD9BE;
-  font-size: 16px;
-  line-height: 2;
-  margin-bottom: 6px;
-}
-.unlock-text.strong {
-  color: #FFD79A;
-  font-size: 19px;
-  font-weight: 600;
-  font-family: var(--font-title);
-  letter-spacing: 2px;
-  margin-bottom: 26px;
-}
-.unlock-actions {
+.gate-stage {
+  position: relative;
   display: flex;
-  gap: 14px;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 30px;
+}
+.gate-lamp-wrap {
+  position: relative;
+  display: flex;
   justify-content: center;
-  margin-bottom: 18px;
 }
-.unlock-btn {
-  flex: 1;
-  max-width: 160px;
-  padding: 12px;
-  border-radius: var(--radius);
-  border: 1px solid rgba(255, 207, 138, 0.5);
-  background: transparent;
-  color: #FFD79A;
-  font-size: 15px;
-  font-family: var(--font-body);
+.gate-glow {
+  position: absolute;
+  top: 12%;
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 178, 96, 0.17) 0%, rgba(255, 150, 66, 0.07) 46%, rgba(255, 150, 66, 0) 76%);
+  filter: blur(30px);
+  pointer-events: none;
+}
+.gate-bloom {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 220px;
+  height: auto;
+  transform: translateX(-50%) scale(1.07);
+  filter: blur(20px) saturate(1.15) brightness(1.05);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.gate-lamp {
+  position: relative;
+  width: 220px;
+  height: auto;
+  filter: brightness(0.94) saturate(1.04) drop-shadow(0 22px 38px rgba(0, 0, 0, 0.4));
+  animation: gateFloat 9s ease-in-out infinite;
+}
+@keyframes gateFloat {
+  0%, 100% { transform: translateY(0) rotate(-0.4deg); }
+  50% { transform: translateY(-10px) rotate(0.4deg); }
+}
+.gate-hint {
+  font-family: var(--font-title);
+  font-size: 13px;
+  line-height: 1.9;
+  letter-spacing: 0.14em;
+  text-indent: 0.14em;
+  color: #b39a76;
+  margin: 4px 0 0;
+  text-align: center;
+  max-width: 440px;
+}
+.gate-primary {
+  border: 0;
+  background: none;
+  padding: 6px 2px 2px;
   cursor: pointer;
-  transition: background 0.2s;
+  font-family: var(--font-title);
+  font-size: 19px;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  color: #eed3a6;
+  transition: color 0.3s;
 }
-.unlock-btn:hover {
-  background: rgba(255, 207, 138, 0.12);
+.gate-primary::after {
+  content: '';
+  display: block;
+  height: 1px;
+  margin-top: 7px;
+  background: linear-gradient(90deg, transparent, rgba(238, 211, 166, 0.55), transparent);
+  transform: scaleX(0.4);
+  transition: transform 0.35s ease;
 }
-.unlock-btn.primary {
-  background: rgba(255, 190, 92, 0.92);
-  color: #3A1E0E;
-  border: none;
-  font-weight: 600;
+.gate-primary:hover {
+  color: #ffe7bf;
 }
-.unlock-btn.primary:hover {
-  background: rgba(255, 190, 92, 1);
+.gate-primary:hover::after {
+  transform: scaleX(1);
 }
-.unlock-hint {
-  color: #B3927A;
+.gate-back {
+  border: 0;
+  background: none;
+  padding: 2px;
+  cursor: pointer;
+  font-family: var(--font-title);
   font-size: 12px;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  color: rgba(201, 168, 119, 0.62);
+  transition: color 0.3s;
+}
+.gate-back:hover {
+  color: #d8b789;
+}
+.gate-note {
+  font-size: 12px;
+  line-height: 1.8;
+  color: rgba(179, 146, 122, 0.78);
+  margin: 4px 0 0;
+  text-align: center;
 }
 
 @media (max-width: 720px) {

@@ -88,13 +88,17 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { isComplete } from '../utils/progress'
 import kongmingImg from '../assets/kongming.webp'
+
+const route = useRoute()
 
 // 结局门禁：线索没有集齐时，灯不亮，也进不去后面两页
 const unlocked = ref(isComplete())
 // 0 = 一盏灯；1 = 第一页；2 = 第二页
-const screen = ref(0)
+// 带着 ?p=1 进来（从集齐线索的提示页直接进入）就跳过封面这一屏
+const screen = ref(unlocked.value && route.query.p === '1' ? 1 : 0)
 
 // —— 背景光点：伪随机分布，跟前情提要同一套算法 ——
 function bokehStyle(n) {
@@ -392,6 +396,17 @@ function restart() {
   color: #b0906b;
   margin: 0;
   text-indent: 0.42em;
+}
+/* 灯亮之后的一句说明，替掉原来那张全屏解锁卡片 */
+.lamp-hint {
+  font-family: var(--font-title);
+  font-size: 13px;
+  line-height: 1.9;
+  letter-spacing: 0.14em;
+  text-indent: 0.14em;
+  color: #b39a76;
+  margin: 0;
+  text-align: center;
 }
 
 /* 无框的字：没有箭头、没有底和边，只有一条随 hover 变宽的细线 */
