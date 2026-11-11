@@ -4,7 +4,7 @@
 
 - **在线体验**：https://maren-722.github.io/nanqiao-night-market/
 - **作品类型**：叙事解谜 / 前端单页应用（无后端、无数据库、无登录服务）
-- **运行环境**：现代 Chromium 内核浏览器（Chrome / Edge）；界面自适应 360–1920px
+- **运行环境**：Chrome 129 及以上（Chromium 内核，Edge 同样可用）；代码不使用 Chrome 129 之后新增的 CSS/JS 特性，界面自适应 360–1920px
 
 ## 一、组内成员与分工
 
