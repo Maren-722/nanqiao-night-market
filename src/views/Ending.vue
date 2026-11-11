@@ -1,110 +1,133 @@
 <template>
   <div class="ending-page">
-    <transition name="turn" mode="out-in">
-      <!-- 第一屏：一盏灯 -->
-      <section v-if="screen === 0" key="lamp" class="lamp-stage">
-        <div class="halo" :class="{ dim: !unlocked }"></div>
-        <div class="cord" :class="{ dim: !unlocked }"></div>
+    <!-- ===== 夜色动态背景（与前情提要同一套） ===== -->
+    <div class="scene" aria-hidden="true">
+      <div class="sky"></div>
+      <span v-for="n in 12" :key="'s' + n" class="star" :style="starStyle(n)"></span>
+      <span v-for="n in 22" :key="'b' + n" class="bokeh" :class="'bokeh-' + (n % 4)" :style="bokehStyle(n)"></span>
+      <span v-for="n in 5" :key="'lb' + n" class="bokeh-lg" :style="bigBokehStyle(n)"></span>
+      <span v-for="n in 5" :key="'f' + n" class="leaf-fall" :style="leafStyle(n)"><i class="leaf" :class="'leaf-' + (n % 4)"></i></span>
+      <div class="mist mist-1"></div>
+      <div class="mist mist-2"></div>
+      <div class="horizon"></div>
+      <div class="ground-glow"></div>
+      <div class="vignette"></div>
+    </div>
 
-        <svg class="lantern" :class="{ dim: !unlocked }" viewBox="0 0 160 240" aria-hidden="true">
-          <defs>
-            <radialGradient id="lampBody" cx="46%" cy="40%" r="72%">
-              <stop offset="0%" stop-color="#ff9a63" />
-              <stop offset="52%" stop-color="#dd5230" />
-              <stop offset="100%" stop-color="#96261a" />
-            </radialGradient>
-            <linearGradient id="lampGold" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#f3d6a0" />
-              <stop offset="100%" stop-color="#b5874b" />
-            </linearGradient>
-          </defs>
+    <!-- 撕边滤镜：只作用于纸张层，不影响文字 -->
+    <svg class="filters" aria-hidden="true" focusable="false">
+      <filter id="tornPaper" x="-12%" y="-12%" width="124%" height="124%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.015 0.034" numOctaves="3" seed="9" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="13" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
 
-          <rect x="64" y="24" width="32" height="12" rx="4" fill="url(#lampGold)" />
-          <rect x="74" y="34" width="12" height="16" fill="#a97c45" />
-          <ellipse cx="80" cy="112" rx="52" ry="62" fill="url(#lampBody)" />
-          <path d="M80 50 C 46 74 46 150 80 174" fill="none" stroke="#7f2015" stroke-opacity=".42" stroke-width="2" />
-          <path d="M80 50 C 114 74 114 150 80 174" fill="none" stroke="#7f2015" stroke-opacity=".42" stroke-width="2" />
-          <path d="M80 50 C 62 78 62 146 80 174" fill="none" stroke="#7f2015" stroke-opacity=".26" stroke-width="1.6" />
-          <path d="M80 50 C 98 78 98 146 80 174" fill="none" stroke="#7f2015" stroke-opacity=".26" stroke-width="1.6" />
-          <ellipse cx="60" cy="92" rx="13" ry="24" fill="#ffe0b8" opacity=".26" />
-          <rect x="64" y="170" width="32" height="12" rx="4" fill="url(#lampGold)" />
-          <line x1="80" y1="182" x2="80" y2="198" stroke="#b5874b" stroke-width="2" />
-          <path d="M70 198 L90 198 L84 224 L76 224 Z" fill="#c9482f" />
-        </svg>
+    <div class="stage">
+      <transition name="turn" mode="out-in">
+        <!-- 第一屏：一盏灯 -->
+        <section v-if="screen === 0" key="lamp" class="lamp-stage">
+          <div class="lantern-wrap" :class="{ dim: !unlocked }">
+            <div class="lamp-glow"></div>
+            <img class="lantern-bloom" :src="kongmingImg" alt="" aria-hidden="true" />
+            <img class="lantern-img" :src="kongmingImg" alt="" />
+            <div class="lamp-haze"></div>
+          </div>
 
-        <div class="lamp-caption">
-          <p v-if="unlocked" class="lamp-state on">灯亮了</p>
-          <p v-else class="lamp-state">灯还没亮</p>
+          <div class="lamp-caption">
+            <p v-if="!unlocked" class="lamp-state">灯还没亮</p>
 
-          <button v-if="unlocked" class="plain-link" @click="screen = 1">进去看看</button>
-          <button v-else class="plain-link" @click="$router.push('/home')">回到夜市</button>
-        </div>
-      </section>
+            <button v-if="unlocked" class="lamp-link" @click="screen = 1">通往结局</button>
+            <button v-else class="lamp-link" @click="$router.push('/home')">回到夜市</button>
+          </div>
+        </section>
 
-      <!-- 第二屏：线索串起来了 -->
-      <article v-else-if="screen === 1" key="p1" class="paper">
-        <p class="lead">所有线索，终于串联起来了。</p>
+        <!-- 第二屏：线索串起来了 -->
+        <section v-else-if="screen === 1" key="p1" class="story">
+          <div class="sheet">
+            <div class="sheet-bg"></div>
+            <div class="sheet-body">
+              <p class="lead">所有线索，终于串联起来了。</p>
 
-        <p class="body-text">
-          二十年前，陈伯的儿子在城南走失。二十年后，儿子循着身世回到临岗，来到了南桥夜市。那根系着“念”字的红绳，让陈伯认出了他。
-        </p>
-        <p class="body-text">
-          可陈伯始终没有相认。因为他已经身患绝症，不愿让儿子刚刚找到父亲，就要面对再次失去他的痛苦。
-        </p>
-        <p class="body-text">
-          10月26日，陈伯分完了最后一锅粥，擦净灶台，留下钥匙和纸条，悄悄离开了夜市。他坐上地铁3号线，从南桥站往城南方向坐了五站，回到了那间二十年未曾搬离的老屋——梧桐苑。
-        </p>
-        <p class="body-text">
-          你终于知道陈伯去了哪里，也明白了他为什么离开。
-        </p>
-        <p class="body-text turn">只是，还有一些事情没有答案。</p>
+              <p class="body-text">二十年前，陈伯的儿子在城南走失。二十年后，儿子循着身世回到临岗，来到了南桥夜市。那根系着“念”字的红绳，让陈伯认出了他。</p>
+              <p class="body-text">可陈伯始终没有相认。因为他已经身患绝症，不愿让儿子刚刚找到父亲，就要面对再次失去他的痛苦。</p>
+              <p class="body-text">10月26日，陈伯分完了最后一锅粥，擦净灶台，留下钥匙和纸条，悄悄离开了夜市。他坐上地铁3号线，从南桥站往城南方向坐了五站，回到了那间二十年未曾搬离的老屋——梧桐苑。</p>
+              <p class="body-text">你终于知道陈伯去了哪里，也明白了他为什么离开。</p>
+              <p class="body-text turn">只是，还有一些事情没有答案。</p>
 
-        <div class="nav">
-          <button class="plain-link small" @click="screen = 2">继续</button>
-        </div>
-      </article>
+              <div class="next">
+                <button class="ink-link" @click="screen = 2">下一页</button>
+              </div>
+            </div>
+          </div>
+        </section>
 
-      <!-- 第三屏：故事未完 -->
-      <article v-else key="p2" class="paper">
-        <p class="body-text">
-          那个寻找父亲的年轻人，是否有机会知道真相？那些和陈伯相处了五年的街坊，是否还能再见他一面？
-        </p>
+        <!-- 第三屏：故事未完 -->
+        <section v-else key="p2" class="story">
+          <div class="sheet">
+            <div class="sheet-bg"></div>
+            <div class="sheet-body">
+              <p class="body-text">那个寻找父亲的年轻人，是否有机会知道真相？那些和陈伯相处了五年的街坊，是否还能再见他一面？</p>
+              <p class="body-text">或许，儿子会找到那间老屋，听父亲讲讲这些年的等待；或许，夜市的街坊们会带着熟悉的吃食，去看看许久未见的老朋友。</p>
+              <p class="body-text">也或许，这些迟来的牵挂，最终没能赶上一次相见。</p>
+              <p class="body-text">从最初搜索临岗的美食，到顺着一条条线索认识陈伯和南桥夜市的街坊，你没想到，一碗糖粥藕背后，藏着一个父亲二十年的等待，也藏着一群街坊数年的情谊。</p>
+              <p class="body-text">如今，你不只是好奇陈伯的去向，也希望那些彼此惦念的人，终有一天还能再见。</p>
 
-        <div class="maybe">
-          <p class="body-text soft">
-            或许，儿子会找到那间老屋，听父亲讲讲这些年的等待；或许，夜市的街坊们会带着熟悉的吃食，去看看许久未见的老朋友。
-          </p>
-          <p class="body-text soft">
-            也或许，这些迟来的牵挂，最终没能赶上一次相见。
-          </p>
-        </div>
+              <p class="brand">南桥夜市 · 故事未完</p>
+            </div>
+          </div>
 
-        <p class="body-text">
-          从最初搜索临岗的美食，到顺着一条条线索认识陈伯和南桥夜市的街坊，你没想到，一碗糖粥藕背后，藏着一个父亲二十年的等待，也藏着一群街坊数年的情谊。
-        </p>
-        <p class="body-text">
-          如今，你不只是好奇陈伯的去向，也希望那些彼此惦念的人，终有一天还能再见。
-        </p>
-
-        <p class="brand">南桥夜市 · 故事未完</p>
-
-        <div class="nav">
-          <button class="plain-link small" @click="$router.push('/home')">回夜市看看</button>
-          <button class="plain-link tiny" @click="restart">重新开始</button>
-        </div>
-      </article>
-    </transition>
+          <div class="exit">
+            <button class="out-link" @click="$router.push('/home')">回夜市看看</button>
+            <button class="out-link faint" @click="restart">重新开始</button>
+          </div>
+        </section>
+      </transition>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { isComplete } from '../utils/progress'
+import kongmingImg from '../assets/kongming.webp'
 
-// 结局门禁：线索没有集齐时，灯不亮，也进不去后面的两页
+// 结局门禁：线索没有集齐时，灯不亮，也进不去后面两页
 const unlocked = ref(isComplete())
 // 0 = 一盏灯；1 = 第一页；2 = 第二页
 const screen = ref(0)
+
+// —— 背景光点：伪随机分布，跟前情提要同一套算法 ——
+function bokehStyle(n) {
+  const left = (n * 41 + 7) % 96
+  const size = 3 + ((n * 13) % 18)
+  const dur = 14 + ((n * 7) % 15)
+  const delay = -((n * 17) % 26)
+  return { left: left + '%', width: size + 'px', height: size + 'px', animationDuration: dur + 's', animationDelay: delay + 's' }
+}
+function bigBokehStyle(n) {
+  const left = 8 + n * 16 + ((n * 29) % 9)
+  const size = 46 + ((n * 37) % 60)
+  const dur = 30 + ((n * 11) % 22)
+  const delay = -((n * 23) % 30)
+  const top = 18 + ((n * 43) % 55)
+  return { left: left + '%', top: top + '%', width: size + 'px', height: size + 'px', animationDuration: dur + 's', animationDelay: delay + 's' }
+}
+function starStyle(n) {
+  const left = (n * 67 + 5) % 97
+  const top = (n * 29 + 4) % 38
+  const size = 1.5 + ((n * 7) % 3) * 0.5
+  const dur = 2.6 + ((n * 11) % 26) / 10
+  const delay = -((n * 13) % 40) / 10
+  return { left: left + '%', top: top + '%', width: size + 'px', height: size + 'px', animationDuration: dur + 's', animationDelay: delay + 's' }
+}
+function leafStyle(n) {
+  const left = (n * 53 + 11) % 94
+  const size = 10 + ((n * 17) % 9)
+  const dur = 12 + ((n * 13) % 10)
+  const delay = -((n * 19) % 22)
+  const sway = 2.2 + (n % 5) * 0.55
+  return { left: left + '%', width: size + 'px', height: size + 'px', animationDuration: dur + 's', animationDelay: delay + 's', '--sway': sway + 's' }
+}
 
 function restart() {
   localStorage.removeItem('nq_progress')
@@ -122,18 +145,157 @@ function restart() {
 
 <style scoped>
 .ending-page {
+  position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px 20px 52px;
-  background:
-    radial-gradient(620px 380px at 50% 8%, rgba(255, 186, 106, 0.18), transparent 72%),
-    radial-gradient(900px 500px at 50% 110%, rgba(120, 52, 24, 0.34), transparent 70%),
-    linear-gradient(168deg, #3d1f13 0%, #2a150d 46%, #1c0f09 100%);
+  background: #20100a;
+  overflow: hidden;
+}
+.filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
 }
 
-/* ---------- 第一屏：灯 ---------- */
+/* ---------- 夜色动态背景 ---------- */
+.scene {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(760px 420px at 74% 12%, rgba(255, 166, 86, 0.1), transparent 70%),
+    radial-gradient(680px 440px at 14% 86%, rgba(220, 112, 54, 0.07), transparent 72%),
+    linear-gradient(176deg, #22100a 0%, #351a0f 40%, #27140c 72%, #170b06 100%);
+  transform-origin: 50% 55%;
+  animation: endSkyDrift 44s ease-in-out infinite alternate;
+}
+@keyframes endSkyDrift {
+  from { transform: scale(1); }
+  to { transform: scale(1.045); }
+}
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffe9c4;
+  animation: endTwinkle ease-in-out infinite;
+}
+@keyframes endTwinkle {
+  0%, 100% { opacity: 0.14; }
+  50% { opacity: 0.85; }
+}
+.bokeh {
+  position: absolute;
+  bottom: -4%;
+  border-radius: 50%;
+  animation: endBokehRise linear infinite;
+  filter: blur(1px);
+}
+.bokeh-0 { background: radial-gradient(circle, rgba(255, 196, 110, 0.92), rgba(255, 196, 110, 0) 70%); }
+.bokeh-1 { background: radial-gradient(circle, rgba(255, 140, 90, 0.88), rgba(255, 140, 90, 0) 70%); }
+.bokeh-2 { background: radial-gradient(circle, rgba(255, 224, 160, 0.92), rgba(255, 224, 160, 0) 70%); }
+.bokeh-3 { background: radial-gradient(circle, rgba(255, 120, 70, 0.75), rgba(255, 120, 70, 0) 70%); }
+@keyframes endBokehRise {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: 0.9; }
+  80% { opacity: 0.58; }
+  100% { transform: translateY(-92vh) translateX(24px); opacity: 0; }
+}
+.bokeh-lg {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 168, 92, 0.17), rgba(255, 168, 92, 0) 70%);
+  filter: blur(9px);
+  animation: endBokehDrift ease-in-out infinite alternate;
+}
+@keyframes endBokehDrift {
+  from { transform: translateX(-26px); opacity: 0.55; }
+  to { transform: translateX(30px); opacity: 1; }
+}
+.leaf-fall {
+  position: absolute;
+  top: -8%;
+  animation: endLeafFall linear infinite;
+}
+@keyframes endLeafFall {
+  0% { transform: translateY(0); opacity: 0; }
+  6% { opacity: 0.62; }
+  88% { opacity: 0.5; }
+  100% { transform: translateY(114vh); opacity: 0; }
+}
+.leaf {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0 65% 65% 65%;
+  animation: endLeafSway var(--sway) ease-in-out infinite alternate;
+}
+@keyframes endLeafSway {
+  from { transform: translateX(-16px) rotate(-32deg); }
+  to { transform: translateX(16px) rotate(42deg); }
+}
+.leaf-0 { background: linear-gradient(135deg, #e0a458, #b4762e); }
+.leaf-1 { background: linear-gradient(135deg, #d98a2b, #a34722); }
+.leaf-2 { background: linear-gradient(135deg, #c96a2e, #8e3320); }
+.leaf-3 { background: linear-gradient(135deg, #c9a05a, #96622a); }
+.mist {
+  position: absolute;
+  width: 150%;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255, 190, 130, 0.05), transparent 65%);
+  filter: blur(28px);
+}
+.mist-1 { left: -30%; bottom: 12%; animation: endMistDrift 46s ease-in-out infinite alternate; }
+.mist-2 { left: -10%; bottom: 28%; height: 200px; animation: endMistDrift 62s ease-in-out infinite alternate-reverse; }
+@keyframes endMistDrift {
+  from { transform: translateX(-6%); }
+  to { transform: translateX(9%); }
+}
+.horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 230px;
+  background: linear-gradient(to top, rgba(255, 150, 70, 0.08), transparent);
+}
+.ground-glow {
+  position: absolute;
+  left: 50%;
+  bottom: -160px;
+  width: 1000px;
+  height: 360px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(255, 176, 96, 0.12), transparent 68%);
+  filter: blur(8px);
+}
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(125% 100% at 50% 42%, transparent 46%, rgba(12, 5, 2, 0.66) 100%);
+}
+
+/* ---------- 内容层 ---------- */
+.stage {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- 第一屏：一盏灯 ---------- */
 .lamp-stage {
   display: flex;
   flex-direction: column;
@@ -143,67 +305,85 @@ function restart() {
   max-width: 640px;
   position: relative;
 }
-
-/* 吊绳：让灯像真挂在夜色里 */
-.cord {
-  width: 1px;
-  height: 74px;
-  margin-bottom: -14px;
-  background: linear-gradient(180deg, rgba(255, 214, 168, 0) 0%, rgba(255, 214, 168, 0.34) 62%, rgba(255, 214, 168, 0.5) 100%);
+.lantern-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
 }
-.cord.dim {
-  background: linear-gradient(180deg, rgba(190, 168, 140, 0) 0%, rgba(190, 168, 140, 0.2) 100%);
-}
-
-.halo {
+.lamp-glow {
   position: absolute;
-  top: 40px;
-  width: 540px;
-  height: 540px;
+  top: 22%;
+  width: 620px;
+  height: 620px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(255, 176, 84, 0.32) 0%,
-    rgba(255, 150, 60, 0.15) 38%,
-    rgba(255, 150, 60, 0) 70%
+    rgba(255, 178, 96, 0.17) 0%,
+    rgba(255, 150, 66, 0.075) 46%,
+    rgba(255, 150, 66, 0) 76%
   );
-  filter: blur(8px);
-  animation: breathe 5.6s ease-in-out infinite;
+  filter: blur(34px);
+  animation: endLampBreathe 6.4s ease-in-out infinite;
   pointer-events: none;
 }
-.halo.dim {
-  animation: none;
-  opacity: 0.28;
-  background: radial-gradient(circle, rgba(160, 130, 96, 0.22) 0%, rgba(160, 130, 96, 0) 68%);
-}
-@keyframes breathe {
-  0%, 100% { opacity: 0.78; transform: scale(1); }
+@keyframes endLampBreathe {
+  0%, 100% { opacity: 0.72; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.06); }
 }
-
-.lantern {
-  width: 252px;
+/* 孔明灯自身的柔光：同一张图放大模糊，叠在本体后面 */
+.lantern-bloom {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 300px;
   height: auto;
+  transform: translateX(-50%) scale(1.07);
+  filter: blur(26px) saturate(1.15) brightness(1.05);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.lantern-img {
   position: relative;
-  animation: swing 6.4s ease-in-out infinite;
-  filter: drop-shadow(0 0 34px rgba(255, 148, 66, 0.5)) drop-shadow(0 18px 26px rgba(0, 0, 0, 0.5));
+  width: 300px;
+  height: auto;
+  animation: endFloat 9s ease-in-out infinite;
+  filter: brightness(0.94) saturate(1.04) drop-shadow(0 26px 44px rgba(0, 0, 0, 0.4));
 }
-.lantern.dim {
+@keyframes endFloat {
+  0%, 100% { transform: translateY(0) rotate(-0.4deg); }
+  50% { transform: translateY(-13px) rotate(0.4deg); }
+}
+/* 灯前的一层薄雾，让光散开 */
+.lamp-haze {
+  position: absolute;
+  inset: -22% -16%;
+  background: radial-gradient(closest-side, rgba(255, 190, 124, 0.07), rgba(255, 166, 92, 0.035) 55%, transparent 82%);
+  filter: blur(28px);
+  pointer-events: none;
+}
+.lantern-wrap.dim {
+  filter: grayscale(0.9) brightness(0.46);
+  opacity: 0.7;
+}
+.lantern-wrap.dim .lamp-glow,
+.lantern-wrap.dim .lamp-haze {
+  opacity: 0.14;
   animation: none;
-  filter: grayscale(0.72) brightness(0.66) drop-shadow(0 16px 22px rgba(0, 0, 0, 0.5));
 }
-@keyframes swing {
-  0%, 100% { transform: translateY(0) rotate(-1.4deg); }
-  50% { transform: translateY(-6px) rotate(1.4deg); }
+.lantern-wrap.dim .lantern-bloom {
+  opacity: 0.12;
+}
+.lantern-wrap.dim .lantern-img {
+  animation: none;
 }
 
 .lamp-caption {
   position: relative;
-  margin-top: 28px;
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
 }
 .lamp-state {
   font-family: var(--font-title);
@@ -213,78 +393,66 @@ function restart() {
   margin: 0;
   text-indent: 0.42em;
 }
-.lamp-state.on {
-  color: #f6d9a8;
-  text-shadow: 0 0 18px rgba(255, 180, 96, 0.45);
-}
 
-/* 无框的字：唯一的交互入口，没有箭头、没有底和边 */
-.plain-link {
+/* 无框的字：没有箭头、没有底和边，只有一条随 hover 变宽的细线 */
+.lamp-link {
   border: 0;
   background: none;
   padding: 6px 2px 2px;
   cursor: pointer;
   font-family: var(--font-title);
-  font-size: 18px;
-  letter-spacing: 0.28em;
-  text-indent: 0.28em;
+  font-size: 19px;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
   color: #eed3a6;
-  transition: color 0.3s, text-shadow 0.3s;
+  transition: color 0.3s;
 }
-.plain-link::after {
+.lamp-link::after {
   content: '';
   display: block;
   height: 1px;
-  margin-top: 6px;
-  background: linear-gradient(90deg, transparent, rgba(232, 199, 154, 0.55), transparent);
-  transform: scaleX(0.35);
+  margin-top: 7px;
+  background: linear-gradient(90deg, transparent, rgba(238, 211, 166, 0.55), transparent);
+  transform: scaleX(0.4);
   transition: transform 0.35s ease;
 }
-.plain-link:hover {
-  color: #ffe6bd;
-  text-shadow: 0 0 18px rgba(255, 190, 110, 0.5);
+.lamp-link:hover {
+  color: #ffe7bf;
 }
-.plain-link:hover::after {
+.lamp-link:hover::after {
   transform: scaleX(1);
 }
-.plain-link.small {
-  font-size: 14px;
-  letter-spacing: 5px;
-  text-indent: 5px;
-  color: #8a6242;
-}
-.plain-link.small::after {
-  background: linear-gradient(90deg, transparent, rgba(160, 124, 84, 0.6), transparent);
-  transform: scaleX(0.5);
-}
-.plain-link.small:hover {
-  color: #6f4c30;
-}
-.plain-link.tiny {
-  font-size: 12px;
-  letter-spacing: 3px;
-  text-indent: 3px;
-  color: #7d6249;
-}
-.plain-link.tiny::after {
-  display: none;
-}
-.plain-link.tiny:hover {
-  color: #a38a6b;
-}
 
-/* ---------- 第二、三屏：纸面 ---------- */
-.paper {
+/* ---------- 第二、三屏：牛皮纸 ---------- */
+.story {
+  width: 100%;
+  max-width: 628px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sheet {
   position: relative;
   width: 100%;
-  max-width: 620px;
-  padding: 52px clamp(24px, 5.5vw, 58px) 38px;
-  background: #fffaf1;
-  background-image: radial-gradient(ellipse at 24% 2%, #e8cf9f1f, transparent 58%),
-    radial-gradient(ellipse at 88% 100%, #d9bd8a14, transparent 60%);
-  border: 1px solid #d9c6a6;
-  border-radius: 2px;
-  box-shadow: 0 50px 100px -52px rgba(8, 3, 1, 0.95), 0 0 0 6px rgba(255, 248, 232, 0.04);
+}
+
+/* 纸张层：牛皮纸纹理 + 撕裂边（滤镜只作用在这里，文字不受影响） */
+.sheet-bg {
+  position: absolute;
+  inset: -16px;
+  background-color: #d7b98b;
+  background-image:
+    radial-gradient(120% 80% at 50% 0%, rgba(255, 242, 214, 0.22), transparent 56%),
+    radial-gradient(110% 90% at 50% 104%, rgba(104, 66, 30, 0.26), transparent 62%),
+    url('../assets/kraft.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: url(#tornPaper) drop-shadow(0 30px 48px rgba(10, 4, 1, 0.58));
+}
+
+.sheet-body {
+  position: relative;
+  padding: 38px clamp(24px, 5.5vw, 52px) 18px;
 }
 
 .lead {
@@ -292,40 +460,23 @@ function restart() {
   font-size: 22px;
   line-height: 1.85;
   letter-spacing: 2px;
-  color: #3a2a1e;
-  margin: 0 0 34px;
-  padding-bottom: 22px;
-  border-bottom: 1px solid #e2d2b6;
+  color: #2d1e13;
+  margin: 0 0 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(72, 46, 24, 0.26);
 }
 
 .body-text {
   font-family: var(--font-title);
   font-size: 16px;
-  line-height: 2.05;
+  line-height: 1.96;
   letter-spacing: 0.6px;
-  color: #3c2b20;
-  margin: 0 0 19px;
+  color: #33241a;
+  margin: 0 0 16px;
   text-align: justify;
 }
-
 .turn {
-  color: #8a5c34;
-  letter-spacing: 1.4px;
-}
-
-/* 三种“或许”：整块略微内缩、字色浅一点，像旁白 */
-.maybe {
-  margin: 4px 0 26px;
-  padding-left: 18px;
-  border-left: 1px solid #dcc7a4;
-}
-.maybe .body-text {
-  margin-bottom: 14px;
-}
-.soft {
-  color: #6f5a45;
-  font-size: 15px;
-  line-height: 2.05;
+  color: #6a4526;
 }
 
 .brand {
@@ -333,35 +484,107 @@ function restart() {
   font-size: 12px;
   letter-spacing: 0.3em;
   text-indent: 0.3em;
-  color: #9a7f5c;
+  color: #6d5233;
   text-align: center;
-  margin: 34px 0 0;
+  margin: 14px 0 0;
 }
 .brand::before,
 .brand::after {
   content: '';
   display: block;
-  width: 76px;
+  width: 72px;
   height: 1px;
   margin: 0 auto;
-  background: linear-gradient(90deg, transparent, #d2bb95, transparent);
+  background: linear-gradient(90deg, transparent, rgba(109, 82, 51, 0.55), transparent);
 }
 .brand::before {
-  margin-bottom: 16px;
+  margin-bottom: 15px;
 }
 .brand::after {
-  margin-top: 16px;
+  margin-top: 15px;
 }
 
-.nav {
+/* 纸上的翻页字 */
+.next {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+.ink-link {
+  border: 0;
+  background: none;
+  padding: 4px 2px 2px;
+  cursor: pointer;
+  font-family: var(--font-title);
+  font-size: 14px;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  color: #7a5330;
+  transition: color 0.3s;
+}
+.ink-link::after {
+  content: '';
+  display: block;
+  height: 1px;
+  margin-top: 6px;
+  background: linear-gradient(90deg, transparent, rgba(122, 83, 48, 0.55), transparent);
+  transform: scaleX(0.45);
+  transition: transform 0.35s ease;
+}
+.ink-link:hover {
+  color: #4d3117;
+}
+.ink-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* 纸外的两个出口：落在夜色上，和纸分开 */
+.exit {
   display: flex;
   align-items: baseline;
-  justify-content: center;
-  gap: 26px;
-  margin-top: 26px;
+  gap: 30px;
+  margin-top: 54px;
+}
+.out-link {
+  border: 0;
+  background: none;
+  padding: 4px 2px;
+  cursor: pointer;
+  font-family: var(--font-title);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  color: #c9a877;
+  transition: color 0.3s;
+}
+.out-link::after {
+  content: '';
+  display: block;
+  height: 1px;
+  margin-top: 6px;
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 119, 0.5), transparent);
+  transform: scaleX(0.4);
+  transition: transform 0.35s ease;
+}
+.out-link:hover {
+  color: #ffe0ae;
+}
+.out-link:hover::after {
+  transform: scaleX(1);
+}
+.out-link.faint {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: #836c52;
+}
+.out-link.faint::after {
+  display: none;
+}
+.out-link.faint:hover {
+  color: #b79a73;
 }
 
-/* 翻页动画：像把纸轻轻掀起 */
+/* 翻页动画 */
 .turn-enter-active,
 .turn-leave-active {
   transition: opacity 0.42s ease, transform 0.42s ease;
@@ -377,22 +600,24 @@ function restart() {
 
 @media (max-width: 720px) {
   .ending-page {
-    padding: 34px 14px 44px;
+    padding: 28px 14px 44px;
     align-items: flex-start;
   }
-  .cord {
-    height: 52px;
+  .lantern-img {
+    width: 248px;
   }
-  .lantern {
-    width: 196px;
+  .lantern-bloom {
+    width: 248px;
   }
-  .halo {
-    top: 24px;
+  .lamp-glow {
     width: 400px;
     height: 400px;
   }
-  .paper {
-    padding: 36px 20px 28px;
+  .sheet-bg {
+    inset: -12px;
+  }
+  .sheet-body {
+    padding: 34px 19px 26px;
   }
   .lead {
     font-size: 19px;
@@ -407,9 +632,12 @@ function restart() {
   .brand {
     margin-top: 28px;
   }
-  .nav {
-    gap: 18px;
-    margin-top: 22px;
+  .next {
+    margin-top: 24px;
+  }
+  .exit {
+    gap: 24px;
+    margin-top: 28px;
   }
 }
 </style>

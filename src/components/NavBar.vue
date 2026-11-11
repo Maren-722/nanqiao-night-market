@@ -25,13 +25,13 @@
         class="nav-lamp"
         :class="{ lit: progressComplete }"
         @click="goEnding"
-      >🏮</span>
+      ><img class="nav-lamp-img" :src="kongmingImg" alt="" /></span>
     </div>
 
     <!-- 集齐线索：全屏解锁提示（只弹一次） -->
     <div v-if="showUnlock" class="unlock-mask">
       <div class="unlock-card">
-        <span class="unlock-lamp">🏮</span>
+        <img class="unlock-lamp" :src="kongmingImg" alt="" />
         <p class="unlock-text">夜色里，所有的线索都被你串了起来。</p>
         <p class="unlock-text strong">这盏灯，为你亮了。</p>
         <div class="unlock-actions">
@@ -76,6 +76,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { matchLogin } from '../utils/auth'
 import { isComplete } from '../utils/progress'
+import kongmingImg from '../assets/kongming-nav.webp'
 
 const route = useRoute()
 const router = useRouter()
@@ -364,22 +365,28 @@ function doSwitch() {
 
 /* 结局灯笼：一直是暗的，集齐后点亮 */
 .nav-lamp {
-  font-size: 20px;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
   user-select: none;
   line-height: 1;
-  filter: grayscale(1) brightness(0.7);
-  opacity: 0.4;
-  transition: filter 0.6s, opacity 0.6s, text-shadow 0.6s;
+  filter: grayscale(0.85) brightness(0.8);
+  opacity: 0.52;
+  transition: filter 0.6s, opacity 0.6s;
+}
+.nav-lamp-img {
+  display: block;
+  width: 23px;
+  height: auto;
 }
 .nav-lamp.lit {
   filter: none;
   opacity: 1;
-  animation: lampGlow 2.4s ease-in-out infinite;
+  animation: lampGlow 2.6s ease-in-out infinite;
 }
 @keyframes lampGlow {
-  0%, 100% { text-shadow: 0 0 4px rgba(255, 190, 92, 0.6); }
-  50% { text-shadow: 0 0 16px rgba(255, 190, 92, 1); }
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 190, 92, 0.5)); }
+  50% { filter: drop-shadow(0 0 13px rgba(255, 190, 92, 0.95)); }
 }
 
 /* 集齐线索的全屏解锁提示：一块被灯照亮的暖色屏 */
@@ -401,9 +408,10 @@ function doSwitch() {
 }
 .unlock-lamp {
   display: block;
-  font-size: 56px;
-  margin-bottom: 20px;
-  animation: lampGlow 2.4s ease-in-out infinite;
+  width: 104px;
+  height: auto;
+  margin: 0 auto 18px;
+  animation: lampGlow 2.6s ease-in-out infinite;
 }
 .unlock-text {
   color: #EBD9BE;
