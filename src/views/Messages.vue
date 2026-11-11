@@ -84,7 +84,7 @@ import Footer from '../components/Footer.vue'
 import messagesData from '../data/messages.json'
 import { markNode } from '../utils/progress'
 import { useCurrentUser } from '../utils/auth'
-import { gameDateTimeAfter } from '../utils/gameTime'
+import { gameDate } from '../utils/gameTime'
 
 const { currentUser, syncUser } = useCurrentUser()
 
@@ -184,15 +184,15 @@ function closeConv() {
   activeWith.value = ''
 }
 
-// 发消息：追加到本机记录并立即显示（游戏内日期固定为 10月30日，钟点用本机当前时间，
-// 且不会早于该会话已有的最后一条，避免白天打开游戏时时间倒挂）
+// 发消息：追加到本机记录并立即显示。
+// 私信界面只按天分段显示日期（不显示具体时刻），所以新消息只记日期「10月30日」，
+// 追加在会话末尾即为最新，无需再计算钟点。
 function sendMsg() {
   const text = draft.value.trim()
   if (!text || !activeConv.value || !currentUser.value) return
-  const last = activeMessages.value[activeMessages.value.length - 1]
   const msg = {
     from: currentUser.value.username,
-    time: gameDateTimeAfter(last?.time),
+    time: gameDate(),
     content: text
   }
   const all = readSent()
