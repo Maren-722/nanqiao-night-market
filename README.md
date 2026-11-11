@@ -22,6 +22,10 @@
 
 未使用任何 UI 组件库或预设样式框架，样式为项目自写，设计变量集中在 `src/styles/variables.css`。
 
+### 关于管理页面（提交说明）
+
+`/manager` 是游戏内的叙事页面（夜市管理处工作台），由前端组件与 JSON 数据驱动，**不是后端管理系统**：不涉及 CMS、后台框架、服务端接口或数据库。作品整体无后端，玩家状态全部存于浏览器 localStorage。
+
 ## 运行
 
 ```bash
@@ -29,6 +33,7 @@ npm install
 npm run dev        # 开发服务器，访问 http://localhost:5173/nanqiao-night-market/
 npm run build      # 打包至 dist/
 npm run test:ui    # 界面回归自检（需本机 Chrome，或设 CHROME_PATH）
+node tests/responsive-audit.cjs   # 自适应审计：10 个页面 × 9 档宽度
 ```
 
 项目设置了 base 路径，必须带 `/nanqiao-night-market/` 访问，根路径不可用。
@@ -41,6 +46,7 @@ npm run test:ui    # 界面回归自检（需本机 Chrome，或设 CHROME_PATH�
 ├── docs/                 # 剧情与设计文档
 ├── scripts/              # 本地预览服务
 ├── tests/ui-smoke.cjs    # 界面回归自检
+├── tests/responsive-audit.cjs  # 多页 × 多宽度的自适应审计
 ├── 启动预览.bat / 停止预览.bat
 └── src/
     ├── assets/           # 图片（含地铁线网图）
@@ -75,9 +81,12 @@ node -e "JSON.parse(require('fs').readFileSync('src/data/messages.json','utf8'))
 
 ## 界面规格
 
-- 目标分辨率：**1920 × 1080、1440 × 900、720 × 1280**（桌面、笔记本、手机竖屏）
-- 720px 以下切换为单列布局，导航折叠，短信页与手记页改为横向选择列表
-- 三档宽度均已实测，无横向溢出
+本作品采用**自适应（responsive）**界面规格，不锁定单一分辨率。
+
+- 覆盖宽度：**360 – 1920px 全区间**，窗口任意缩放均不出现横向滚动条
+- 主要断点：**720px**（切换单列布局、导航折叠，短信页与手记页改为横向选择列表）、**900px**（导览等版式的两列/一列切换）
+- 实测矩阵：**9 档宽度**（360 / 390 / 430 / 768 / 820 / 1024 / 1280 / 1440 / 1920）× **15 个页面组合**（游客态 10 页 + 登录态 5 页，含摊位详情、帖子详情、私信、手记、管理处页），横向溢出均为 0
+- 复测方式：`node tests/responsive-audit.cjs`（需站点在 5173 运行）
 
 ## 分支
 
