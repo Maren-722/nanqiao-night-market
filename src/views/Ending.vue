@@ -1,194 +1,109 @@
 <template>
   <div class="ending-page">
-    <!-- 未集齐：灯还没亮 -->
-    <div v-if="!unlocked" class="ending-card">
-      <span class="ending-lamp dim">🏮</span>
-      <p class="blocked-text">灯还没亮。</p>
-      <p class="blocked-sub">夜市的故事，还没到说再见的时候。</p>
-      <hr class="ending-divider">
-      <button class="ending-btn" @click="$router.push('/home')">回到夜市</button>
-    </div>
+    <transition name="turn" mode="out-in">
+      <!-- 第一屏：一盏灯 -->
+      <section v-if="screen === 0" key="lamp" class="lamp-stage">
+        <div class="halo" :class="{ dim: !unlocked }"></div>
 
-    <!-- 已集齐：分幕结局 -->
-    <div v-else class="ending-shell">
-      <div class="ending-card" :key="stage">
-        <p class="stage-tag">{{ stageLabel }}</p>
+        <svg class="lantern" :class="{ dim: !unlocked }" viewBox="0 0 160 240" aria-hidden="true">
+          <defs>
+            <radialGradient id="lampBody" cx="46%" cy="40%" r="72%">
+              <stop offset="0%" stop-color="#ff9a63" />
+              <stop offset="52%" stop-color="#dd5230" />
+              <stop offset="100%" stop-color="#96261a" />
+            </radialGradient>
+            <linearGradient id="lampGold" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f3d6a0" />
+              <stop offset="100%" stop-color="#b5874b" />
+            </linearGradient>
+          </defs>
 
-        <!-- 第一幕：桌上 -->
-        <template v-if="stage === 0">
-          <h1 class="ending-title">你把它们摊在桌上</h1>
-          <p class="ending-text">十月三十日，夜里十一点。</p>
-          <p class="ending-text">
-            你把这几天的东西一样一样摊开：一张排班表，三张帖子截图，六个账号，一条地铁线。
-          </p>
-          <p class="ending-text">
-            你在纸上写下几个词：陈伯。陈桂生。A1。糖粥藕。二十年。
-          </p>
-          <p class="ending-text">
-            写完你才发现，这不像一个人的档案，倒像一个人被留在这世上的全部痕迹。
-          </p>
-          <p class="ending-text">你其实已经知道答案了。只是还没敢承认。</p>
-          <div class="ending-actions">
-            <button class="ending-btn primary" @click="stage = 1">往下看</button>
-          </div>
-        </template>
+          <rect x="64" y="24" width="32" height="12" rx="4" fill="url(#lampGold)" />
+          <rect x="74" y="34" width="12" height="16" fill="#a97c45" />
+          <ellipse cx="80" cy="112" rx="52" ry="62" fill="url(#lampBody)" />
+          <path d="M80 50 C 46 74 46 150 80 174" fill="none" stroke="#7f2015" stroke-opacity=".42" stroke-width="2" />
+          <path d="M80 50 C 114 74 114 150 80 174" fill="none" stroke="#7f2015" stroke-opacity=".42" stroke-width="2" />
+          <path d="M80 50 C 62 78 62 146 80 174" fill="none" stroke="#7f2015" stroke-opacity=".26" stroke-width="1.6" />
+          <path d="M80 50 C 98 78 98 146 80 174" fill="none" stroke="#7f2015" stroke-opacity=".26" stroke-width="1.6" />
+          <ellipse cx="60" cy="92" rx="13" ry="24" fill="#ffe0b8" opacity=".26" />
+          <rect x="64" y="170" width="32" height="12" rx="4" fill="url(#lampGold)" />
+          <line x1="80" y1="182" x2="80" y2="198" stroke="#b5874b" stroke-width="2" />
+          <path d="M70 198 L90 198 L84 224 L76 224 Z" fill="#c9482f" />
+        </svg>
 
-        <!-- 第二幕：真相 -->
-        <template v-else-if="stage === 1">
-          <h1 class="ending-title">真相是三件事</h1>
+        <div class="lamp-caption">
+          <p v-if="unlocked" class="lamp-state on">灯亮了</p>
+          <p v-else class="lamp-state">灯还没亮</p>
 
-          <p class="ending-kicker">一 · 他有个儿子</p>
-          <p class="ending-text">
-            2006年8月16日，城南老街。四岁的陈念在人群里松开了父亲的手。那天他手腕上系着一根红绳，绳结里绣着一个「念」。
-          </p>
-          <p class="ending-text">
-            之后的二十年，陈桂生没搬过家，没换过号码，没离开过这条街。他怕儿子回来，找不到门。
-          </p>
-          <p class="ending-text">
-            今年十月，儿子回来了。他坐在离父亲三米远的地方，喝了一碗糖粥藕，说这个味道特别亲切。第二次来，他把袖子捋上去，露出手腕上那根红绳，问：认不认得这个字。
-            <br>父亲低头搅着粥，说：不认得。
-          </p>
+          <button v-if="unlocked" class="plain-link" @click="screen = 1">进去看看</button>
+          <button v-else class="plain-link" @click="$router.push('/home')">回到夜市</button>
+        </div>
+      </section>
 
-          <p class="ending-kicker">二 · 他病了</p>
-          <p class="ending-text">
-            十月五日体检，他住了一个星期的院。这件事他没告诉任何人，只在手记里写了一句：认了，让他守着我走吗？
-          </p>
-          <p class="ending-text">
-            他算得很清楚——认了，就是让孩子从相认那天起，开始守灵。
-          </p>
+      <!-- 第二屏：线索串起来了 -->
+      <article v-else-if="screen === 1" key="p1" class="paper">
+        <p class="lead">所有线索，终于串联起来了。</p>
 
-          <p class="ending-kicker">三 · 他回了家</p>
-          <p class="ending-text">
-            10月26日晚上，他把最后一锅粥分给街坊，把灶台擦干净，给王主任留了张纸条。
-          </p>
-          <p class="ending-text">
-            然后他坐上3号线，往城南，第五站，梧桐苑。那是他住了二十年、一直没搬过的老屋。
-          </p>
-          <p class="ending-text">
-            他没有走远。他只是回了家，等一件他不想让任何人看见的事。
-          </p>
-          <div class="ending-actions">
-            <button class="ending-btn primary" @click="stage = 2">往下看</button>
-          </div>
-        </template>
+        <p class="body-text">
+          二十年前，陈伯的儿子在城南走失。二十年后，儿子循着身世回到临岗，来到了南桥夜市。那根系着“念”字的红绳，让陈伯认出了他。
+        </p>
+        <p class="body-text">
+          可陈伯始终没有相认。因为他已经身患绝症，不愿让儿子刚刚找到父亲，就要面对再次失去他的痛苦。
+        </p>
+        <p class="body-text">
+          10月26日，陈伯分完了最后一锅粥，擦净灶台，留下钥匙和纸条，悄悄离开了夜市。他坐上地铁3号线，从南桥站往城南方向坐了五站，回到了那间二十年未曾搬离的老屋——梧桐苑。
+        </p>
+        <p class="body-text">
+          你终于知道陈伯去了哪里，也明白了他为什么离开。
+        </p>
+        <p class="body-text turn">只是，还有一些事情没有答案。</p>
 
-        <!-- 第三幕：你写的那条帖子 -->
-        <template v-else-if="stage === 2">
-          <h1 class="ending-title">凌晨一点，你写了一条帖子</h1>
-          <p class="ending-text">
-            你写A1，写那锅粥，写一根红绳，写一个在夜市站了二十年的父亲。
+        <div class="nav">
+          <button class="plain-link small" @click="screen = 2">继续</button>
+        </div>
+      </article>
+
+      <!-- 第三屏：故事未完 -->
+      <article v-else key="p2" class="paper">
+        <p class="body-text">
+          那个寻找父亲的年轻人，是否有机会知道真相？那些和陈伯相处了五年的街坊，是否还能再见他一面？
+        </p>
+
+        <div class="maybe">
+          <p class="body-text soft">
+            或许，儿子会找到那间老屋，听父亲讲讲这些年的等待；或许，夜市的街坊们会带着熟悉的吃食，去看看许久未见的老朋友。
           </p>
-          <p class="ending-text">你写：他没有失踪，他只是回家了。</p>
-          <div class="post-preview">
-            <p class="post-preview-title">陈伯没有失踪，他只是回家了</p>
-            <p class="post-preview-body">
-              前面那些都是真的。我一条一条核过。A1的灶台是他自己擦的，钥匙交给了王主任。他不是出事，他是自己走的。<br>
-              他儿子不知道。这条街上的人也都不知道。
-            </p>
-            <p class="post-preview-addr">
-              他住在城南梧桐苑，3号线南桥站往城南第五站，5号楼2单元101。
-            </p>
-          </div>
-          <p class="ending-text">
-            你盯着最后那一行看了很久。
+          <p class="body-text soft">
+            也或许，这些迟来的牵挂，最终没能赶上一次相见。
           </p>
-          <p class="ending-text">
-            发出去，明天就会有人站在他家门口；删掉，这条街会继续等一个不会回来的人。
-          </p>
-          <p class="ending-text strong">删，还是不删？</p>
-          <div class="ending-actions row">
-            <button class="ending-btn" @click="choose('delete')">删掉这一行，发出去</button>
-            <button class="ending-btn primary" @click="choose('keep')">留着，发出去</button>
-          </div>
-        </template>
+        </div>
 
-        <!-- 第四幕：尾声 -->
-        <template v-else>
-          <h1 class="ending-title">{{ choice === 'delete' ? '他们把位置留着' : '那盏灯，从南桥亮到城南' }}</h1>
+        <p class="body-text">
+          从最初搜索临岗的美食，到顺着一条条线索认识陈伯和南桥夜市的街坊，你没想到，一碗糖粥藕背后，藏着一个父亲二十年的等待，也藏着一群街坊数年的情谊。
+        </p>
+        <p class="body-text">
+          如今，你不只是好奇陈伯的去向，也希望那些彼此惦念的人，终有一天还能再见。
+        </p>
 
-          <template v-if="choice === 'delete'">
-            <p class="ending-text">你删掉了那一行。</p>
-            <p class="ending-text">
-              帖子发出去，论坛安静了一会儿。然后有人回：人没事就好。
-            </p>
-            <p class="ending-text">
-              第二天，A1摊前放了一碗糖粥藕。第三天又多了一碗。没有人组织，也没有人说破。
-            </p>
-            <p class="ending-text">
-              十一月一日，夜市五周年。A1的灯亮着——王主任把摊位留着，老张每天来擦一遍灶台，刘姐在灶上温着一锅粥。
-            </p>
-            <p class="ending-text">
-              他们不知道他在哪儿。但他们把他的位置留着。
-            </p>
-            <p class="ending-text">
-              有些人不告而别，是为了让别人好好过。<br>
-              而有些人守着一个空摊子，是为了让不告而别的人回来时，还有个地方站。
-            </p>
-            <p class="ending-text">
-              你关掉网页。窗外，南桥的灯一盏一盏亮起来。
-            </p>
-          </template>
+        <p class="brand">南桥夜市 · 故事未完</p>
 
-          <template v-else>
-            <p class="ending-text">你没有删。</p>
-            <p class="ending-text">
-              帖子在凌晨一点四十分发出去。第一个回复的人是「今天吃什么」，他只回了三个字：我明天去。
-            </p>
-            <p class="ending-text">
-              十一月一日，夜市五周年。
-            </p>
-            <p class="ending-text">
-              A1的灯亮了。灶前站着一个年轻人，手腕上系着一根褪色的红绳，正笨手笨脚地搅一锅粥。陈伯坐在旁边的小马扎上，裹着厚外套，看着他，没说话，一直在笑。
-            </p>
-            <p class="ending-text">
-              王主任在人群外面站了很久，最后转过身，抹了一把脸。
-            </p>
-            <p class="ending-text">
-              老张端来一碟卤蛋，放在灶台上：老陈，五周年，得有个样子。
-            </p>
-            <p class="ending-text">
-              刘姐把一碗绿豆汤放在陈伯手边：喝吧，今年的。
-            </p>
-            <p class="ending-text strong">
-              那盏灯，从南桥一直亮到城南。
-            </p>
-          </template>
-
-          <hr class="ending-divider">
-          <p class="ending-fin">— 完 —</p>
-          <div class="ending-actions">
-            <button class="ending-btn" @click="$router.push('/home')">再回夜市看看</button>
-            <button class="ending-btn ghost" @click="restart">重新开始</button>
-          </div>
-        </template>
-      </div>
-
-      <!-- 进度指示 -->
-      <div class="stage-dots">
-        <span v-for="n in 4" :key="n" class="dot" :class="{ on: stage >= n - 1 }"></span>
-      </div>
-    </div>
+        <div class="nav">
+          <button class="plain-link small" @click="$router.push('/home')">回夜市看看</button>
+          <button class="plain-link tiny" @click="restart">重新开始</button>
+        </div>
+      </article>
+    </transition>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { isComplete } from '../utils/progress'
 
-// 结局页守卫：线索没有集齐时，直接访问只会看到"灯还没亮"
+// 结局门禁：线索没有集齐时，灯不亮，也进不去后面的两页
 const unlocked = ref(isComplete())
-const stage = ref(0)
-const choice = ref('')
-
-const stageLabel = computed(() => {
-  if (stage.value === 3) return '尾声'
-  return ['一', '二', '三'][stage.value] || ''
-})
-
-function choose(v) {
-  choice.value = v
-  stage.value = 3
-}
+// 0 = 一盏灯；1 = 第一页；2 = 第二页
+const screen = ref(0)
 
 function restart() {
   localStorage.removeItem('nq_progress')
@@ -207,203 +122,270 @@ function restart() {
 <style scoped>
 .ending-page {
   min-height: 100vh;
-  position: relative;
-  background:
-    radial-gradient(720px 420px at 50% 0%, rgba(255, 190, 108, 0.22), transparent 70%),
-    linear-gradient(165deg, #4C2515 0%, #351A0D 100%);
-  color: #EFDDC2;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 44px 20px;
+  padding: 64px 20px 72px;
+  background:
+    radial-gradient(620px 380px at 50% 8%, rgba(255, 186, 106, 0.18), transparent 72%),
+    radial-gradient(900px 500px at 50% 110%, rgba(120, 52, 24, 0.34), transparent 70%),
+    linear-gradient(168deg, #3d1f13 0%, #2a150d 46%, #1c0f09 100%);
 }
-.ending-shell {
-  width: 100%;
-  max-width: 660px;
-}
-.ending-card {
-  background: var(--color-card);
-  border-radius: var(--radius-lg);
-  padding: 50px 44px 40px;
-  border: 1px solid #E3CDA6;
-  box-shadow: 0 40px 90px -46px rgba(20, 8, 2, 0.95);
-  color: var(--color-text);
-  animation: fadeUp 0.6s ease both;
-}
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.stage-tag {
-  font-size: 11px;
-  letter-spacing: 5px;
-  color: var(--color-accent);
-  margin-bottom: 18px;
-}
-.ending-title {
-  font-family: var(--font-title);
-  font-size: 27px;
-  letter-spacing: 1.5px;
-  color: var(--color-text);
-  margin-bottom: 22px;
-  line-height: 1.55;
-}
-.ending-kicker {
-  font-family: var(--font-title);
-  font-size: 16px;
-  letter-spacing: 2px;
-  color: var(--color-accent);
-  margin: 28px 0 10px;
-  padding-left: 10px;
-  border-left: 3px solid var(--amber);
-}
-.ending-text {
-  font-size: 15px;
-  line-height: 2.05;
-  color: #4A3322;
-  margin-bottom: 14px;
-}
-.ending-text.strong {
-  color: var(--color-primary);
-  font-weight: 600;
-}
-.ending-divider {
-  border: none;
-  border-top: 1px dashed var(--color-border-strong);
-  margin: 32px 0 20px;
-}
-.ending-fin {
-  text-align: center;
-  color: var(--color-text-muted);
-  letter-spacing: 8px;
-  font-family: var(--font-title);
-  margin-bottom: 24px;
-}
-.ending-actions {
+
+/* ---------- 第一屏：灯 ---------- */
+.lamp-stage {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 26px;
-}
-.ending-actions.row {
-  flex-direction: row;
-}
-.ending-actions.row .ending-btn {
-  flex: 1;
-}
-.ending-btn {
+  align-items: center;
+  gap: 6px;
   width: 100%;
-  padding: 13px;
-  background: transparent;
-  color: var(--color-accent);
-  border: 1px solid var(--color-accent);
-  border-radius: var(--radius);
-  font-size: 14px;
-  letter-spacing: 1.5px;
-  cursor: pointer;
-  font-family: var(--font-body);
-  transition: background 0.2s;
+  max-width: 640px;
+  position: relative;
 }
-.ending-btn:hover {
-  background: rgba(180, 71, 42, 0.09);
-}
-.ending-btn.primary {
-  background: var(--color-accent);
-  border-color: var(--color-accent-dark);
-  color: #FFF4E2;
-  font-weight: 600;
-}
-.ending-btn.primary:hover {
-  background: #C25232;
-}
-.ending-btn.ghost {
-  color: var(--color-text-muted);
-  border-color: var(--color-border-strong);
-}
-
-/* 帖子预览：抉择前的最后一眼 */
-.post-preview {
-  margin: 20px 0 24px;
-  padding: 20px 22px;
-  background: #F6E9CC;
-  border: 1px solid var(--color-border);
-  border-left: 3px solid var(--amber);
-  border-radius: var(--radius);
-}
-.post-preview-title {
-  font-family: var(--font-title);
-  font-size: 16px;
-  color: var(--color-text);
-  margin-bottom: 10px;
-}
-.post-preview-body {
-  font-size: 13px;
-  line-height: 1.95;
-  color: var(--color-text-secondary);
-}
-.post-preview-addr {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px dashed var(--color-border-strong);
-  font-size: 13px;
-  line-height: 1.8;
-  color: var(--color-accent);
-  font-weight: 600;
-}
-
-/* 进度点 */
-.stage-dots {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin-top: 20px;
-}
-.dot {
-  width: 7px;
-  height: 7px;
+.halo {
+  position: absolute;
+  top: -6px;
+  width: 460px;
+  height: 460px;
   border-radius: 50%;
-  background: rgba(255, 226, 181, 0.25);
-  transition: background 0.3s;
+  background: radial-gradient(
+    circle,
+    rgba(255, 176, 84, 0.34) 0%,
+    rgba(255, 150, 60, 0.16) 38%,
+    rgba(255, 150, 60, 0) 70%
+  );
+  filter: blur(6px);
+  animation: breathe 5.6s ease-in-out infinite;
+  pointer-events: none;
 }
-.dot.on {
-  background: var(--amber);
-  box-shadow: 0 0 10px rgba(255, 190, 92, 0.7);
+.halo.dim {
+  animation: none;
+  opacity: 0.28;
+  background: radial-gradient(circle, rgba(160, 130, 96, 0.22) 0%, rgba(160, 130, 96, 0) 68%);
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.78; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
 }
 
-/* 未解锁的挡板页 */
-.ending-lamp {
+.lantern {
+  width: 208px;
+  height: auto;
+  position: relative;
+  animation: swing 6.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 28px rgba(255, 148, 66, 0.45)) drop-shadow(0 18px 26px rgba(0, 0, 0, 0.5));
+}
+.lantern.dim {
+  animation: none;
+  filter: grayscale(0.72) brightness(0.66) drop-shadow(0 16px 22px rgba(0, 0, 0, 0.5));
+}
+@keyframes swing {
+  0%, 100% { transform: translateY(0) rotate(-1.4deg); }
+  50% { transform: translateY(-6px) rotate(1.4deg); }
+}
+
+.lamp-caption {
+  position: relative;
+  margin-top: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.lamp-state {
+  font-family: var(--font-title);
+  font-size: 15px;
+  letter-spacing: 7px;
+  color: #c2a582;
+  margin: 0;
+  text-indent: 7px;
+}
+.lamp-state.on {
+  color: #f6d9a8;
+  text-shadow: 0 0 18px rgba(255, 180, 96, 0.45);
+}
+
+/* 无框的字：唯一的交互入口，没有箭头、没有底和边 */
+.plain-link {
+  border: 0;
+  background: none;
+  padding: 6px 2px;
+  cursor: pointer;
+  font-family: var(--font-title);
+  font-size: 17px;
+  letter-spacing: 6px;
+  text-indent: 6px;
+  color: #e8c79a;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+.plain-link::after {
+  content: '';
   display: block;
-  text-align: center;
-  font-size: 44px;
-  margin-bottom: 20px;
+  height: 1px;
+  margin-top: 6px;
+  background: linear-gradient(90deg, transparent, rgba(232, 199, 154, 0.55), transparent);
+  transform: scaleX(0.35);
+  transition: transform 0.35s ease;
 }
-.ending-lamp.dim {
-  filter: grayscale(1) brightness(0.75);
-  opacity: 0.45;
+.plain-link:hover {
+  color: #ffe6bd;
+  text-shadow: 0 0 18px rgba(255, 190, 110, 0.5);
 }
-.blocked-text {
-  text-align: center;
+.plain-link:hover::after {
+  transform: scaleX(1);
+}
+.plain-link.small {
+  font-size: 14px;
+  letter-spacing: 5px;
+  text-indent: 5px;
+  color: #9d7a55;
+}
+.plain-link.small:hover {
+  color: #c9a173;
+}
+.plain-link.tiny {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-indent: 3px;
+  color: #7d6249;
+}
+.plain-link.tiny::after {
+  display: none;
+}
+.plain-link.tiny:hover {
+  color: #a38a6b;
+}
+
+/* ---------- 第二、三屏：纸面 ---------- */
+.paper {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  padding: 62px clamp(26px, 6vw, 62px) 48px;
+  background: #fffaf1;
+  background-image: radial-gradient(ellipse at 22% 0%, #e8cf9f22, transparent 62%),
+    repeating-linear-gradient(0deg, #7b5a3a08 0 1px, transparent 1px 5px);
+  border: 1px solid #d9c6a6;
+  border-radius: 2px;
+  box-shadow: 0 50px 100px -52px rgba(8, 3, 1, 0.95), 0 0 0 6px rgba(255, 248, 232, 0.04);
+}
+
+.lead {
   font-family: var(--font-title);
   font-size: 22px;
-  letter-spacing: 3px;
-  color: var(--color-text);
-  margin-bottom: 8px;
+  line-height: 1.85;
+  letter-spacing: 2px;
+  color: #3a2a1e;
+  margin: 0 0 34px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #e2d2b6;
 }
-.blocked-sub {
+
+.body-text {
+  font-family: var(--font-title);
+  font-size: 16px;
+  line-height: 2.15;
+  letter-spacing: 0.6px;
+  color: #403026;
+  margin: 0 0 22px;
+  text-align: justify;
+}
+
+.turn {
+  color: #8a5c34;
+  letter-spacing: 1.4px;
+}
+
+/* 三种“或许”：整块略微内缩、字色浅一点，像旁白 */
+.maybe {
+  margin: 4px 0 26px;
+  padding-left: 18px;
+  border-left: 1px solid #dcc7a4;
+}
+.maybe .body-text {
+  margin-bottom: 14px;
+}
+.soft {
+  color: #6f5a45;
+  font-size: 15px;
+  line-height: 2.05;
+}
+
+.brand {
+  font-family: var(--font-title);
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-indent: 0.32em;
+  color: #9c825f;
   text-align: center;
-  font-size: 14px;
-  color: var(--color-text-muted);
+  margin: 46px 0 4px;
+}
+.brand::before,
+.brand::after {
+  content: '';
+  display: block;
+  width: 46px;
+  height: 1px;
+  margin: 0 auto;
+  background: #d8c3a0;
+}
+.brand::before {
+  margin-bottom: 18px;
+}
+.brand::after {
+  margin-top: 18px;
+}
+
+.nav {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+/* 翻页动画：像把纸轻轻掀起 */
+.turn-enter-active,
+.turn-leave-active {
+  transition: opacity 0.42s ease, transform 0.42s ease;
+}
+.turn-enter-from {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.turn-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 @media (max-width: 720px) {
-  .ending-card {
-    padding: 32px 22px;
+  .ending-page {
+    padding: 44px 16px 56px;
+    align-items: flex-start;
   }
-  .ending-title {
-    font-size: 22px;
+  .lantern {
+    width: 168px;
   }
-  .ending-actions.row {
-    flex-direction: column;
+  .halo {
+    width: 360px;
+    height: 360px;
+  }
+  .paper {
+    padding: 42px 22px 34px;
+  }
+  .lead {
+    font-size: 19px;
+    margin-bottom: 26px;
+    padding-bottom: 18px;
+  }
+  .body-text {
+    font-size: 15px;
+    line-height: 2.05;
+    text-align: left;
+  }
+  .nav {
+    gap: 20px;
+    margin-top: 32px;
   }
 }
 </style>
