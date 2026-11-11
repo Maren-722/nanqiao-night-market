@@ -6,6 +6,8 @@
 - **作品类型**：叙事解谜 / 前端单页应用（无后端、无数据库、无登录服务）
 - **运行环境**：Chrome 129 及以上（Chromium 内核，Edge 同样可用）；代码不使用 Chrome 129 之后新增的 CSS/JS 特性，界面自适应 360–1920px
 
+**最快体验**：解压后双击 `打开游戏/index.html`，用浏览器直接打开即可，不需要安装 Node.js 或任何运行环境。
+
 ## 一、组内成员与分工
 
 | 成员 | GitHub | 负责内容 |
@@ -73,6 +75,8 @@ node tests/competition-env-check.cjs  # 参赛环境实测：1920/1440/720 三�
 ```
 
 项目设置了 base 路径，必须带 `/nanqiao-night-market/` 访问，根路径不可用。
+
+提交包里的 `打开游戏/` 是同一套源码用 `vite build --base=./ --outDir dist-offline` 生成的离线构建产物（资源全部走相对路径，可直接 `file://` 打开）；根目录才是源码工程。
 
 **本地常驻预览**：`启动预览.bat` / `停止预览.bat` 以零依赖静态服务（`scripts/preview-server.mjs`）托管 `dist/`，固定 5173 端口；改动后需重新 `npm run build`。
 
