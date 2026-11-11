@@ -15,6 +15,10 @@
         </div>
       </div>
       <div class="hero-steam" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="scroll-hint" :class="{ 'is-hidden': !showHint }" aria-hidden="true">
+        <span class="scroll-hint-text">下滑看公告与排班</span>
+        <span class="scroll-hint-arrow">⌄</span>
+      </div>
     </section>
 
     <div class="container">
@@ -112,13 +116,21 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import marketScene from '../assets/night-market-dusk.jpg'
 import NavBar from '../components/NavBar.vue'
 import Footer from '../components/Footer.vue'
 import noticesData from '../data/notices.json'
 import { markNode } from '../utils/progress'
 import metroMap from '../assets/metro-map.png'
+
+// 首屏下滑提示：开始滚动后淡出，不干扰阅读
+const showHint = ref(true)
+function onHeroScroll() {
+  showHint.value = window.scrollY < 80
+}
+onMounted(() => window.addEventListener('scroll', onHeroScroll, { passive: true }))
+onBeforeUnmount(() => window.removeEventListener('scroll', onHeroScroll))
 
 // 公告标签配色
 const tagColors = {
@@ -223,7 +235,7 @@ for (let d = 1; d <= 31; d++) {
 
 <style scoped>
 /* 首页插画保持完整构图，交互与文字由 HTML 呈现。 */
-.hero { position:relative; isolation:isolate; overflow:hidden; height:min(72vh, 880px); min-height:520px; background:#343139; }
+.hero { position:relative; isolation:isolate; overflow:hidden; aspect-ratio:1672 / 941; min-height:580px; max-height:900px; background:#343139; }
 .hero-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center bottom; }
 .hero-shade { position:absolute; inset:0; background:linear-gradient(90deg,rgba(27,23,29,.16),transparent 66%); }
 .hero-inner { position:relative; z-index:2; width:min(100%,1440px); margin:0 auto; padding:clamp(64px,7vw,120px) clamp(28px,7vw,110px) 80px; color:#fff0d5; }
@@ -241,6 +253,40 @@ for (let d = 1; d <= 31; d++) {
 .hero-steam i:nth-child(2) { left:30px; animation-delay:-2.3s; }
 .hero-steam i:nth-child(3) { left:4px; animation-delay:-4.6s; }
 @keyframes marketSteam { 0% { opacity:0; transform:translate(0,15px) scale(.7); } 35% { opacity:.7; } 100% { opacity:0; transform:translate(-12px,-60px) scale(1.4); } }
+
+/* 首屏下滑提示：轻微浮动，滚动后淡出 */
+.scroll-hint {
+  position:absolute;
+  left:50%;
+  bottom:16px;
+  z-index:3;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1px;
+  transform:translateX(-50%);
+  opacity:.88;
+  pointer-events:none;
+  transition:opacity .45s ease;
+  animation:hintFloat 2.8s ease-in-out infinite;
+}
+.scroll-hint.is-hidden { opacity:0; }
+.scroll-hint-text {
+  font-size:12px;
+  letter-spacing:2px;
+  color:#f9e7c8;
+  text-shadow:0 1px 8px rgba(32,22,28,.55);
+}
+.scroll-hint-arrow {
+  font-size:17px;
+  line-height:1;
+  color:#f0d2a6;
+  text-shadow:0 1px 8px rgba(32,22,28,.55);
+}
+@keyframes hintFloat {
+  0%, 100% { transform:translate(-50%, 0); }
+  50% { transform:translate(-50%, -5px); }
+}
 
 /* ---------- 公告栏：贴在墙上的纸条 ---------- */
 .notice-bar {
@@ -574,10 +620,12 @@ for (let d = 1; d <= 31; d++) {
 }
 
 @media (max-width: 720px) {
-  .hero { height:min(66vh, 560px); min-height:460px; }
+  .hero { aspect-ratio:auto; min-height:640px; }
   .hero-art { object-position:64% bottom; }
   .hero-shade { background:linear-gradient(180deg,rgba(28,25,32,.65),rgba(28,25,32,.16) 48%,transparent 74%); }
-  .hero-inner { padding:46px 24px 92px; }
+  .hero-inner { padding:54px 24px 300px; }
+  .scroll-hint { bottom:12px; }
+  .scroll-hint-text { font-size:11px; letter-spacing:1.5px; }
   .hero-kicker { font-size:12px; letter-spacing:3px; }
   .hero-title { font-size:48px; letter-spacing:5px; margin:20px 0; }
   .hero-sub { font-size:12px; letter-spacing:.5px; }
