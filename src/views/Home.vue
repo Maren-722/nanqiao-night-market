@@ -223,7 +223,7 @@ for (let d = 1; d <= 31; d++) {
 
 <style scoped>
 /* 首页插画保持完整构图，交互与文字由 HTML 呈现。 */
-.hero { position:relative; isolation:isolate; overflow:hidden; aspect-ratio:1672 / 941; min-height:580px; max-height:900px; background:#343139; }
+.hero { position:relative; isolation:isolate; overflow:hidden; height:min(72vh, 880px); min-height:520px; background:#343139; }
 .hero-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center bottom; }
 .hero-shade { position:absolute; inset:0; background:linear-gradient(90deg,rgba(27,23,29,.16),transparent 66%); }
 .hero-inner { position:relative; z-index:2; width:min(100%,1440px); margin:0 auto; padding:clamp(64px,7vw,120px) clamp(28px,7vw,110px) 80px; color:#fff0d5; }
@@ -574,10 +574,10 @@ for (let d = 1; d <= 31; d++) {
 }
 
 @media (max-width: 720px) {
-  .hero { aspect-ratio:auto; min-height:640px; }
+  .hero { height:min(66vh, 560px); min-height:460px; }
   .hero-art { object-position:64% bottom; }
   .hero-shade { background:linear-gradient(180deg,rgba(28,25,32,.65),rgba(28,25,32,.16) 48%,transparent 74%); }
-  .hero-inner { padding:54px 24px 300px; }
+  .hero-inner { padding:46px 24px 92px; }
   .hero-kicker { font-size:12px; letter-spacing:3px; }
   .hero-title { font-size:48px; letter-spacing:5px; margin:20px 0; }
   .hero-sub { font-size:12px; letter-spacing:.5px; }
