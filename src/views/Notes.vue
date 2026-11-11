@@ -42,6 +42,7 @@ import Footer from '../components/Footer.vue'
 import messagesData from '../data/messages.json'
 import { markNode } from '../utils/progress'
 import { useCurrentUser } from '../utils/auth'
+import { gameDate } from '../utils/gameTime'
 
 // 手记正文里 **文字** 渲染为加粗（如陈伯日记里的「念」字）
 function renderNote(text) {
@@ -107,7 +108,7 @@ function addNote() {
   const uname = currentUser.value.username
   const local = readLocalNotes()
   local[uname] = [
-    { date: new Date().toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' }), content: newNote.value.trim() },
+    { date: gameDate(), content: newNote.value.trim() },
     ...(local[uname] || [])
   ]
   localStorage.setItem('nq_notes', JSON.stringify(local))

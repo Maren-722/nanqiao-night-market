@@ -43,6 +43,7 @@ import BackBar from '../components/BackBar.vue'
 import postsData from '../data/posts.json'
 import { markNode } from '../utils/progress'
 import { useCurrentUser, uidOf } from '../utils/auth'
+import { gameDateTime } from '../utils/gameTime'
 
 const route = useRoute()
 const post = ref(null)
@@ -103,8 +104,7 @@ function addComment() {
   const uid = uname ? uidOf(uname) : null
   const comment = {
     user: currentUser.value?.shopName || uname || '游客',
-    date: new Date().toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' }) + ' ' +
-      new Date().toTimeString().slice(0, 5),
+    date: gameDateTime(),
     content: newComment.value.trim()
   }
   if (uid) comment.uid = uid

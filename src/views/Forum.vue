@@ -42,6 +42,7 @@ import NavBar from '../components/NavBar.vue'
 import Footer from '../components/Footer.vue'
 import postsData from '../data/posts.json'
 import { useCurrentUser, uidOf } from '../utils/auth'
+import { gameDate } from '../utils/gameTime'
 
 // 帖子列表：内置帖子(src/data/posts.json) + 玩家发布的帖子(localStorage nq_posts)
 // 玩家帖子/评论只存在本机浏览器，退出游戏（清除浏览器数据/换设备）后不再保留
@@ -101,7 +102,7 @@ function publishPost() {
     id: 'local-' + Date.now(),
     title: newTitle.value.trim(),
     author,
-    date: new Date().toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' }),
+    date: gameDate(),
     preview: newContent.value.trim(),
     content: newContent.value.trim(),
     comments: []

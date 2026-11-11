@@ -52,6 +52,7 @@ import BackBar from '../components/BackBar.vue'
 import stallsData from '../data/stalls.json'
 import { foodImage, foodLabels } from '../utils/foodImages'
 import { useCurrentUser } from '../utils/auth'
+import { gameDate } from '../utils/gameTime'
 
 const route = useRoute()
 const stall = ref(null)
@@ -84,7 +85,7 @@ function addReview() {
   if (!newReview.value.trim() || !stall.value) return
   const review = {
     user: currentUser.value?.shopName || currentUser.value?.username || '游客',
-    date: new Date().toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' }),
+    date: gameDate(),
     content: newReview.value.trim()
   }
   const all = readLocalReviews()
