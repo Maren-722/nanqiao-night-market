@@ -76,9 +76,9 @@ node tests/competition-env-check.cjs  # 参赛环境实测：1920/1440/720 三�
 
 项目设置了 base 路径，必须带 `/nanqiao-night-market/` 访问，根路径不可用。
 
-提交包里的 `打开游戏/` 由 `npm run build:offline` 生成：打成 IIFE 单脚本、样式内联进 HTML、入口用 `<script defer>`，所以在 `file://` 下双击也能运行。普通 `vite build` 的 `type="module"` 入口会被浏览器以跨源策略拦掉，直接双击只会白屏——这也是这里单独做一份离线构建的原因。根目录才是源码工程。
+提交包里的 `打开游戏/index.html` 由 `npm run build:offline` 生成：打包成单文件，脚本、样式与全部菜品图都内联进 HTML，并以普通 `<script>` 方式注入，所以在 `file://` 下双击即可运行，不依赖任何外部文件（直接放在压缩包里点开也能跑）。普通 `vite build` 的 `type="module"` 入口会被浏览器以跨源策略拦掉，直接双击只会白屏——这也是这里单独做一份离线构建的原因。根目录才是源码工程。
 
-**本地常驻预览**：`启动预览.bat` / `停止预览.bat` 以零依赖静态服务（`scripts/preview-server.mjs`）托管 `dist/`，固定 5173 端口；改动后需重新 `npm run build`。
+**本地常驻预览**：`scripts/启动预览.bat` / `scripts/停止预览.bat` 以零依赖静态服务（`scripts/preview-server.mjs`）托管 `dist/`，固定 5173 端口；改动后需重新 `npm run build`。这两个脚本需要 Node.js，只供开发调试，**评委无需运行**。
 
 ## 六、目录结构
 
@@ -88,7 +88,7 @@ node tests/competition-env-check.cjs  # 参赛环境实测：1920/1440/720 三�
 ├── tests/ui-smoke.cjs    # 界面回归自检
 ├── tests/responsive-audit.cjs  # 多页 × 多宽度的自适应审计
 ├── tests/competition-env-check.cjs  # 界面规格 + 慢网实测
-├── 启动预览.bat / 停止预览.bat
+├── scripts/启动预览.bat / scripts/停止预览.bat
 └── src/
     ├── assets/           # 图片（含地铁线网图）
     ├── components/       # NavBar、Footer、BackBar
